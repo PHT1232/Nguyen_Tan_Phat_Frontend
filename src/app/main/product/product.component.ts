@@ -49,7 +49,7 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
     this._productService.getCategoryProduct().subscribe(val => {
         this.getCategory = val;
     });
-    if (this.getStorage.items.length === 0)
+    if (this.getStorage.items === undefined)
       this.storageCode = '0';
   }
 

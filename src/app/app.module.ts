@@ -8,6 +8,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { TableModule } from 'primeng/table';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
@@ -128,7 +129,8 @@ import { EditImportComponent } from './main/export-import/edit-export-import/edi
     ModalModule,
     BsDropdownModule,
     CollapseModule,
-    BrowserAnimationsModule,
+    TableModule,
+    // BrowserAnimationsModule,
   ],
   providers: [],
   entryComponents: [

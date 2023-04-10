@@ -91,7 +91,7 @@
         <div class="row">
           <div class="col">
             <select class="form-control" [(ngModel)]="storageCode" (change)="getDataPage(1)" [ngModelOptions]="{standalone: true}" aria-label="Default select example">
-              <option value="0" *ngIf="getStorage.length === 0" selected>Kho</option>
+              <option value="0" *ngIf="getStorage.items.length === 0" selected>Kho</option>
               <option *ngFor="let storage of getStorage;let i = index" value="{{storage.storageCode}}" [selected]="true">{{storage.storageName}}</option>
             </select>
             <!-- <abp-validation-summary [control]="nameCode" [controlEl]="nameCodeEl"></abp-validation-summary> -->
@@ -219,9 +219,6 @@
                 </tr>
               </tbody>
             </table>
-            <pagination [totalItems]="totalItems" [(ngModel)]="pageNumber" (ngModelChange)="getProductPage()"
-            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
-            </pagination>
           </div>
         </div>
       </div>

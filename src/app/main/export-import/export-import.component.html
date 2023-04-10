@@ -78,10 +78,6 @@
                           placeholder="Ngày/tháng/năm"
                           class="form-control"
                           bsDaterangepicker
-                          [bsConfig]="{
-                            isAnimated: true,
-                            rangeInputFormat: 'DD/MM/YYYY'
-                          }"
                           [(ngModel)]="bsInlineRangeValue"
                           [ngModelOptions]="{ standalone: true }"
                           (ngModelChange)="getDataPage(1)"
@@ -174,7 +170,6 @@
                               <button
                               type="button"
                               class="btn btn-sm bg-secondary"
-                              (click)="editUser(user)"
                               *ngIf="
                                 isGranted('Pages.System.ExportImport.Add') ==
                                 true

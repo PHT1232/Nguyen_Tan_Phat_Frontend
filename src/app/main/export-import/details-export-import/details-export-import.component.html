@@ -46,7 +46,7 @@
                         </label>
                         <span style="margin-left: 20px;">
                             <select disabled class="form-control" [(ngModel)]="exportImport.storageId" [ngModelOptions]="{standalone: true}" aria-label="Default select example">
-                                <option value="0" *ngIf="getStorage.length === 0" selected>Kho</option>
+                                <option value="0" *ngIf="getStorage.items.length" selected>Kho</option>
                                 <option *ngFor="let storage of getStorage;let i = index" value="{{storage.storageCode}}" [selected]="true">{{storage.storageName}}</option>
                             </select>
                         </span>
@@ -109,7 +109,7 @@
                       </div>
                       <div *ngIf="customer.customerPhone !== null" class="col">
                         <select disabled class="form-control" [(ngModel)]="storageCode" [ngModelOptions]="{standalone: true}" aria-label="Default select example">
-                          <option value="0" *ngIf="getStorage.length === 0" selected>Kho</option>
+                          <option value="0" *ngIf="getStorage.items.length === 0" selected>Kho</option>
                           <option *ngFor="let storage of getStorage;let i = index" value="{{storage.storageCode}}" [selected]="true">{{storage.storageName}}</option>
                         </select>
                       </div>

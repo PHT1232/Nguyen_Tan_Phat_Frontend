@@ -19,20 +19,14 @@ export class ProductGetAllPagedResultDto implements IProductGetAllPagedResultDto
         }
     }
 
-    // init(_data?: any) {
-    //     if (_data) {
-    //         if (Array.isArray(_data["items"])) {
-    //             this.items = [] as any;
-    //             for (let item of _data["items"])
-    //                 this.items.push(ProductGetAllDto.fromJS(item));
-    //         }
-    //         this.totalCount = _data["totalCount"];
-    //     }
-    // }
-
-    init(data?: any) {
-        if (data) {
-        this.items = data["items"] && data["items"].map((item: any) => ProductGetAllPagedResultDto.fromJS(item));
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(ProductGetAllDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
         }
     }
 

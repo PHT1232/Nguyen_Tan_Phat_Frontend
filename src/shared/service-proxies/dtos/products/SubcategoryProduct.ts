@@ -36,7 +36,7 @@ export class SubcategoryProductList implements ISubcategoryProductList {
     toJSON(data?: any) {
         data = typeof data === "object" ? data : {};
         if (this.items) {
-            data["items"] = this.items.map((item: any) => {
+            data["result"] = this.items.map((item: any) => {
                 return item.toJSON();
             });
         }

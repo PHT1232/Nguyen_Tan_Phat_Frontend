@@ -55,6 +55,7 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
     });
 
     this._productService.getCategoryProduct().subscribe(val => {
+        console.log(val.items[0]);
         this.getCategory = val;
     });
     this.products.storages = [];

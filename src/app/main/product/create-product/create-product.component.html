@@ -57,7 +57,7 @@
                         (change)="getSubcategory()" [(ngModel)]="categoryCode" [ngModelOptions]="{standalone: true}"
                         aria-label="Default select example">
                         <option value="0" selected>Danh mục</option>
-                        <option *ngFor="let category of getCategory;let i = index" value="{{category.CategoryId}}">
+                        <option *ngFor="let category of getCategory.items;let i = index" value="{{category.CategoryId}}">
                           {{category.CategoryName}}</option>
                       </select>
                       <abp-validation-summary [control]="selectModel" [controlEl]="selectEl"></abp-validation-summary>
@@ -78,7 +78,7 @@
                         [disabled]="isCategoryCodeExist != true" [(ngModel)]="products.subCategoryId"
                         [ngModelOptions]="{standalone: true}" aria-label="Default select example">
                         <option value="0" selected>Danh mục nhỏ</option>
-                        <option *ngFor="let subcategory of getSubcategorycode;let i = index"
+                        <option *ngFor="let subcategory of getSubcategorycode.items;let i = index"
                           value="{{subcategory.subcategoryId}}">{{subcategory.subcategoryName}}</option>
                       </select>
                     </div>

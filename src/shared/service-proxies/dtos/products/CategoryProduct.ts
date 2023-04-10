@@ -16,10 +16,10 @@ export class CategoryProductList implements ICategoryProductList {
 
     init(data?: any) {
         if (data) {
-            this.items = Array.isArray(data["items"]) ? [] : undefined;
-            if (data["items"] && Array.isArray(data["items"])) {
+            if (data["items"]) {
+                this.items = [] as any;
                 for (let item of data["items"])
-                    this.items!.push(CategoryProduct.fromJS(item));
+                    this.items.push(CategoryProduct.fromJS(item));
             }
         }
     }
