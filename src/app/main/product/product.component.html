@@ -1,25 +1,28 @@
 <div [@routerTransition]>
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-6">
-            <h1>{{ "Sản phẩm" | localize }}</h1>
-          </div>
-          <div class="col-6 text-right">
-            <a href="javascript:;"
-              class="btn bg-blue"
-              routerLink="create"
-              *ngIf="isGranted('Pages.System.Product.Add') == true">
-              <i class="fa fa-plus-square"></i>
-              {{ "Thêm" | localize }}
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="content px-2">
-      <div class="container-fluid">
-        <div class="card">
+
+    <section class="content px-2" style="margin-top: 40px; margin-left: 15px; margin-right: 15px;">
+      <p-panel>
+        <!-- <div class="card"> -->
+          <ng-template pTemplate="header">
+            <!-- <section class="content-header">
+              <div class="container-fluid">
+                <div class="row"> -->
+                  <div class="col-6">
+                    <h1>{{ "Sản phẩm" | localize }}</h1>
+                  </div>
+                  <div class="col-6 text-right">
+                    <a href="javascript:;"
+                      class="btn bg-blue"
+                      routerLink="create"
+                      *ngIf="isGranted('Pages.System.Product.Add') == true">
+                      <i class="fa fa-plus-square"></i>
+                      {{ "Thêm" | localize }}
+                    </a>
+                  </div>
+                <!-- </div>
+              </div>
+            </section> -->
+          </ng-template>
           <div class="card-header">
             <div class="row">
               <div class="col-md-6">&emsp;</div>
@@ -91,7 +94,7 @@
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-product>
-                  <!-- <tr *ngFor="
+                  <tr *ngFor="
                     let product of productList
                       | paginate
                         : {
@@ -100,7 +103,7 @@
                             currentPage: pageNumber,
                             totalItems: totalItems
                           }
-                  "> -->
+                  ">
                   <tr>
                   <td>
                     <a [routerLink]="['detail', product.productCode]">{{ product.productCode }}</a>
@@ -163,7 +166,7 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        <!-- </div> -->
+      </p-panel>
     </section>
   </div>

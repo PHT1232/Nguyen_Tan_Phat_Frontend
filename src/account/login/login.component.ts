@@ -6,7 +6,15 @@ import { AppAuthService } from '@shared/auth/app-auth.service';
 
 @Component({
   templateUrl: './login.component.html',
-  animations: [accountModuleAnimation()]
+  animations: [accountModuleAnimation()],
+  styles: [`
+  :host ::ng-deep .pi-eye,
+  :host ::ng-deep .pi-eye-slash {
+      transform:scale(1.6);
+      margin-right: 1rem;
+      color: var(--primary-color) !important;
+  }
+`]
 })
 export class LoginComponent extends AppComponentBase {
   submitting = false;

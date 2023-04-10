@@ -9,6 +9,14 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { TableModule } from 'primeng/table';
+import { SidebarModule } from 'primeng/sidebar';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { ButtonModule } from 'primeng/button';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { PasswordModule } from 'primeng/password';
+import { PanelModule } from 'primeng/panel';
+import { InputTextModule } from 'primeng/inputtext';
+import { CheckboxModule } from 'primeng/checkbox';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
@@ -130,6 +138,14 @@ import { EditImportComponent } from './main/export-import/edit-export-import/edi
     BsDropdownModule,
     CollapseModule,
     TableModule,
+    SidebarModule,
+    RadioButtonModule,
+    ButtonModule,
+    InputSwitchModule,
+    PanelModule,
+    PasswordModule,
+    CheckboxModule,
+    InputTextModule
     // BrowserAnimationsModule,
   ],
   providers: [],
