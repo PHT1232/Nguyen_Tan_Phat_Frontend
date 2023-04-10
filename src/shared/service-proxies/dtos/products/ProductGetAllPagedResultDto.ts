@@ -2,12 +2,12 @@
 import { ProductGetAllDto } from '../products/ProductGetAllDto';
 
 export interface IProductGetAllPagedResultDto {
-    items?: ProductGetAllDto[];
+    items: ProductGetAllDto[] | undefined;
     totalCount: number;
 }
 
 export class ProductGetAllPagedResultDto implements IProductGetAllPagedResultDto {
-    items?: ProductGetAllDto[];
+    items: ProductGetAllDto[] | undefined;
     totalCount: number;
 
     constructor(data?: IProductGetAllPagedResultDto) {

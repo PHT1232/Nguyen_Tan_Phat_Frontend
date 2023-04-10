@@ -60,7 +60,7 @@
                                         </select>
                                     </div>
                                     <div class="col pt-2">
-                                        <select class="form-control" (change)="getDataPage(1)" [(ngModel)]="subcategoryCode" [ngModelOptions]="{standalone: true}" [disabled]="getSubcategorycode.length === 0 || categoryCode === '0'" aria-label="Default select example">
+                                        <select class="form-control" (change)="getDataPage(1)" [(ngModel)]="subcategoryCode" [ngModelOptions]="{standalone: true}" [disabled]="getSubcategorycode.items.length" aria-label="Default select example">
                                           <option value="0" selected>Tất cả danh mục nhỏ</option>
                                           <option *ngFor="let subcategory of getSubcategorycode;let i = index" value="{{subcategory.subcategoryId}}">{{subcategory.subcategoryName}}</option>
                                         </select>

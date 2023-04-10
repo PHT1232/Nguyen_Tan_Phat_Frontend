@@ -3,6 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientJsonpModule } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -34,7 +38,6 @@ import { SidebarComponent } from './layout/sidebar.component';
 import { SidebarLogoComponent } from './layout/sidebar-logo.component';
 import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component';
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
-import { EditTestDialogComponent } from './main/test/edit-test-dialog/edit-test-dialog.component';
 import { StorageComponent } from './main/storage/storage.component';
 import { CreateStorageComponent } from './main/storage/create-storage/create-storage.component';
 import { EditStorageComponent } from './main/storage/edit-storage/edit-storage.component';
@@ -88,7 +91,6 @@ import { EditImportComponent } from './main/export-import/edit-export-import/edi
     SidebarLogoComponent,
     SidebarUserPanelComponent,
     SidebarMenuComponent,
-    EditTestDialogComponent,
     StorageComponent,
     CreateStorageComponent,
     EditStorageComponent,
@@ -122,7 +124,11 @@ import { EditImportComponent } from './main/export-import/edit-export-import/edi
     ServiceProxyModule,
     SharedModule,
     NgxPaginationModule,
-    // BrowserAnimationsModule,
+    TabsModule.forRoot(),
+    ModalModule,
+    BsDropdownModule,
+    CollapseModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   entryComponents: [

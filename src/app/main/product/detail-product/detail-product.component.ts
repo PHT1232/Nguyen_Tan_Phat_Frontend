@@ -2,7 +2,14 @@ import { Component, OnInit, Output, EventEmitter, Injector } from '@angular/core
 import { ActivatedRoute, Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
-import { PermissionDto, ProductOutputDto, ProductGetAllDto, StorageProductDetail, CategoryProduct, SubcategoryProduct, ProductServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CategoryInput, CategoryServiceProxy, PermissionDto, ProductServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CategoryProduct, CategoryProductList } from '@shared/service-proxies/dtos/products/CategoryProduct';
+import { ProductGetAllDto } from '@shared/service-proxies/dtos/products/ProductGetAllDto';
+import { ProductInputDto } from '@shared/service-proxies/dtos/products/ProductInputDto';
+import { ProductOutputDto } from '@shared/service-proxies/dtos/products/ProductOutputDto';
+import { ProductStorageDto } from '@shared/service-proxies/dtos/products/ProductStorageDto';
+import { StorageProductDetail, StorageProductDetailList } from '@shared/service-proxies/dtos/products/StorageProductDetail';
+import { SubcategoryProduct, SubcategoryProductList } from '@shared/service-proxies/dtos/products/SubcategoryProduct';
 
 @Component({
   selector: 'app-detail-product',
@@ -21,9 +28,9 @@ export class DetailProductComponent extends AppComponentBase implements OnInit {
   isCategoryCodeExist = false;
   categoryCode = '0';
   productList: ProductGetAllDto[] = [];
-  getStorage: StorageProductDetail[] = [];
-  getCategory: CategoryProduct[] = [];
-  getSubcategorycode: SubcategoryProduct[] = [];
+  getStorage: StorageProductDetailList = new StorageProductDetailList();
+  getCategory: CategoryProductList = new CategoryProductList();
+  getSubcategorycode: SubcategoryProductList = new SubcategoryProductList();
 
   @Output() onSave = new EventEmitter<any>();
 

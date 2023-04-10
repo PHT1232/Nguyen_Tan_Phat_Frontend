@@ -15,6 +15,16 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 
 import * as moment from 'moment';
 
+import { StorageProduct } from './dtos/products/StorageProduct';
+import { CategoryProduct, CategoryProductList } from './dtos/products/CategoryProduct';
+import { ProductOutputDto } from './dtos/products/ProductOutputDto';
+import { StorageProductDetail, StorageProductDetailList } from './dtos/products/StorageProductDetail';
+import { ProductInputDto } from './dtos/products/ProductInputDto';
+import { ProductGetAllDto } from './dtos/products/ProductGetAllDto';
+import { ProductGetAllPagedResultDto } from './dtos/products/ProductGetAllPagedResultDto';
+import { SubcategoryProduct, SubcategoryProductList } from './dtos/products/SubcategoryProduct';
+import { LookUpTable, LookUpTableList } from './dtos/LookUpTable';
+
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 //#region Framework service
@@ -2640,7 +2650,7 @@ export class ProductServiceProxy {
         return _observableOf<ProductGetAllPagedResultDto>(<any>null);
     }
 
-    getCategoryProduct(): Observable<CategoryProduct[]> {
+    getCategoryProduct(): Observable<CategoryProductList> {
         let url_ = this.baseUrl + "/api/services/app/Product/GetCategoryProduct";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2660,14 +2670,14 @@ export class ProductServiceProxy {
                 try {
                     return this.processGetCategoryProduct(<any>response_);
                 } catch (e) {
-                    return <Observable<CategoryProduct[]>><any>_observableThrow(e);
+                    return <Observable<CategoryProductList>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<CategoryProduct[]>><any>_observableThrow(response_);
+                return <Observable<CategoryProductList>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetCategoryProduct(response: HttpResponseBase): Observable<CategoryProduct[]> {
+    protected processGetCategoryProduct(response: HttpResponseBase): Observable<CategoryProductList> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2682,7 +2692,7 @@ export class ProductServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200.push(CategoryProduct.fromJS(item));
+                    result200.push(CategoryProductList.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -2694,10 +2704,10 @@ export class ProductServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<CategoryProduct[]>(<any>null);
+        return _observableOf<CategoryProductList>(<any>null);
     }    
     
-    getSubcategoryProduct(id: string): Observable<SubcategoryProduct[]> {
+    getSubcategoryProduct(id: string): Observable<SubcategoryProductList> {
         let url_ = this.baseUrl + "/api/services/app/Product/GetSubcategoryProduct?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -2720,14 +2730,14 @@ export class ProductServiceProxy {
                 try {
                     return this.processGetSubcategoryProduct(<any>response_);
                 } catch (e) {
-                    return <Observable<SubcategoryProduct[]>><any>_observableThrow(e);
+                    return <Observable<SubcategoryProductList>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<SubcategoryProduct[]>><any>_observableThrow(response_);
+                return <Observable<SubcategoryProductList>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetSubcategoryProduct(response: HttpResponseBase): Observable<SubcategoryProduct[]> {
+    protected processGetSubcategoryProduct(response: HttpResponseBase): Observable<SubcategoryProductList> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2742,7 +2752,7 @@ export class ProductServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200.push(SubcategoryProduct.fromJS(item));
+                    result200.push(SubcategoryProductList.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -2754,10 +2764,10 @@ export class ProductServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<SubcategoryProduct[]>(<any>null);
+        return _observableOf<SubcategoryProductList>(<any>null);
     }
 
-    getStorageProduct(): Observable<StorageProductDetail[]> {
+    getStorageProduct(): Observable<StorageProductDetailList> {
         let url_ = this.baseUrl + "/api/services/app/Product/GetStorageProduct";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2776,14 +2786,14 @@ export class ProductServiceProxy {
                 try {
                     return this.processStorageProduct(<any>response_);
                 } catch (e) {
-                    return <Observable<StorageProductDetail[]>><any>_observableThrow(e);
+                    return <Observable<StorageProductDetailList>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<StorageProductDetail[]>><any>_observableThrow(response_);
+                return <Observable<StorageProductDetailList>><any>_observableThrow(response_);
         }));
     }
 
-    protected processStorageProduct(response: HttpResponseBase): Observable<StorageProductDetail[]> {
+    protected processStorageProduct(response: HttpResponseBase): Observable<StorageProductDetailList> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2798,7 +2808,7 @@ export class ProductServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200.push(StorageProductDetail.fromJS(item));
+                    result200.push(StorageProductDetailList.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -2810,7 +2820,7 @@ export class ProductServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<StorageProductDetail[]>(<any>null);
+        return _observableOf<StorageProductDetailList>(<any>null);
     }
 
     getProduct(id: string | undefined): Observable<ProductOutputDto> {
@@ -3398,7 +3408,7 @@ export class ExportImportService {
         return _observableOf<ExportImportPagedResult>(<any>null);
     }
 
-    getUser(): Observable<LookUpTable[]> {
+    getUser(): Observable<LookUpTableList> {
         let url_ = this.baseUrl + "/api/services/app/ExportImport/GetCreator";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3417,14 +3427,14 @@ export class ExportImportService {
                 try {
                     return this.processGetUser(<any>response_);
                 } catch (e) {
-                    return <Observable<LookUpTable[]>><any>_observableThrow(e);
+                    return <Observable<LookUpTableList>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<LookUpTable[]>><any>_observableThrow(response_);
+                return <Observable<LookUpTableList>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetUser(response: HttpResponseBase): Observable<LookUpTable[]> {
+    protected processGetUser(response: HttpResponseBase): Observable<LookUpTableList> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3439,7 +3449,7 @@ export class ExportImportService {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200.push(LookUpTable.fromJS(item));
+                    result200.push(LookUpTableList.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -3451,7 +3461,7 @@ export class ExportImportService {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<LookUpTable[]>(<any>null);
+        return _observableOf<LookUpTableList>(<any>null);
     }
 
     getAll(keyword: string | undefined, storageCode: string, DateTime: Date[], orderType: number, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetAllExportImportPagedResult> {
@@ -4171,48 +4181,6 @@ export class CustomerDto {
     }
 }
 
-export class LookUpTable {
-    id: number;
-    name: string;
-
-    constructor(data?: LookUpTable) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-        }
-    }
-
-    static fromJS(data: any): LookUpTable {
-        data = typeof data === 'object' ? data : {};
-        let result = new LookUpTable();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        return data;
-    }
-
-    clone(): LookUpTable {
-        const json = this.toJSON();
-        let result = new LookUpTable();
-        result.init(json);
-        return result;
-    }
-}
-
 export class GetAllCategoryDto implements ICategoryGetAllDto {
     categoryCode: string;
     categoryName: string;
@@ -4648,423 +4616,6 @@ export class StorageOutPutDto implements IStorageOutPutDto {
 }
 
 //Product
-export class StorageProduct implements IStorageProduct {
-    productCode: string;
-    productName: string;
-    unit: string;
-    quantity: number;
-    location: string;
-
-    constructor(data?: IStorageProduct) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.productCode = _data["productCode"];
-            this.productName = _data["productName"];
-            this.unit = _data["unit"];
-            this.quantity = _data["quantity"];
-            this.location = _data["location"];
-        }
-    }
-
-    static fromJS(data: any): StorageProduct {
-        data = typeof data === 'object' ? data : {};
-        let result = new StorageProduct();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["productCode"] = this.productCode;
-        data["productName"] = this.productName;
-        data["unit"] = this.unit;
-        data["quantity"] = this.quantity;
-        data["location"] = this.location;
-        return data;
-    }
-
-    clone(): StorageProduct {
-        const json = this.toJSON();
-        let result = new StorageProduct();
-        result.init(json);
-        return result;
-    }
-}
-
-export class StorageProductDetail implements IStorageProductDetail {
-    storageProductId: number;
-    storageCode: string;
-    storageName: string;
-    quantity: number;
-    productLocation: string;
-
-    constructor(data?: IStorageProductDetail) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data: any) {
-        if (_data) {
-            this.storageProductId = _data["storageProductId"];
-            this.storageCode = _data["storageCode"];
-            this.storageName = _data["storageName"];
-            this.quantity = _data["quantity"];
-            this.productLocation = _data["productLocation"]
-        }
-    }
-
-    static fromJS(data: any): StorageProductDetail {
-        data = typeof data === 'object' ? data : {};
-        let result = new StorageProductDetail();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["storageProductId"] = this.storageProductId;
-        data["storageCode"] = this.storageCode;
-        data["storageName"] = this.storageName;
-        data["quantity"] = this.quantity;
-        data["productLocation"] = this.productLocation;
-        return data;
-    }
-
-    clone(): StorageProductDetail {
-        const json = this.toJSON();
-        let result = new StorageProductDetail();
-        result.init(json);
-        return result;
-    }
-}
-
-export class ProductStorageDto implements IProductStorageDto {
-    storageCode: string;
-    productQuantity: number;
-    productLocation: string;
-    description: string;
-
-    constructor(data?: IProductStorageDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data: any) {
-        if (_data) {
-            this.storageCode = _data["storageCode"];
-            this.productQuantity = _data["productQuantity"];
-            this.productLocation = _data["productLocation"];
-            this.description = _data["description"];
-        }
-    }
-
-    static fromJS(data: any): ProductStorageDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProductStorageDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["storageCode"] = this.storageCode;
-        data["productQuantity"] = this.productQuantity;
-        data["productLocation"] = this.productLocation;
-        data["description"] = this.description;
-        return data;
-    }
-}
-
-export class ProductGetAllDto implements IProductGetAllDto {
-    productCode: string;
-    productName: string;
-    categoryName: string;
-    price: number;
-    unit: string;
-    quantity: number;
-    creationTime: moment.Moment;
-    lastDateModified: moment.Moment;
-    username: string;
-
-    constructor(data?: IProductGetAllDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data: any) {
-        if (_data) {
-            this.productCode = _data["productCode"];
-            this.productName = _data["productName"];
-            this.categoryName = _data["categoryName"];
-            this.price = _data["price"];
-            this.unit = _data["unit"];
-            this.quantity = _data["quantity"];
-            this.creationTime = _data["creationTime"];
-            this.lastDateModified = _data["lastDateModified"];
-            this.username = _data["username"];
-        }
-    }
-
-    static fromJS(data: any): ProductGetAllDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProductGetAllDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["productCode"] = this.productCode;
-        data["productName"] = this.productName;
-        data["categoryName"] = this.categoryName;
-        data["price"] = this.price;
-        data["unit"] = this.unit;
-        data["quantity"] = this.quantity;
-        data["creationTime"] = this.creationTime;
-        data["lastDateModified"] = this.lastDateModified;
-        data["username"] = this.username;
-        return data;
-    }
-
-    clone(): ProductGetAllDto {
-        const json = this.toJSON();
-        let result = new ProductGetAllDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export class SubcategoryProduct implements ISubcategoryProduct {
-    subcategoryId: number;
-    subcategoryName: string;
-
-    constructor(data?: ISubcategoryProduct) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data: any) {
-        if (_data) {
-            this.subcategoryId = _data["subcategoryId"];
-            this.subcategoryName = _data["subcategoryName"];
-        }
-    }
-
-    static fromJS(data: any): SubcategoryProduct {
-        data = typeof data === 'object' ? data : {};
-        let result = new SubcategoryProduct();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["subcategoryId"] = this.subcategoryId;
-        data["subcategoryName"] = this.subcategoryName;
-        return data;
-    }
-
-    clone(): SubcategoryProduct {
-        const json = this.toJSON();
-        let result = new SubcategoryProduct();
-        result.init(json);
-        return result;
-    }
-}
-
-export class ProductInputDto implements IProductInputDto{
-    productCode: string;
-    productName: string;
-    productDescription: string;
-    productDetail: string;
-    price: number;
-    categoryId: string;
-    subCategoryId: string;
-    unit: string;
-    storages: StorageProductDetail[];
-
-    constructor(data?: IProductInputDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data: any) {
-        if (_data) {
-            this.productCode = _data["productCode"];
-            this.productName = _data["productName"];
-            this.productDescription = _data["productDescription"];
-            this.productDetail = _data["productDetail"];
-            this.price = _data["price"];
-            this.categoryId = _data["categoryId"];
-            this.subCategoryId = _data["subCategoryId"];
-            this.unit = _data["unit"];
-            this.storages = _data["storages"];
-        }
-    }
-
-    static fromJS(data: any): ProductInputDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProductInputDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["productCode"] = this.productCode;
-        data["productName"] = this.productName;
-        data["productDescription"] = this.productDescription;
-        data["productDetail"] = this.productDetail;
-        data["price"] = this.price;
-        data["categoryId"] = this.categoryId;
-        data["subCategoryId"] = this.subCategoryId;
-        data["unit"] = this.unit;
-        data["storages"] = this.storages;
-        return data;
-    }
-}
-
-export class ProductOutputDto implements IProductOutputDto {
-    productCode: string;
-    productName: string;
-    productDescription: string;
-    productDetail: string;
-    price: number;
-    categoryId: string;
-    subCategoryId: string;
-    unit: string;
-    storages: StorageProductDetail[];
-
-    constructor(data?: IProductOutputDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data: any) {
-        if (_data) {
-            this.productCode = _data["productCode"];
-            this.productName = _data["productName"];
-            this.productDescription = _data["productDescription"];
-            this.productDetail = _data["productDetail"];
-            this.price = _data["price"];
-            this.unit = _data["unit"];
-            this.categoryId = _data["categoryId"];
-            this.subCategoryId = _data["subCategoryId"];
-            this.storages = _data["storages"];
-        }
-    }
-
-    static fromJS(data: any): ProductOutputDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProductOutputDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["productCode"] = this.productCode;
-        data["productName"] = this.productName;
-        data["productDescription"] = this.productDescription;
-        data["productDetail"] = this.productDetail;
-        data["price"] = this.price;
-        data["unit"] = this.unit;
-        data["categoryId"] = this.categoryId;
-        data["subCategoryId"] = this.subCategoryId;
-        data["storages"] = this.storages;
-        return data;
-    }
-
-    clone(): ProductOutputDto {
-        const json = this.toJSON();
-        let result = new ProductOutputDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export class ProductGetAllPagedResultDto implements IProductGetAllPagedResultDto {
-    items: ProductGetAllDto[] | undefined;
-    totalCount: number;
-
-    constructor(data?: IProductGetAllPagedResultDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items.push(ProductGetAllDto.fromJS(item));
-            }
-            this.totalCount = _data["totalCount"];
-        }
-    }
-
-    static fromJS(data: any): ProductGetAllPagedResultDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProductGetAllPagedResultDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        data["totalCount"] = this.totalCount;
-        return data;
-    }
-
-    clone(): ProductGetAllPagedResultDto {
-        const json = this.toJSON();
-        let result = new ProductGetAllPagedResultDto();
-        result.init(json);
-        return result;
-    }
-}
-
 export class TestInput implements ITestInput {
     testVarible: number | undefined;
 

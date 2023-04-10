@@ -1,7 +1,15 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
-import { CategoryProduct, ProductGetAllDto, ProductGetAllPagedResultDto, ProductServiceProxy, StorageProductDetail, SubcategoryProduct } from '@shared/service-proxies/service-proxies';
+import { CategoryInput, CategoryServiceProxy, PermissionDto, ProductServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CategoryProduct, CategoryProductList } from '@shared/service-proxies/dtos/products/CategoryProduct';
+import { ProductGetAllDto } from '@shared/service-proxies/dtos/products/ProductGetAllDto';
+import { ProductInputDto } from '@shared/service-proxies/dtos/products/ProductInputDto';
+import { ProductOutputDto } from '@shared/service-proxies/dtos/products/ProductOutputDto';
+import { ProductStorageDto } from '@shared/service-proxies/dtos/products/ProductStorageDto';
+import { StorageProductDetail, StorageProductDetailList } from '@shared/service-proxies/dtos/products/StorageProductDetail';
+import { ProductGetAllPagedResultDto } from '@shared/service-proxies/dtos/products/ProductGetAllPagedResultDto';
+import { SubcategoryProduct, SubcategoryProductList } from '@shared/service-proxies/dtos/products/SubcategoryProduct';
 import { throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 
@@ -24,9 +32,9 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
   categoryCode = '0';
   subcategoryCode = 0;
   productList: ProductGetAllDto[] = [];
-  getStorage: StorageProductDetail[] = [];
-  getCategory: CategoryProduct[] = [];
-  getSubcategorycode: SubcategoryProduct[] = [];
+  getStorage: StorageProductDetailList = new StorageProductDetailList();
+  getCategory: CategoryProductList = new CategoryProductList();
+  getSubcategorycode: SubcategoryProductList = new SubcategoryProductList();
   totalCount: number;
 
   constructor(
@@ -41,7 +49,7 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
     this._productService.getCategoryProduct().subscribe(val => {
         this.getCategory = val;
     });
-    if (this.getStorage.length === 0)
+    if (this.getStorage.items.length === 0)
       this.storageCode = '0';
   }
 

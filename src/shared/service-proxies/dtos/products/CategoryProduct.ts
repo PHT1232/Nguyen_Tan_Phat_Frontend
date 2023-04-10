@@ -1,3 +1,54 @@
+export interface ICategoryProductList {
+    items: CategoryProduct[] | undefined;
+}
+
+export class CategoryProductList implements ICategoryProductList {
+    items: CategoryProduct[] | undefined;
+
+    constructor(data?: ICategoryProductList) {
+        if (data) {
+            for (let property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.items = Array.isArray(data["items"]) ? [] : undefined;
+            if (data["items"] && Array.isArray(data["items"])) {
+                for (let item of data["items"])
+                    this.items!.push(CategoryProduct.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CategoryProductList {
+        data = typeof data === 'object' ? data : {};
+        let result = new CategoryProductList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.items && Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): CategoryProductList {
+        const json = this.toJSON();
+        let result = new CategoryProductList();
+        result.init(json);
+        return result;
+    }
+}
+
 export interface ICategoryProduct {
     CategoryId: string;
     CategoryName: string;

@@ -1,7 +1,14 @@
 import { Component, OnInit, Output, EventEmitter, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponentBase } from '@shared/app-component-base';
-import { CategoryInput, CategoryProduct, CategoryServiceProxy, PermissionDto, ProductGetAllDto, ProductInputDto, ProductServiceProxy, ProductStorageDto, StorageProductDetail, SubcategoryProduct } from '@shared/service-proxies/service-proxies';
+import { CategoryInput, CategoryServiceProxy, PermissionDto, ProductServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CategoryProduct, CategoryProductList } from '@shared/service-proxies/dtos/products/CategoryProduct';
+import { ProductGetAllDto } from '@shared/service-proxies/dtos/products/ProductGetAllDto';
+import { ProductInputDto } from '@shared/service-proxies/dtos/products/ProductInputDto';
+import { ProductOutputDto } from '@shared/service-proxies/dtos/products/ProductOutputDto';
+import { ProductStorageDto } from '@shared/service-proxies/dtos/products/ProductStorageDto';
+import { StorageProductDetail, StorageProductDetailList } from '@shared/service-proxies/dtos/products/StorageProductDetail';
+import { SubcategoryProduct, SubcategoryProductList } from '@shared/service-proxies/dtos/products/SubcategoryProduct';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 
@@ -15,9 +22,9 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
   saving = false;
   categoryCode = '0';
   productList: ProductGetAllDto[] = [];
-  getStorage: StorageProductDetail[] = [];
-  getCategory: CategoryProduct[] = [];
-  getSubcategorycode: SubcategoryProduct[] = [];
+  getStorage: StorageProductDetailList = new StorageProductDetailList();
+  getCategory: CategoryProductList = new CategoryProductList();
+  getSubcategorycode: SubcategoryProductList = new SubcategoryProductList();
   isCategoryCodeExist = false;
   totalCount: number;
   storageFormArray = new FormArray([]);
@@ -86,7 +93,7 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
   getSubcategory() {
     if (this.categoryCode !== '0') {
       this._productService.getSubcategoryProduct(this.categoryCode).subscribe(val => {
-        if (val.length === 0) {
+        if (val.items.length === 0) {
           this.products.subCategoryId = '0';
           this.isCategoryCodeExist = false;
         } else {
@@ -102,7 +109,7 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
   }
 
   AddItem() {
-    if (this.storageFormArray.length < this.getStorage.length) {
+    if (this.storageFormArray.length < this.getStorage.items.length) {
       this.storageSelect[this.storageFormArray.length] = new StorageProductDetail();
       this.storageFormArray.push(new FormGroup({
         storageOfFormArray: new FormControl(''),
@@ -139,7 +146,7 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
         return true;
     }
 
-    if (this.getSubcategorycode.length > 0 && this.products.subCategoryId === '0') {
+    if (this.getSubcategorycode.items.length > 0 && this.products.subCategoryId === '0') {
       console.log("2 check form valid");
       return true;
     }

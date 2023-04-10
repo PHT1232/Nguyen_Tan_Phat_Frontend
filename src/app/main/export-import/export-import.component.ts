@@ -10,10 +10,10 @@ import {
   ExportImportService,
   GetAllExportImportDto,
   GetAllExportImportPagedResult,
-  ProductGetAllDto,
   ProductServiceProxy,
-  StorageProductDetail,
 } from "@shared/service-proxies/service-proxies";
+import { ProductGetAllDto } from '@shared/service-proxies/dtos/products/ProductGetAllDto';
+import { StorageProductDetail, StorageProductDetailList } from '@shared/service-proxies/dtos/products/StorageProductDetail';
 import { throwError } from "rxjs";
 import { catchError, finalize } from "rxjs/operators";
 
@@ -38,7 +38,7 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
   nameOfReciever = "";
   bsInlineRangeValue: Date[];
   exportImportList: GetAllExportImportDto[] = [];
-  getStorage: StorageProductDetail[] = [];
+  getStorage: StorageProductDetailList = new StorageProductDetailList();
   totalCount: number;
 
   constructor(
@@ -49,7 +49,7 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
     super(injector);
     this._productService.getStorageProduct().subscribe((val) => {
       this.getStorage = val;
-      this.storageCode = val[val.length - 1].storageCode;
+      this.storageCode = val[val.items.length - 1].storageCode;
     });
   }
 

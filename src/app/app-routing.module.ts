@@ -8,7 +8,6 @@ import { UsersComponent } from './users/users.component';
 import { TenantsComponent } from './tenants/tenants.component';
 import { RolesComponent } from 'app/roles/roles.component';
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
-import { TestComponent } from './main/test/test.component';
 import { StorageComponent } from './main/storage/storage.component';
 import { CreateStorageComponent } from './main/storage/create-storage/create-storage.component';
 import { EditStorageComponent } from './main/storage/edit-storage/edit-storage.component';
@@ -39,7 +38,6 @@ import { DetailsExportImportComponent } from './main/export-import/details-expor
                     { path: 'tenants', component: TenantsComponent, data: { permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
                     { path: 'about', component: AboutComponent, canActivate: [AppRouteGuard] },
                     { path: 'update-password', component: ChangePasswordComponent, canActivate: [AppRouteGuard] },
-                    { path: 'test', component: TestComponent, data: { permission: 'Pages.System.Test' } ,canActivate: [AppRouteGuard] },
                     { path: 'storage', component: StorageComponent, data: { permission: 'Pages.System.Storage.View'} , canActivate: [AppRouteGuard] },
                     { path: 'storage/create', component: CreateStorageComponent, data: { permission: 'Pages.System.Storage.Add'} , canActivate: [AppRouteGuard] },
                     { path: 'storage/edit/:id', component: EditStorageComponent, data: { permission: 'Pages.System.Storage.Update'} , canActivate: [AppRouteGuard] },

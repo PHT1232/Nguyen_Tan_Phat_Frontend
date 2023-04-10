@@ -1,7 +1,18 @@
 import { Component, OnInit, Output, EventEmitter, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponentBase } from '@shared/app-component-base';
-import { CategoryInput, CategoryServiceProxy, CustomerDto, ExportImportInput, ExportImportPagedResult, ExportImportProductDto, ExportImportService, LookUpTable, PermissionDto, ProductServiceProxy, StorageProductDetail } from '@shared/service-proxies/service-proxies';
+import { CategoryInput, 
+  CategoryServiceProxy, 
+  CustomerDto, 
+  ExportImportInput, 
+  ExportImportPagedResult, 
+  ExportImportProductDto, 
+  ExportImportService, 
+  PermissionDto, 
+  ProductServiceProxy, 
+} from '@shared/service-proxies/service-proxies';
+import { LookUpTableList } from '@shared/service-proxies/dtos/LookUpTable';
+import { StorageProductDetailList } from '@shared/service-proxies/dtos/products/StorageProductDetail';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
@@ -29,10 +40,10 @@ export class ReturnImportComponent extends AppComponentBase implements OnInit {
   storageCode = '0';
   storageCodeInput = '0';
   keyword: string;
-  getStorage: StorageProductDetail[] = [];
+  getStorage: StorageProductDetailList = new StorageProductDetailList();
   orderType = 1;
   products1: ExportImportProductDto[] = [];
-  user: LookUpTable[] = [];
+  user: LookUpTableList = new LookUpTableList();
   request: PagedProductRequestDto;
   pageSize = 5;
   pageNumber = 1;
