@@ -1,4 +1,5 @@
 <div [@routerTransition]>
+
     <section class="content px-2" style="padding-top: 20px;">
       <p-panel [style]="{'margin-left':'15px','margin-right':'15px'}">
         <ng-template pTemplate="header">
@@ -23,7 +24,18 @@
         </ng-template>
         <div class="card-header">
           <div class="row">
-            <div class="col-md-6">&emsp;</div>
+            <div class="col-md-6">
+              <!-- &emsp; -->
+              <p-button 
+            label="Xóa"
+            [disabled]="selectedStorages.length === 0"
+            (onClick)="checkOnDelete()"
+            styleClass="p-button-danger"
+            icon="pi pi-trash"
+            *ngIf="isGranted('Pages.System.Storage.Delete') == true">
+
+            </p-button>
+            </div>
             <div class="col-md-6">
               <div class="input-group">
                 <div class="input-group-prepend">
@@ -45,21 +57,28 @@
         </div>
         <div class="card-body">
           <div class="table-responsive">
-            <p-table [value]="storages"  [tableStyle]="{ 'min-width': '50rem' }"
-              [busy]="isTableLoading">
+            <p-scrollPanel [style]="{ width: '100%', height: '540px' }">
+            <p-table [value]="storages" dataKey="storageCode" [(selection)]="selectedStorages" [tableStyle]="{ 'min-width': '50rem' }"
+              [busy]="isTableLoading" [styleClass]="''">
               <ng-template pTemplate="header">
                 <tr>
-                  <th>{{ "Mã kho" | localize }}</th>
-                  <th>{{ "Tên kho" | localize }}</th>
-                  <th>{{ "Địa chỉ" | localize }}</th>
-                  <th>{{ "Ngày tạo" | localize }}</th>
-                  <th>{{ "Ngày cập nhật" | localize }}</th>
+                  <th style="width: 4rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                  </th>
+                  <th pSortableColumn="storageCode">{{ "Mã kho" | localize }}<p-sortIcon field="storageCode"></p-sortIcon></th>
+                  <th pSortableColumn="storageName">{{ "Tên kho" | localize }}<p-sortIcon field="storageName"></p-sortIcon></th>
+                  <th pSortableColumn="address">{{ "Địa chỉ" | localize }}<p-sortIcon field="address"></p-sortIcon></th>
+                  <th pSortableColumn="creationTime">{{ "Ngày tạo" | localize }}<p-sortIcon field="creationTime"></p-sortIcon></th>
+                  <th pSortableColumn="lastDateModified">{{ "Ngày cập nhật" | localize }}<p-sortIcon field="lastDateModified"></p-sortIcon></th>
                   <th>{{ "Người cập nhật" | localize }}</th>
                   <th style="width: 200px;">{{ "Hành động" | localize }}</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-storage>
                 <tr>
+                  <td>
+                    <p-tableCheckbox [value]="storage"></p-tableCheckbox>
+                </td>
                 <td><a [routerLink]="['detail', storage.storageCode]">{{ storage.storageCode }}</a></td>
                 <td>{{ storage.storageName }}</td>
                 <td>{{ storage.address }}</td>
@@ -84,7 +103,7 @@
                       [routerLink]="['edit', storage.storageCode]">
                     </p-button>
                     <p-button styleClass="p-button-danger"
-                      icon="fas fa-trash"
+                      icon="pi pi-trash"
                       (click)="delete(storage)"
                       *ngIf="isGranted('Pages.System.Storage.Delete') == true"
                       >
@@ -93,26 +112,29 @@
                 </tr>
               </ng-template>
             </p-table>
+          </p-scrollPanel>
           </div>
         </div>
         <div class="card-footer table-card-footer bg-light border-top">
           <div class="row">
-            <div class="col-sm-4 col-12 text-sm-left text-center">
+            <div class="col-sm-3 col-12 text-sm-left text-center">
               <button class="btn btn-secondary"
                 (click)="refresh()">
                 <i class="fas fa-redo-alt"></i>
               </button>
             </div>
-            <div class="col-sm-4 col-12 text-center">
+            <!-- <div class="col-sm-4 col-12 text-center">
               <p class="mb-0 my-2">
                 {{ "TotalRecordsCount" | localize: totalItems }}
               </p>
-            </div>
-            <div class="col-sm-4 col-12">
+            </div> -->
+            <div class="col-sm-5 col-12">
               <div class="float-sm-right m-auto">
-                <abp-pagination-controls id="server"
+                
+              <p-paginator (onPageChange)="getDataPage($event)" [first]="first" [rows]="rows" [totalRecords]="totalItems" [rowsPerPageOptions]="[6, 10, 15]"></p-paginator>
+                <!-- <abp-pagination-controls id="server"
                   (pageChange)="getDataPage($event)">
-                </abp-pagination-controls>
+                </abp-pagination-controls> -->
               </div>
             </div>
           </div>
@@ -120,4 +142,5 @@
       </p-panel>
 
     </section>
+
   </div>

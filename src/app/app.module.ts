@@ -22,6 +22,9 @@ import { DockModule } from 'primeng/dock';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { CardModule } from 'primeng/card';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { PaginatorModule } from 'primeng/paginator';
+import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
@@ -158,6 +161,9 @@ import { SidebarnewComponent } from './layout/sidebarnew/sidebarnew.component';
     MegaMenuModule,
     PanelMenuModule,
     CardModule,
+    ScrollPanelModule,
+    PaginatorModule,
+    CascadeSelectModule,
     // BrowserAnimationsModule,
   ],
   providers: [],

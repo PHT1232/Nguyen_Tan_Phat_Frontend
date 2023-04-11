@@ -2867,14 +2867,13 @@ export class ProductServiceProxy {
                 return <Observable<StorageProductDetailList>><any>_observableThrow(response_);
         }));
     }
-
+    
     protected processStorageProduct(response: HttpResponseBase): Observable<StorageProductDetailList> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-
+    
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
@@ -2889,7 +2888,7 @@ export class ProductServiceProxy {
             }));
         }
         return _observableOf<StorageProductDetailList>(<any>null);
-    }
+    }  
 
     getProduct(id: string | undefined): Observable<ProductOutputDto> {
         let url_ = this.baseUrl + "/api/services/app/Product/Get?";
