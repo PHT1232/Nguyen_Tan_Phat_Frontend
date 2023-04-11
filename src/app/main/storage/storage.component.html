@@ -1,0 +1,123 @@
+<div [@routerTransition]>
+    <section class="content px-2" style="padding-top: 20px;">
+      <p-panel [style]="{'margin-top':'40px','margin-left':'15px','margin-right':'15px'}">
+        <ng-template pTemplate="header">
+          <div class="col-6">
+            <h1>{{ "Kho" | localize }}</h1>
+          </div>
+          <div class="col-6 text-right">
+            <!-- <a href="javascript:;"
+              class="btn bg-blue"
+              routerLink="create"
+              *ngIf="isGranted('Pages.System.Storage.Add') == true">
+              <i class="fa fa-plus-square"></i>
+              {{ "Thêm" | localize }}
+            </a> -->
+            <p-button 
+            label="Thêm"
+            routerLink="create"
+            *ngIf="isGranted('Pages.System.Storage.Add') == true">
+
+            </p-button>
+          </div>
+        </ng-template>
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-6">&emsp;</div>
+            <div class="col-md-6">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <button type="button"
+                    class="btn bg-blue"
+                    (click)="getDataPage(1)">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+                <input type="text"
+                  class="form-control"
+                  name="keyword"
+                  [placeholder]="'SearchWithThreeDot' | localize"
+                  [(ngModel)]="keyword"
+                  (ngModelChange)="getDataPage(1)" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <p-table [value]="storages"  [tableStyle]="{ 'min-width': '50rem' }"
+              [busy]="isTableLoading">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>{{ "Mã kho" | localize }}</th>
+                  <th>{{ "Tên kho" | localize }}</th>
+                  <th>{{ "Địa chỉ" | localize }}</th>
+                  <th>{{ "Ngày tạo" | localize }}</th>
+                  <th>{{ "Ngày cập nhật" | localize }}</th>
+                  <th>{{ "Người cập nhật" | localize }}</th>
+                  <th style="width: 200px;">{{ "Hành động" | localize }}</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-storage>
+                <tr>
+                <td><a [routerLink]="['detail', storage.storageCode]">{{ storage.storageCode }}</a></td>
+                <td>{{ storage.storageName }}</td>
+                <td>{{ storage.address }}</td>
+                <td>
+                  {{storage.creationTime | date: 'dd/MM/yyyy'}}
+                </td>
+                <td>
+                  {{storage.lastDateModified | date: 'dd/MM/yyyy'}}
+                </td>
+                <td>{{ storage.username }}</td>
+                <td>
+                    <!-- <p-button styleClass="p-button-secondary"
+                      icon="fas fa-pencil-alt"
+                      [style]="{'margin-right': '10px'}"
+                      *ngIf="isGranted('Pages.System.Storage.Update') == true"
+                      [routerLink]="['edit', storage.storageCode]">
+                    </p-button> -->
+                    <p-button styleClass="p-button-secondary"
+                      icon="pi pi-pencil"
+                      [style]="{'margin-right': '10px'}"
+                      *ngIf="isGranted('Pages.System.Storage.Update') == true"
+                      [routerLink]="['edit', storage.storageCode]">
+                    </p-button>
+                    <p-button styleClass="p-button-danger"
+                      icon="fas fa-trash"
+                      (click)="delete(storage)"
+                      *ngIf="isGranted('Pages.System.Storage.Delete') == true"
+                      >
+                    </p-button>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+        <div class="card-footer table-card-footer bg-light border-top">
+          <div class="row">
+            <div class="col-sm-4 col-12 text-sm-left text-center">
+              <button class="btn btn-secondary"
+                (click)="refresh()">
+                <i class="fas fa-redo-alt"></i>
+              </button>
+            </div>
+            <div class="col-sm-4 col-12 text-center">
+              <p class="mb-0 my-2">
+                {{ "TotalRecordsCount" | localize: totalItems }}
+              </p>
+            </div>
+            <div class="col-sm-4 col-12">
+              <div class="float-sm-right m-auto">
+                <abp-pagination-controls id="server"
+                  (pageChange)="getDataPage($event)">
+                </abp-pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-panel>
+
+    </section>
+  </div>
