@@ -11,6 +11,9 @@ import { PermissionDto, StorageInput, StorageServiceProxy } from '@shared/servic
 import { forEach as _forEach, map as _map } from 'lodash-es';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { Router } from '@angular/router';
+import { NotifyComponent } from '@app/layout/notify/notify.component';
+import { MessageService } from 'primeng/api';
+import { AppComponent } from '@app/app.component';
 
 @Component({
   selector: 'app-create-storage',
@@ -30,7 +33,8 @@ export class CreateStorageComponent extends AppComponentBase implements OnInit {
   constructor(
     injector: Injector,
     private _router: Router,
-    private _storageService: StorageServiceProxy
+    private _storageService: StorageServiceProxy,
+    private appMain: AppComponent
   ) { 
     super(injector);
   }
@@ -40,13 +44,14 @@ export class CreateStorageComponent extends AppComponentBase implements OnInit {
 
   save(): void {
     this.saving = true;
-    
     const storageAdd = new StorageInput();
     storageAdd.init(this.storage);
     
     this._storageService.createStorage(storageAdd).subscribe(
       () => {
-        this.notify.info(this.l('Thêm mới thành công'));
+        // this.notify.info(this.l('Thêm mới thành công'));
+        // this.message.add({ severity: 'success', summary: 'Thêm mới thành công', detail: 'Thêm mới kho thành công'});
+        this.appMain.showSuccessMessage('Thêm mới thành công', 'Thêm mới kho thành công')
         this.onSave.emit();
         this._router.navigate(['app/storage']);
       },

@@ -16,6 +16,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { PasswordModule } from 'primeng/password';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -70,6 +71,7 @@ import { DetailImportComponent } from './main/export-import/details-export-impor
 import { DetailReturnImportComponent } from './main/export-import/details-export-import/detail-return-import/detail-return-import.component';
 import { EditReturnImportComponent } from './main/export-import/edit-export-import/edit-return-import/edit-return-import.component';
 import { EditImportComponent } from './main/export-import/edit-export-import/edit-import/edit-import.component';
+import { NotifyComponent } from './layout/notify/notify.component';
 
 @NgModule({
   declarations: [
@@ -122,6 +124,7 @@ import { EditImportComponent } from './main/export-import/edit-export-import/edi
     DetailReturnImportComponent,
     EditReturnImportComponent,
     EditImportComponent,
+    NotifyComponent,
   ],
   imports: [
     CommonModule,
@@ -145,7 +148,8 @@ import { EditImportComponent } from './main/export-import/edit-export-import/edi
     PanelModule,
     PasswordModule,
     CheckboxModule,
-    InputTextModule
+    InputTextModule,
+    ToastModule,
     // BrowserAnimationsModule,
   ],
   providers: [],

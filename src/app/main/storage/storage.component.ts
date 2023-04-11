@@ -7,6 +7,7 @@ import {
 } from '@shared/paged-listing-component-base';
 import { GetAllStorageDto, GetAllStoragePagedResultDto, StorageServiceProxy } from '@shared/service-proxies/service-proxies';
 import { throwError } from 'rxjs';
+import { AppComponent } from '@app/app.component';
 
 class PagedStorageRequestDto extends PagedRequestDto {
   keyword: string;
@@ -26,6 +27,7 @@ export class StorageComponent extends PagedListingComponentBase<GetAllStorageDto
   constructor(
     injector: Injector,
     private _storageService: StorageServiceProxy,
+    private appMain: AppComponent
   ) { 
     super(injector);
   }
@@ -65,7 +67,9 @@ export class StorageComponent extends PagedListingComponentBase<GetAllStorageDto
           }))
           .subscribe({
             next: () => {
-              abp.notify.success(this.l('Xóa thành công'));
+              // this.message.add({ severity: 'success', summary: 'Xóa thành công', detail: 'Xóa thành công kho thành công'})
+              this.appMain.showSuccessMessage('Xóa thành công', 'Xóa thành công kho thành công')
+              // abp.notify.success(this.l('Xóa thành công'));
               this.refresh();
             },
             error: (error) => {

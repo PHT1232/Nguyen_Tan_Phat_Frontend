@@ -6,9 +6,9 @@ import {
     FeatureCheckerService,
     NotifyService,
     SettingService,
-    MessageService,
     AbpMultiTenancyService
 } from 'abp-ng2-module';
+import { MessageService } from 'primeng/api';
 
 import { AppSessionService } from '@shared/session/app-session.service';
 
@@ -30,9 +30,9 @@ export abstract class AppComponentBase {
         this.localization = injector.get(LocalizationService);
         this.permission = injector.get(PermissionCheckerService);
         this.feature = injector.get(FeatureCheckerService);
+        this.message = injector.get(MessageService);
         this.notify = injector.get(NotifyService);
         this.setting = injector.get(SettingService);
-        this.message = injector.get(MessageService);
         this.multiTenancy = injector.get(AbpMultiTenancyService);
         this.appSession = injector.get(AppSessionService);
         this.elementRef = injector.get(ElementRef);
@@ -55,5 +55,13 @@ export abstract class AppComponentBase {
 
     isGranted(permissionName: string): boolean {
         return this.permission.isGranted(permissionName);
+    }
+
+    showSuccessMessage(summary: string, detail: string) {
+        this.message.add({
+            severity: 'success',
+            summary: summary,
+            detail: detail
+        })
     }
 }

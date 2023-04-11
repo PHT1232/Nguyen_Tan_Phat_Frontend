@@ -1,6 +1,7 @@
 import { AppComponentBase } from 'shared/app-component-base';
 import { Component, Injector, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
+import { MessageService } from 'primeng/api';
 
 export class PagedResultDto {
     items: any[];

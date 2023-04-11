@@ -12,6 +12,7 @@ import { ProductGetAllPagedResultDto } from '@shared/service-proxies/dtos/produc
 import { SubcategoryProduct, SubcategoryProductList } from '@shared/service-proxies/dtos/products/SubcategoryProduct';
 import { throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
+import { MessageService } from 'primeng/api';
 
 class PagedProductRequestDto extends PagedRequestDto {
   keyword: string;

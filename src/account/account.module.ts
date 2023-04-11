@@ -35,7 +35,7 @@ import { TenantChangeDialogComponent } from './tenant/tenant-change-dialog.compo
         CheckboxModule,
         PasswordModule,
         InputTextModule,
-        ButtonModule
+        ButtonModule,
     ],
     declarations: [
         AccountComponent,
