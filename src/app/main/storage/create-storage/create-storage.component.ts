@@ -11,7 +11,6 @@ import { PermissionDto, StorageInput, StorageServiceProxy } from '@shared/servic
 import { forEach as _forEach, map as _map } from 'lodash-es';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { Router } from '@angular/router';
-import { NotifyComponent } from '@app/layout/notify/notify.component';
 import { MessageService } from 'primeng/api';
 import { AppComponent } from '@app/app.component';
 

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NotifyComponent } from './notify.component';
+import { SidebarnewComponent } from './sidebarnew.component';
 
-describe('NotifyComponent', () => {
-  let component: NotifyComponent;
-  let fixture: ComponentFixture<NotifyComponent>;
+describe('SidebarnewComponent', () => {
+  let component: SidebarnewComponent;
+  let fixture: ComponentFixture<SidebarnewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NotifyComponent ]
+      declarations: [ SidebarnewComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(NotifyComponent);
+    fixture = TestBed.createComponent(SidebarnewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -10,7 +10,8 @@ import { LayoutStoreService } from '@shared/layout/layout-store.service';
   // tslint:disable-next-line:component-selector
   selector: 'sidebar',
   templateUrl: './sidebar.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./style-sidebar.css']
 })
 export class SidebarComponent implements OnInit {
   sidebarExpanded: boolean;
