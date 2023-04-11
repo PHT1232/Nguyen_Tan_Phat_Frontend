@@ -1,7 +1,7 @@
 <div [@routerTransition]>
 
     <section class="content px-2" style="padding-top: 20px;">
-      <p-panel [style]="{'margin-top':'40px','margin-left':'15px','margin-right':'15px'}">
+      <p-panel [style]="{'margin-left':'15px','margin-right':'15px'}">
         <!-- <div class="card"> -->
           <ng-template pTemplate="header">
             <!-- <section class="content-header">
@@ -11,13 +11,19 @@
                     <h1>{{ "Sản phẩm" | localize }}</h1>
                   </div>
                   <div class="col-6 text-right">
-                    <a href="javascript:;"
+                    <!-- <a href="javascript:;"
                       class="btn bg-blue"
                       routerLink="create"
                       *ngIf="isGranted('Pages.System.Product.Add') == true">
                       <i class="fa fa-plus-square"></i>
                       {{ "Thêm" | localize }}
-                    </a>
+                    </a> -->
+                    <p-button 
+                    label="Thêm"
+                    routerLink="create"
+                    *ngIf="isGranted('Pages.System.Product.Add') == true">
+        
+                    </p-button>
                   </div>
                 <!-- </div>
               </div>
@@ -55,12 +61,14 @@
                                           <option value="0" selected>Kho</option>
                                           <option *ngFor="let storage of getStorage.items;let i = index" value="{{storage.storageCode}}">{{storage.storageName}}</option>
                                         </select>
+                                        <!-- <p-cascadeSelect [ngModelOptions]="{standalone: true}" [(ngModel)]="storageCode" [options]="getStorage.items" optionLabel="cname" optionGroupLabel="name" [style]="{ minWidth: '14rem' }" placeholder="Kho"></p-cascadeSelect> -->
                                     </div>
                                     <div class="col pt-2">
                                         <select class="form-control" (change)="getSubcategory(); getDataPage(1)" [(ngModel)]="categoryCode" [ngModelOptions]="{standalone: true}" aria-label="Default select example">
                                           <option value="0" selected>Tất cả danh mục</option>
                                           <option *ngFor="let category of getCategory.items;let i = index" value="{{category.CategoryId}}">{{category.CategoryName}}</option>
                                         </select>
+                                        <!-- <p-cascadeSelect [ngModelOptions]="{standalone: true}" [(ngModel)]="categoryCode" [options]="getCategory.items" optionLabel="cname" optionGroupLabel="name" [style]="{ minWidth: '14rem' }" placeholder="Danh mục"></p-cascadeSelect> -->
                                     </div>
                                     <div class="col pt-2">
                                         <select class="form-control" (change)="getDataPage(1)" [(ngModel)]="subcategoryCode" [ngModelOptions]="{standalone: true}" [disabled]="getSubcategorycode.items === undefined" aria-label="Default select example">
@@ -77,6 +85,7 @@
           </div>
           <div class="card-body">
             <div class="table-responsive">
+            <p-scrollPanel [style]="{ width: '100%', height: '520px' }">
               <p-table [value]="productList"  [tableStyle]="{ 'min-width': '50rem' }"
                 [busy]="isTableLoading">
                 <ng-template pTemplate="header">
@@ -114,45 +123,42 @@
                   </td>
                   <td>{{ product.username }}</td>
                   <td>
-                      <button type="button"
-                        class="btn btn-sm bg-secondary"
+                      <p-button styleClass="p-button-secondary"
+                        icon="pi pi-pencil"
+                        [style]="{'margin-right': '10px'}"
                         *ngIf="isGranted('Pages.System.Product.Add') == true"
                         [routerLink]="['edit', product.productCode]">
-                        <i class="fas fa-pencil-alt"></i>
-                        {{ "Sửa" | localize }}
-                      </button>
-                      <button type="button"
-                        class="btn btn-sm bg-danger mx-2"
+                      </p-button>
+                      <p-button styleClass="p-button-danger"
+                        icon="fas fa-trash"
                         (click)="delete(product)"
                         *ngIf="isGranted('Pages.System.Product.Delete') == true"
                         >
-                        <i class="fas fa-trash"></i>
-                        {{ "Xóa" | localize }}
-                      </button>
+                      </p-button>
                     </td>
                   </tr>
                 </ng-template>
               </p-table>
+            </p-scrollPanel>
             </div>
           </div>
           <div class="card-footer table-card-footer bg-light border-top">
             <div class="row">
-              <div class="col-sm-4 col-12 text-sm-left text-center">
+              <div class="col-sm-3 col-12 text-sm-left text-center">
                 <button class="btn btn-secondary"
                   (click)="refresh()">
                   <i class="fas fa-redo-alt"></i>
                 </button>
               </div>
-              <div class="col-sm-4 col-12 text-center">
+              <!-- <div class="col-sm-4 col-12 text-center">
                 <p class="mb-0 my-2">
                   {{ "TotalRecordsCount" | localize: totalItems }}
                 </p>
-              </div>
-              <div class="col-sm-4 col-12">
+              </div> -->
+              <div class="col-sm-5 col-12">
                 <div class="float-sm-right m-auto">
-                  <abp-pagination-controls id="server"
-                    (pageChange)="getDataPage($event)">
-                  </abp-pagination-controls>
+                  <p-paginator (onPageChange)="getDataPage($event)" [first]="first" [rows]="rows" [totalRecords]="totalItems" [rowsPerPageOptions]="[6, 10, 15]"></p-paginator>
+
                 </div>
               </div>
             </div>

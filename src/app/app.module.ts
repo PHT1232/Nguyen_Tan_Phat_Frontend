@@ -18,6 +18,13 @@ import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { CheckboxModule } from 'primeng/checkbox';
+import { DockModule } from 'primeng/dock';
+import { MegaMenuModule } from 'primeng/megamenu';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { CardModule } from 'primeng/card';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { PaginatorModule } from 'primeng/paginator';
+import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
@@ -71,7 +78,7 @@ import { DetailImportComponent } from './main/export-import/details-export-impor
 import { DetailReturnImportComponent } from './main/export-import/details-export-import/detail-return-import/detail-return-import.component';
 import { EditReturnImportComponent } from './main/export-import/edit-export-import/edit-return-import/edit-return-import.component';
 import { EditImportComponent } from './main/export-import/edit-export-import/edit-import/edit-import.component';
-import { NotifyComponent } from './layout/notify/notify.component';
+import { SidebarnewComponent } from './layout/sidebarnew/sidebarnew.component';
 
 @NgModule({
   declarations: [
@@ -124,7 +131,7 @@ import { NotifyComponent } from './layout/notify/notify.component';
     DetailReturnImportComponent,
     EditReturnImportComponent,
     EditImportComponent,
-    NotifyComponent,
+    SidebarnewComponent,
   ],
   imports: [
     CommonModule,
@@ -150,6 +157,13 @@ import { NotifyComponent } from './layout/notify/notify.component';
     CheckboxModule,
     InputTextModule,
     ToastModule,
+    DockModule,
+    MegaMenuModule,
+    PanelMenuModule,
+    CardModule,
+    ScrollPanelModule,
+    PaginatorModule,
+    CascadeSelectModule,
     // BrowserAnimationsModule,
   ],
   providers: [],

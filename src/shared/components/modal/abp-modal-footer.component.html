@@ -1,15 +1,15 @@
 <div class="modal-footer justify-content-center">
-  <button
+  <p-button
   type="button"
-  class="btn btn-default"
+  label="{{ cancelLabel }}"
+  styleClass="p-button-outlined"
   [disabled]="cancelDisabled"
   (click)="onCancelClick.emit()"
 >
-  {{ cancelLabel }}
-</button>
-<button type="submit" class="btn btn-primary" [disabled]="saveDisabled">
-  {{ saveLabel }}
-</button> 
+</p-button>
+<p-button type="submit" label="{{ saveLabel }}" [disabled]="saveDisabled">
+  <!-- {{ saveLabel }} -->
+</p-button> 
 </div>
   
 

@@ -11,7 +11,7 @@ import { StorageProductDetail, StorageProductDetailList } from '@shared/service-
 import { ProductGetAllPagedResultDto } from '@shared/service-proxies/dtos/products/ProductGetAllPagedResultDto';
 import { SubcategoryProduct, SubcategoryProductList } from '@shared/service-proxies/dtos/products/SubcategoryProduct';
 import { throwError } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+import { catchError, delay, finalize } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 
 class PagedProductRequestDto extends PagedRequestDto {
@@ -29,7 +29,7 @@ class PagedProductRequestDto extends PagedRequestDto {
 })
 export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto> {
   keyword = '';
-  storageCode = '0';
+  storageCode = '1';
   categoryCode = '0';
   subcategoryCode = 0;
   productList: ProductGetAllDto[] = [];
@@ -37,21 +37,28 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
   getCategory: CategoryProductList = new CategoryProductList();
   getSubcategorycode: SubcategoryProductList = new SubcategoryProductList();
   totalCount: number;
+  first: number = 0;
+  rows: number = 6;
 
   constructor(
     injector: Injector,
     private _productService: ProductServiceProxy
   ) { 
     super(injector);
-    this._productService.getStorageProduct().subscribe(val => {
-      this.getStorage = val;
-    });
-
-    this._productService.getCategoryProduct().subscribe(val => {
-        this.getCategory = val;
-    });
-    if (this.getStorage.items === undefined)
+      this._productService.getStorageProduct().subscribe(val => {
+        this.getStorage = val;
+      });
+  
+      this._productService.getCategoryProduct().subscribe(val => {
+          this.getCategory = val;
+      });
+    
+    // console.log(this.getStorage.items[0].storageCode)
+    if (this.getStorage.items === undefined) {
       this.storageCode = '0';
+      // this.getStorage.items = [];
+      // this.getStorage.items[0] = new StorageProductDetail();
+    }
   }
 
   list(request: PagedProductRequestDto, pageNumber: number, finishedCallback: Function): void {

@@ -31,13 +31,21 @@ export class StorageProductDetailList implements IStorageProductDetailList {
 
     init(data?: any) {
         if (data) {
-        this.items = data["items"] && data["items"].map((item: any) => StorageProductDetail.fromJS(item));
+            if (data["items"]) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items.push(StorageProductDetail.fromJS(item));
+            }
         }
     }
 
     toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["items"] = this.items && this.items.map((item: any) => item.toJSON());
+        data = typeof data === 'object' ? data : {};
+        if (this.items && Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
         return data;
     }
 

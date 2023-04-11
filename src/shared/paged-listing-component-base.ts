@@ -27,7 +27,7 @@ export abstract class PagedListingComponentBase<TEntityDto> extends AppComponent
     cancelButtonText = 'No, cancel';
     deleteButtonText = 'Yes, delete';
     ReverseButtons = true;
-    public pageSize = 10;
+    public pageSize = 6;
     public pageNumber = 1;
     public totalPages = 1;
     public totalItems: number;
@@ -52,10 +52,18 @@ export abstract class PagedListingComponentBase<TEntityDto> extends AppComponent
         this.pageNumber = pageNumber;
     }
 
-    public getDataPage(page: number): void {
+    public getDataPage(event): void {
+        var page = 1;
+        var pageSize1 = 6;
+        if (event.page === undefined) {
+            page = 0;
+        } else {
+            page = event.page;
+            pageSize1 = event.rows
+        }
         const req = new PagedRequestDto();
-        req.maxResultCount = this.pageSize;
-        req.skipCount = (page - 1) * this.pageSize;
+        req.maxResultCount = pageSize1;
+        req.skipCount = page * pageSize1;
 
         this.isTableLoading = true;
         this.list(req, page, () => {

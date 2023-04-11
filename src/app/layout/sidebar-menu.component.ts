@@ -12,10 +12,11 @@ import {MenuItem} from '@shared/layout/menu-item';
 
 @Component({
     selector: 'sidebar-menu',
-    templateUrl: './sidebar-menu.component.html'
+    templateUrl: './sidebar-menu.component.html',
 })
 export class SidebarMenuComponent extends AppComponentBase implements OnInit {
     menuItems: MenuItem[];
+     position: string = 'left';
     menuItemsMap: { [key: number]: MenuItem } = {};
     activatedMenuItems: MenuItem[] = [];
     routerEvents: BehaviorSubject<RouterEvent> = new BehaviorSubject(undefined);
@@ -49,42 +50,46 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
             //     '',
             //     'Pages.System.Test'
             // ),
-            new MenuItem(
-                this.l('Kho'),
-                '/app/storage',
-                '',
-                'Pages.System.Storage.View'
-            ),
-            new MenuItem(
-                this.l('Danh mục'),
-                '/app/category',
-                '',
-                'Pages.System.Category.View'
-            ),
-            new MenuItem(
-                this.l('Sản phẩm'),
-                '/app/product',
-                '',
-                'Pages.System.Product.View'
-            ),
-            new MenuItem(
-                this.l('Xuất nhập kho'),
-                '/app/exportimport',
-                '',
-                'Pages.System.ExportImport.View'
-            ),
-            new MenuItem(
-                this.l('Vai trò'),
-                '/app/roles',
-                '',
-                'Pages.Users'
-            ),
-            new MenuItem(
-                this.l('Người dùng'),
-                '/app/users',
-                '',
-                'Pages.Users'
-            ),
+            new MenuItem(this.l('Quản lý kho'), '', '', '', [
+                new MenuItem(
+                    this.l('Kho'),
+                    '/app/storage',
+                    '',
+                    'Pages.System.Storage.View'
+                ),
+                new MenuItem(
+                    this.l('Danh mục'),
+                    '/app/category',
+                    '',
+                    'Pages.System.Category.View'
+                ),
+                new MenuItem(
+                    this.l('Sản phẩm'),
+                    '/app/product',
+                    '',
+                    'Pages.System.Product.View'
+                ),
+                new MenuItem(
+                    this.l('Xuất nhập kho'),
+                    '/app/exportimport',
+                    '',
+                    'Pages.System.ExportImport.View'
+                ),
+            ]),
+            new MenuItem(this.l('Quản lý Người dùng'), '', '', '', [
+                new MenuItem(
+                    this.l('Vai trò'),
+                    '/app/roles',
+                    '',
+                    'Pages.Users'
+                ),
+                new MenuItem(
+                    this.l('Người dùng'),
+                    '/app/users',
+                    '',
+                    'Pages.Users'
+                ),
+            ])
         ];
     }
 
