@@ -31,6 +31,7 @@ export class DetailProductComponent extends AppComponentBase implements OnInit {
   getStorage: StorageProductDetailList = new StorageProductDetailList();
   getCategory: CategoryProductList = new CategoryProductList();
   getSubcategorycode: SubcategoryProductList = new SubcategoryProductList();
+  arrow_i = '';
 
   @Output() onSave = new EventEmitter<any>();
 
@@ -77,5 +78,15 @@ export class DetailProductComponent extends AppComponentBase implements OnInit {
 
   Cancel(): void {
     this._router.navigate(['app/product']);
+  }
+
+  OpenStoragePanel(): void {
+    if (!this.isCollapsed) {
+      this.arrow_i = 'transform: rotate(0deg);'
+      this.isCollapsed = true;
+    } else {
+      this.arrow_i = 'transform: rotate(-180deg);'
+      this.isCollapsed = false;
+    }
   }
 }

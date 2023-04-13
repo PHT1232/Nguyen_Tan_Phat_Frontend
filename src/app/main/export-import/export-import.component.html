@@ -58,7 +58,7 @@
                           >
                             <option value="0" selected>Kho</option>
                             <option
-                              *ngFor="let storage of getStorage; let i = index"
+                              *ngFor="let storage of getStorage.items; let i = index"
                               value="{{ storage.storageCode }}"
                               [selected]="true"
                             >
