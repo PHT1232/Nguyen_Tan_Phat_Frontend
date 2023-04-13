@@ -25,6 +25,7 @@ import { CardModule } from 'primeng/card';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { PaginatorModule } from 'primeng/paginator';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
+import { CalendarModule } from 'primeng/calendar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
@@ -164,6 +165,7 @@ import { SidebarnewComponent } from './layout/sidebarnew/sidebarnew.component';
     ScrollPanelModule,
     PaginatorModule,
     CascadeSelectModule,
+    CalendarModule,
     // BrowserAnimationsModule,
   ],
   providers: [],
