@@ -23,7 +23,7 @@ import { Console } from "console";
 class PagedExportImportRequestDto extends PagedRequestDto {
   keyword: string;
   storageCode: string;
-  dateTime: Date[] = [];
+  dateTime: string[] = [];
   orderStatus: number;
 }
 
@@ -44,6 +44,8 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
   getStorage: StorageProductDetailList = new StorageProductDetailList();
   totalCount: number;
   isLoading = false;
+  first: number = 0;
+  rows: number = 6;
 
   constructor(
     injector: Injector,
@@ -73,9 +75,8 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
         request.dateTime = [];
         this.bsInlineRangeValue.forEach(element => {
           var date = element.toLocaleString();
-          console.log(date);
           
-          request.dateTime.push(new Date(date));
+          request.dateTime.push(date);
         });
       }
       

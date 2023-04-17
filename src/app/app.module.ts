@@ -72,7 +72,7 @@ import { ExportImportComponent } from './main/export-import/export-import.compon
 import { CreateExportImportComponent } from './main/export-import/create-export-import/create-export-import.component';
 import { EditExportImportComponent } from './main/export-import/edit-export-import/edit-export-import.component';
 import { DetailsExportImportComponent } from './main/export-import/details-export-import/details-export-import.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ImportComponent } from './main/export-import/create-export-import/import/import.component';
 import { ReturnImportComponent } from './main/export-import/create-export-import/return-import/return-import.component';
 import { DetailImportComponent } from './main/export-import/details-export-import/detail-import/detail-import.component';
@@ -166,7 +166,7 @@ import { SidebarnewComponent } from './layout/sidebarnew/sidebarnew.component';
     PaginatorModule,
     CascadeSelectModule,
     CalendarModule,
-    // BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
   ],
   providers: [],
   entryComponents: [

@@ -66,22 +66,15 @@
                       </select>
                     </div>
                     <div class="col pt-2">
-                      <!-- <input
-                            type="text"
+                      <input type="text"
                             placeholder="Ngày/tháng/năm"
                             class="form-control"
                             bsDaterangepicker
+                            [bsConfig]="{ isAnimated: true }"
                             [(ngModel)]="bsInlineRangeValue"
                             [ngModelOptions]="{ standalone: true }"
                             (ngModelChange)="getDataPage(1)"
-                          /> -->
-                      <p-calendar
-                        [(ngModel)]="bsInlineRangeValue"
-                        [ngModelOptions]="{ standalone: true }"
-                        selectionMode="range"
-                        [readonlyInput]="true"
-                      ></p-calendar>
-                      <p-button [style]="{'margin-left': '10px'}" (onClick)="getDataPage(1)" label="Tìm kiếm"></p-button>
+                          />
                     </div>
                   </div>
                 </div>
@@ -232,23 +225,25 @@
       </div>
       <div class="card-footer table-card-footer bg-light border-top">
         <div class="row">
-          <div class="col-sm-4 col-12 text-sm-left text-center">
+          <div class="col-sm-3 col-12 text-sm-left text-center">
             <button class="btn btn-secondary" (click)="refresh()">
               <i class="fas fa-redo-alt"></i>
             </button>
           </div>
-          <div class="col-sm-4 col-12 text-center">
+          <!-- <div class="col-sm-4 col-12 text-center">
             <p class="mb-0 my-2">
               {{ "TotalRecordsCount" | localize : totalItems }}
             </p>
-          </div>
-          <div class="col-sm-4 col-12">
+          </div> -->
+          <div class="col-sm-5 col-12">
             <div class="float-sm-right m-auto">
-              <abp-pagination-controls
-                id="server"
-                (pageChange)="getDataPage($event)"
-              >
-              </abp-pagination-controls>
+              <p-paginator
+                (onPageChange)="getDataPage($event)"
+                [first]="first"
+                [rows]="rows"
+                [totalRecords]="totalItems"
+                [rowsPerPageOptions]="[6, 10, 15]"
+              ></p-paginator>
             </div>
           </div>
         </div>

@@ -3608,32 +3608,24 @@ export class ExportImportService {
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-
+    
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200.push(LookUpTableList.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = LookUpTableList.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
         return _observableOf<LookUpTableList>(<any>null);
     }
 
-    getAll(keyword: string | undefined, storageCode: string, DateTime: Date[], orderType: number, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetAllExportImportPagedResult> {
+    getAll(keyword: string | undefined, storageCode: string, DateTime: string[], orderType: number, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetAllExportImportPagedResult> {
         let _url = this.baseUrl + "/api/services/app/ExportImport/GetAll"
         if (keyword === null)
             throw new Error("The parameter 'keyword' cannot be null.");
@@ -3641,8 +3633,11 @@ export class ExportImportService {
             _url += "?Keyword=" + encodeURIComponent("" + keyword) + "&";
         if (storageCode !== undefined)
             _url += "Storage=" + encodeURIComponent("" + storageCode) + "&";    
-        if (DateTime !== undefined)
-            _url += "DateTime=" + encodeURIComponent("" + DateTime) + "&";       
+        if (DateTime !== undefined) {
+            DateTime.forEach(element => {
+                _url += "DateTime=" + encodeURIComponent("" + element) + "&";       
+            });
+        }
         if (orderType !== 0)
             _url += "OrderStatus=" + encodeURIComponent("" + orderType) + "&";
         if (skipCount === null)

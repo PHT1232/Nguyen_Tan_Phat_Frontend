@@ -67,7 +67,7 @@
               aria-label="Default select example"
             >
               <option value="0" selected>Người lập phiếu</option>
-              <option *ngFor="let usd of user;let i = index" value="{{usd.id}}">
+              <option *ngFor="let usd of user.items;let i = index" value="{{usd.id}}">
                 {{usd.name}}</option>
             </select>
             <!-- <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary> -->
@@ -124,7 +124,7 @@
           <div class="col">
             <select class="form-control" [(ngModel)]="storageCodeInput" [ngModelOptions]="{standalone: true}" aria-label="Default select example">
               <option value="0">Kho</option>
-              <option *ngFor="let storage of getStorage;let i = index" value="{{storage.storageCode}}">{{storage.storageName}}</option>
+              <option *ngFor="let storage of getStorage.items;let i = index" value="{{storage.storageCode}}">{{storage.storageName}}</option>
             </select>
             <!-- <abp-validation-summary [control]="nameCode" [controlEl]="nameCodeEl"></abp-validation-summary> -->
           </div>
