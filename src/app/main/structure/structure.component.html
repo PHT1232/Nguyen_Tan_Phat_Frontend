@@ -1,0 +1,150 @@
+<div [@routerTransition]>
+    <section class="content px-2" style="padding-top: 20px">
+      <p-panel [style]="{ 'margin-left': '15px', 'margin-right': '15px' }">
+        <!-- <div class="card"> -->
+        <ng-template pTemplate="header">
+          <!-- <section class="content-header">
+                <div class="container-fluid">
+                  <div class="row"> -->
+          <div class="col-6">
+            <h1>{{ "Cơ cấu tổ chức" | localize }}</h1>
+          </div>
+          <div class="col-6 text-right">
+            <!-- <a href="javascript:;"
+                        class="btn bg-blue"
+                        routerLink="create"
+                        *ngIf="isGranted('Pages.System.Product.Add') == true">
+                        <i class="fa fa-plus-square"></i>
+                        {{ "Thêm" | localize }}
+                      </a> -->
+            <p-button
+              label="Thêm"
+              routerLink="create"
+              *ngIf="isGranted('Pages.System.Product.Add') == true"
+            >
+            </p-button>
+          </div>
+          <!-- </div>
+                </div>
+              </section> -->
+        </ng-template>
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <button
+                    type="button"
+                    class="btn bg-blue"
+                    (click)="searched();getDataPage(1)"
+                  >
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="keyword"
+                  [placeholder]="'SearchWithThreeDot' | localize"
+                  [(ngModel)]="keyword"
+                  (keyup.enter)="searched();getDataPage(1)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <p-scrollPanel [style]="{ width: '100%', height: '520px' }">
+              <p-table
+                [value]="List"
+                dataKey="unitCode"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                [busy]="isTableLoading"
+                [styleClass]="'p-datatable-sm'"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th pSortableColumn="unitCode">{{ "Mã đơn vị" | localize }}<p-sortIcon field="unitCode"></p-sortIcon></th>
+                    <th pSortableColumn="unitName">{{ "Tên đơn vị" | localize }}<p-sortIcon field="unitName"></p-sortIcon></th>
+                    <th pSortableColumn="address">{{ "Địa chỉ" | localize }}<p-sortIcon field="address"></p-sortIcon></th>
+                    <th pSortableColumn="levelOfUnit">{{ "Cấp tổ chức" | localize }}<p-sortIcon field="levelOfUnit"></p-sortIcon></th>
+                    <th pSortableColumn="creationTime">{{ "Ngày tạo" | localize }}<p-sortIcon field="creationTime"></p-sortIcon></th>
+                    <th pSortableColumn="lastDateModified">{{ "Ngày cập nhật" | localize }}<p-sortIcon field="lastDateModified"></p-sortIcon></th>
+                    <th pSortableColumn="username">{{ "Người cập nhật" | localize }}<p-sortIcon field="username"></p-sortIcon></th>
+                    <th style="width: 200px">{{ "Hành động" | localize }}</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-structure>
+                  <tr></tr>
+                  <tr>
+                    <td>
+                      <a [routerLink]="['detail', structure.unitCode]">{{
+                        structure.unitCode
+                      }}</a>
+                    </td>
+                    <td>{{ structure.unitName }}</td>
+                    <td>{{ structure.address }}</td>
+                    <td>{{ structure.levelOfUnit }}</td>
+                    <!-- <td *ngIf="storageCode != '0'">{{ product.quantity }}</td> -->
+                    <td>
+                      {{ structure.creationTime | date : "dd/MM/yyyy" }}
+                    </td>
+                    <td>
+                      {{ structure.lastDateModified | date : "dd/MM/yyyy" }}
+                    </td>
+                    <td>{{ structure.username }}</td>
+                    <td>
+                      <p-button
+                        styleClass="p-button-secondary"
+                        icon="pi pi-pencil"
+                        [style]="{ 'margin-right': '10px' }"
+                        *ngIf="isGranted('Pages.System.Structure.Add') == true"
+                        [routerLink]="['edit', structure.productCode]"
+                      >
+                      </p-button>
+                      <p-button
+                        styleClass="p-button-danger"
+                        icon="pi pi-trash"
+                        (click)="delete(structure)"
+                        *ngIf="isGranted('Pages.System.Structure.Delete') == true"
+                      >
+                      </p-button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </p-scrollPanel>
+          </div>
+        </div>
+          
+        <div class="card-footer table-card-footer bg-light border-top">
+          <div class="row">
+            <div class="col-sm-3 col-12 text-sm-left text-center">
+              <button class="btn btn-secondary" (click)="refresh()">
+                <i class="fas fa-redo-alt"></i>
+              </button>
+            </div>
+            <!-- <div class="col-sm-4 col-12 text-center">
+                  <p class="mb-0 my-2">
+                    {{ "TotalRecordsCount" | localize: totalItems }}
+                  </p>
+                </div> -->
+            <div class="col-sm-5 col-12">
+              <div class="float-sm-right m-auto">
+                <p-paginator
+                  (onPageChange)="getDataPage($event)"
+                  [first]="first"
+                  [rows]="rows"
+                  [totalRecords]="totalItems"
+                  [rowsPerPageOptions]="[10, 15, 20]"
+                ></p-paginator>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- </div> -->
+      </p-panel>
+    </section>
+  </div>
+  

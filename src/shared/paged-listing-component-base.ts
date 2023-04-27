@@ -27,7 +27,7 @@ export abstract class PagedListingComponentBase<TEntityDto> extends AppComponent
     cancelButtonText = 'No, cancel';
     deleteButtonText = 'Yes, delete';
     ReverseButtons = true;
-    public pageSize = 6;
+    public pageSize = 10;
     public pageNumber = 1;
     public totalPages = 1;
     public totalItems: number;
@@ -54,7 +54,7 @@ export abstract class PagedListingComponentBase<TEntityDto> extends AppComponent
 
     public getDataPage(event): void {
         var page = 1;
-        var pageSize1 = 6;
+        var pageSize1 = this.pageSize;
         if (event.page === undefined) {
             page = 0;
         } else {

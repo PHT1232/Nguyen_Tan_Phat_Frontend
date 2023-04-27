@@ -68,6 +68,7 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
     request.keyword = this.keyword;
     request.storageCode = this.storageCode;
     request.categoryCode = this.categoryCode;
+
     setTimeout(() => { 
       request.subcategoryCode = this.subcategoryCode; 
       
@@ -178,5 +179,14 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
           this.subcategoryCode = 0;
       });
     } 
+  }
+
+  searched() {
+    if (this.keyword !== undefined) {
+      this.storageCode = '-1';
+      this.categoryCode = '-1';
+      this.rows = this.totalItems;
+      this.pageSize = this.totalItems;
+    }
   }
 }

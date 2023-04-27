@@ -2,8 +2,6 @@
 <div [@routerTransition]>
   <form autocomplete="off" #createRoleForm="ngForm" (ngSubmit)="save()">
     <div class="modal-body">
-      <tabset>
-        <tab [heading]="'Chi tiết' | localize" class="pt-3 px-2">
           <div class="container-add">
             <div class="container-row">
                 <div class="row" style="padding-bottom: 25px;">
@@ -74,7 +72,7 @@
                       <div class="row">
                         <div class="col">
                           <textarea class="form-control" name="description" id="description" [(ngModel)]="storage.description" cols="20"
-                            rows="10"></textarea>  
+                            rows="10"></textarea> 
                         </div>
                       </div>
                   </div>
@@ -83,8 +81,6 @@
                 (onCancelClick)="Cancel()"></abp-modal-footer>
             </div>
           </div>  
-        </tab>
-      </tabset>
     </div>
     
   </form>

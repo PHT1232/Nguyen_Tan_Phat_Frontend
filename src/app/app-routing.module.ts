@@ -24,6 +24,8 @@ import { ExportImportComponent } from './main/export-import/export-import.compon
 import { CreateExportImportComponent } from './main/export-import/create-export-import/create-export-import.component';
 import { EditExportImportComponent } from './main/export-import/edit-export-import/edit-export-import.component';
 import { DetailsExportImportComponent } from './main/export-import/details-export-import/details-export-import.component';
+import { StructureComponent } from './main/structure/structure.component';
+import { CreateStructureComponent } from './main/structure/create-structure/create-structure.component';
 
 @NgModule({
     imports: [
@@ -53,7 +55,11 @@ import { DetailsExportImportComponent } from './main/export-import/details-expor
                     { path: 'exportimport', component: ExportImportComponent, data: { permission: 'Pages.System.ExportImport.View'} , canActivate: [AppRouteGuard] },
                     { path: 'exportimport/create', component: CreateExportImportComponent, data: { permission: 'Pages.System.ExportImport.Add'} , canActivate: [AppRouteGuard] },
                     { path: 'exportimport/edit/:id', component: EditExportImportComponent, data: { permission: 'Pages.System.ExportImport.Update'} , canActivate: [AppRouteGuard] },
-                    { path: 'exportimport/detail/:id', component: DetailsExportImportComponent, data: { permission: 'Pages.System.ExportImport.View'} , canActivate: [AppRouteGuard] }
+                    { path: 'exportimport/detail/:id', component: DetailsExportImportComponent, data: { permission: 'Pages.System.ExportImport.View'} , canActivate: [AppRouteGuard] },
+                    { path: 'structure', component: StructureComponent, data: { permission: 'Pages.System.Structure.View'} , canActivate: [AppRouteGuard] },
+                    { path: 'structure/create', component: CreateStructureComponent, data: { permission: 'Pages.System.Structure.Add'} , canActivate: [AppRouteGuard] },
+                    { path: 'structure/edit/:id', component: EditExportImportComponent, data: { permission: 'Pages.System.ExportImport.Update'} , canActivate: [AppRouteGuard] },
+                    { path: 'structure/detail/:id', component: DetailsExportImportComponent, data: { permission: 'Pages.System.ExportImport.View'} , canActivate: [AppRouteGuard] }
                 ]
             }
         ])

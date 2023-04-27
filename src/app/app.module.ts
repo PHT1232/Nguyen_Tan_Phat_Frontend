@@ -26,6 +26,9 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { PaginatorModule } from 'primeng/paginator';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { CalendarModule } from 'primeng/calendar';
+import { TreeTableModule } from 'primeng/treetable';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
@@ -80,6 +83,8 @@ import { DetailReturnImportComponent } from './main/export-import/details-export
 import { EditReturnImportComponent } from './main/export-import/edit-export-import/edit-return-import/edit-return-import.component';
 import { EditImportComponent } from './main/export-import/edit-export-import/edit-import/edit-import.component';
 import { SidebarnewComponent } from './layout/sidebarnew/sidebarnew.component';
+import { StructureComponent } from './main/structure/structure.component';
+import { CreateStructureComponent } from './main/structure/create-structure/create-structure.component';
 
 @NgModule({
   declarations: [
@@ -133,6 +138,8 @@ import { SidebarnewComponent } from './layout/sidebarnew/sidebarnew.component';
     EditReturnImportComponent,
     EditImportComponent,
     SidebarnewComponent,
+    StructureComponent,
+    CreateStructureComponent,
   ],
   imports: [
     CommonModule,
@@ -167,6 +174,9 @@ import { SidebarnewComponent } from './layout/sidebarnew/sidebarnew.component';
     CascadeSelectModule,
     CalendarModule,
     BsDatepickerModule.forRoot(),
+    TreeTableModule,
+    InputTextareaModule,
+    InputNumberModule,
   ],
   providers: [],
   entryComponents: [

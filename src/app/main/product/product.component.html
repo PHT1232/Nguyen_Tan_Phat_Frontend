@@ -43,6 +43,7 @@
                           (change)="getDataPage(1)"
                           [ngModelOptions]="{ standalone: true }"
                           aria-label="Default select example"
+                          [disabled]="storageCode === '-1'"
                         >
                           <option value="0" selected>Kho</option>
                           <option
@@ -64,6 +65,7 @@
                           [(ngModel)]="categoryCode"
                           [ngModelOptions]="{ standalone: true }"
                           aria-label="Default select example"
+                          [disabled]="categoryCode === '-1'"
                         >
                           <option value="0" selected>Tất cả danh mục</option>
                           <option
@@ -126,7 +128,7 @@
                 <button
                   type="button"
                   class="btn bg-blue"
-                  (click)="getDataPage(1)"
+                  (click)="searched();getDataPage(1)"
                 >
                   <i class="fas fa-search"></i>
                 </button>
@@ -137,7 +139,7 @@
                 name="keyword"
                 [placeholder]="'SearchWithThreeDot' | localize"
                 [(ngModel)]="keyword"
-                (keyup.enter)="getDataPage(1)"
+                (keyup.enter)="searched();getDataPage(1)"
               />
             </div>
           </div>
@@ -152,6 +154,7 @@
               dataKey="productCode"
               [tableStyle]="{ 'min-width': '50rem' }"
               [busy]="isTableLoading"
+              [styleClass]="'p-datatable-sm'"
             >
               <ng-template pTemplate="header">
                 <tr>
@@ -162,8 +165,8 @@
                   <th pSortableColumn="productName">{{ "Tên sản phẩm" | localize }}<p-sortIcon field="productName"></p-sortIcon></th>
                   <th pSortableColumn="categoryName">{{ "Danh mục" | localize }}<p-sortIcon field="categoryName"></p-sortIcon></th>
                   <th pSortableColumn="unit">{{ "Đơn vị tính" | localize }}<p-sortIcon field="unit"></p-sortIcon></th>
-                  <th pSortableColumn="quantity" *ngIf="storageCode != '0'">
-                    {{ "Số lượng" | localize }}<p-sortIcon field="quantity"></p-sortIcon>
+                  <th pSortableColumn="quantity" >
+                    {{ "Số lượng tồn kho" | localize }}<p-sortIcon field="quantity"></p-sortIcon>
                   </th>
                   <th pSortableColumn="price">{{ "Giá" | localize }}<p-sortIcon field="price"></p-sortIcon></th>
                   <th pSortableColumn="creationTime">{{ "Ngày tạo" | localize }}<p-sortIcon field="creationTime"></p-sortIcon></th>
@@ -186,7 +189,8 @@
                   <td>{{ product.productName }}</td>
                   <td>{{ product.categoryName }}</td>
                   <td>{{ product.unit }}</td>
-                  <td *ngIf="storageCode != '0'">{{ product.quantity }}</td>
+                  <!-- <td *ngIf="storageCode != '0'">{{ product.quantity }}</td> -->
+                  <td>{{ product.quantity }}</td>
                   <td>
                     {{ product.price | currency : "VND" }}
                   </td>
@@ -220,6 +224,7 @@
           </p-scrollPanel>
         </div>
       </div>
+        
       <div class="card-footer table-card-footer bg-light border-top">
         <div class="row">
           <div class="col-sm-3 col-12 text-sm-left text-center">
@@ -239,7 +244,7 @@
                 [first]="first"
                 [rows]="rows"
                 [totalRecords]="totalItems"
-                [rowsPerPageOptions]="[6, 10, 15]"
+                [rowsPerPageOptions]="[10, 15, 20]"
               ></p-paginator>
             </div>
           </div>
