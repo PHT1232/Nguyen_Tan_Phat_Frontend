@@ -4,7 +4,7 @@ export interface IStructureOutputDto {
     address: string;
     levelOfUnit: string;
     unitOf: string;
-    businessRN: string;
+    businessRN: number;
     issuedDate: Date;
     issuedPlace: string;
 }
@@ -15,7 +15,7 @@ export class StructureOutputDto implements IStructureOutputDto {
     address: string;
     levelOfUnit: string;
     unitOf: string;
-    businessRN: string;
+    businessRN: number;
     issuedDate: Date;
     issuedPlace: string;
 

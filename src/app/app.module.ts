@@ -85,6 +85,9 @@ import { EditImportComponent } from './main/export-import/edit-export-import/edi
 import { SidebarnewComponent } from './layout/sidebarnew/sidebarnew.component';
 import { StructureComponent } from './main/structure/structure.component';
 import { CreateStructureComponent } from './main/structure/create-structure/create-structure.component';
+import { EditStructureComponent } from './main/structure/edit-structure/edit-structure.component';
+import { EmployeeComponent } from './main/employee/employee.component';
+import { CreateEmployeeComponent } from './main/employee/create-employee/create-employee.component';
 
 @NgModule({
   declarations: [
@@ -140,6 +143,9 @@ import { CreateStructureComponent } from './main/structure/create-structure/crea
     SidebarnewComponent,
     StructureComponent,
     CreateStructureComponent,
+    EditStructureComponent,
+    EmployeeComponent,
+    CreateEmployeeComponent,
   ],
   imports: [
     CommonModule,

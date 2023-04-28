@@ -16,7 +16,7 @@
                       </div>
                       <div class="row">
                         <div class="col">
-                          <input pInputText type="text" class="form-control" required [ngModelOptions]="{standalone: true}"
+                          <input [disabled]="id !== undefined" pInputText type="text" class="form-control" required [ngModelOptions]="{standalone: true}"
                             maxlength="32" [(ngModel)]="structure.unitCode" #nameCode="ngModel" #nameCodeEl />
                           <abp-validation-summary [control]="nameCode" [controlEl]="nameCodeEl"></abp-validation-summary>
                         </div>
