@@ -31,6 +31,9 @@ import { StructureOutputDto } from './dtos/Structure/StructureOutputDto';
 import { StructureSelectList } from './dtos/Structure/StructureSelectDto';
 import { StructureGetAllPagedResultDto } from './dtos/Structure/StructureGetallPagedResultDto';
 import { EmployeeGetAllPagedResultDto } from './dtos/employee/EmployeeGetallPagedResultDto';
+import { EmployeeInputDto } from './dtos/employee/EmployeeInputDto';
+import { CMNDDto } from './dtos/employee/CMNDDto';
+import { EmployeeOutputDto } from './dtos/employee/EmployeeOutputDto';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
@@ -3047,7 +3050,7 @@ export class StructureServiceProxy {
     }
 } 
 //#endregion
-//#region employee
+//#region Employee service
 @Injectable()
 export class EmployeeServiceProxy {
     private http: HttpClient;
@@ -3059,7 +3062,7 @@ export class EmployeeServiceProxy {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    create(body: StructureInputDto | undefined): Observable<void> {
+    create(body: EmployeeInputDto | undefined): Observable<void> {
         let _url = this.baseUrl + "/api/services/app/Employee/AddNew";
         _url = _url.replace(/[?&]$/, "");
 
@@ -3113,8 +3116,8 @@ export class EmployeeServiceProxy {
         return _observableOf<void>(<any>null);
     }
 
-    update(body: StructureInputDto | undefined): Observable<StructureInputDto> {
-        let url_ = this.baseUrl + "/api/services/app/Structure/Update";
+    update(body: EmployeeInputDto | undefined): Observable<EmployeeInputDto> {
+        let url_ = this.baseUrl + "/api/services/app/Employee/Update";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -3136,14 +3139,14 @@ export class EmployeeServiceProxy {
                 try {
                     return this.processUpdate(<any>response_);
                 } catch (e) {
-                    return <Observable<StructureInputDto>><any>_observableThrow(e);
+                    return <Observable<EmployeeInputDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<StructureInputDto>><any>_observableThrow(response_);
+                return <Observable<EmployeeInputDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processUpdate(response: HttpResponseBase): Observable<StructureInputDto> {
+    protected processUpdate(response: HttpResponseBase): Observable<EmployeeInputDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3154,7 +3157,7 @@ export class EmployeeServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = StructureInputDto.fromJS(resultData200);
+                result200 = EmployeeInputDto.fromJS(resultData200);
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3162,7 +3165,7 @@ export class EmployeeServiceProxy {
                 return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<StructureInputDto>(<any>null);
+        return _observableOf<EmployeeInputDto>(<any>null);
     }
 
     getAll(keyword: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<EmployeeGetAllPagedResultDto> {
@@ -3226,64 +3229,12 @@ export class EmployeeServiceProxy {
         return _observableOf<EmployeeGetAllPagedResultDto>(<any>null);
     }
 
-    getStructureForEdit(id: string | undefined): Observable<StructureOutputDto> {
-        let url_ = this.baseUrl + "/api/services/app/Structure/GetUpdate?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
-            return this.processGetStorageForEdit(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetStorageForEdit(<any>response_);
-                } catch (e) {
-                    return <Observable<StructureOutputDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<StructureOutputDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetStorageForEdit(response: HttpResponseBase): Observable<StructureOutputDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-                (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-                let result200: any = null;
-                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = StructureOutputDto.fromJS(resultData200);
-                return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<StructureOutputDto>(<any>null);
-    }
-
     /**
      * @param id (optional) 
      * @return Success
      */
-    get(id: string | undefined): Observable<StructureOutputDto> {
-        let url_ = this.baseUrl + "/api/services/app/Structure/Get?";
+    get(id: string | undefined): Observable<EmployeeOutputDto> {
+        let url_ = this.baseUrl + "/api/services/app/Employee/Get?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -3305,14 +3256,14 @@ export class EmployeeServiceProxy {
                 try {
                     return this.processGet(<any>response_);
                 } catch (e) {
-                    return <Observable<StructureOutputDto>><any>_observableThrow(e);
+                    return <Observable<EmployeeOutputDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<StructureOutputDto>><any>_observableThrow(response_);
+                return <Observable<EmployeeOutputDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGet(response: HttpResponseBase): Observable<StructureOutputDto> {
+    protected processGet(response: HttpResponseBase): Observable<EmployeeOutputDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3323,7 +3274,7 @@ export class EmployeeServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = StructureOutputDto.fromJS(resultData200);
+                result200 = EmployeeOutputDto.fromJS(resultData200);
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3331,11 +3282,11 @@ export class EmployeeServiceProxy {
                 return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<StructureOutputDto>(<any>null);
+        return _observableOf<EmployeeOutputDto>(<any>null);
     }
     
     delete(id: string | undefined): Observable<void> {
-        let _url = this.baseUrl + "/api/services/app/Structure/Delete?";
+        let _url = this.baseUrl + "/api/services/app/Employee/Delete?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null");
         else if (id !== undefined)

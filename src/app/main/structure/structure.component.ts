@@ -11,7 +11,6 @@ class PagedStructureRequestDto extends PagedRequestDto {
   keyword: string;
 }
 
-
 @Component({
   selector: 'app-structure',
   templateUrl: './structure.component.html',

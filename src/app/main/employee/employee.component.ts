@@ -1,14 +1,21 @@
 import { Component, Injector } from '@angular/core';
 import { AppComponent } from '@app/app.component';
-import { PagedListingComponentBase } from '@shared/paged-listing-component-base';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
 import { EmployeeGetAllDto } from '@shared/service-proxies/dtos/employee/EmployeeGetallDto';
 import { EmployeeGetAllPagedResultDto } from '@shared/service-proxies/dtos/employee/EmployeeGetallPagedResultDto';
 import { EmployeeServiceProxy } from '@shared/service-proxies/service-proxies';
+import { catchError, finalize, throwError } from 'rxjs';
+
+class PagedEmployeeRequestDto extends PagedRequestDto {
+  keyword: string;
+}
 
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
-  styleUrls: ['./employee.component.css']
+  styleUrls: ['./employee.component.css'],
+  animations: [appModuleAnimation()]
 })
 export class EmployeeComponent extends PagedListingComponentBase<EmployeeGetAllDto> {
   keyword = '';
@@ -26,29 +33,29 @@ export class EmployeeComponent extends PagedListingComponentBase<EmployeeGetAllD
     super(injector);
   }
 
-  list(request: PagedStructureRequestDto, pageNumber: number, finishedCallback: Function): void {
+  list(request: PagedEmployeeRequestDto, pageNumber: number, finishedCallback: Function): void {
     request.keyword = this.keyword;
 
     setTimeout(() => { 
       console.log(request.keyword);
       
-      this._structureService
+      this._employeeService
       .getAll(request.keyword, request.skipCount, request.maxResultCount)
       .pipe(
         finalize(() => {
           finishedCallback();
         })
       )
-      .subscribe((result: StructureGetAllPagedResultDto) => {
+      .subscribe((result: EmployeeGetAllPagedResultDto) => {
         this.List = result.items;
         this.showPaging(result, pageNumber);
       });
     },500);
   }
-  delete(entity: StructureGetallDto): void {
+  delete(entity: EmployeeGetAllDto): void {
     this.swal.fire({
       title: 'Bạn có chắc?',
-      text: 'Đơn vị sẽ bị xóa',
+      text: 'Nhân viên sẽ bị xóa',
       showCancelButton: true,
       confirmButtonColor: this.confirmButtonColor,
       cancelButtonColor: this.cancelButtonColor,
@@ -59,13 +66,13 @@ export class EmployeeComponent extends PagedListingComponentBase<EmployeeGetAllD
     })
     .then((result) => {
       if (result.value) {
-        this._structureService.delete(entity.unitCode).pipe(
+        this._employeeService.delete(entity.employeeCode).pipe(
           catchError(err => {
             return throwError(err);
           }))
           .subscribe({
             next: () => {
-              this.appMain.showSuccessMessage('Xóa thành công', 'Xóa thành công đơn vị');
+              this.appMain.showSuccessMessage('Xóa thành công', 'Xóa thành công nhân viên');
               this.refresh();
             },
             error: (error) => {

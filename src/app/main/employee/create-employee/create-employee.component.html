@@ -1,1 +1,175 @@
-<p>create-employee works!</p>
+<p-toast></p-toast>
+<div [@routerTransition]>
+  <form autocomplete="off" #createRoleForm="ngForm" (ngSubmit)="save()">
+    <div class="modal-body">
+          <div class="container-add">
+            <div class="container-row">
+                <div class="row" style="padding-bottom: 25px;">
+                  <div class="col">
+                      <div class="row">
+                        <div class="col required">
+                          <label for="name">
+                            {{ "Mã đơn vị" | localize }}
+                          </label>
+                          <span style="color: red; margin-left: 5px; font-size: 14pt;">*</span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <input pInputText type="text" class="form-control" required [ngModelOptions]="{standalone: true}"
+                            maxlength="32" [(ngModel)]="structure.unitCode" #nameCode="ngModel" #nameCodeEl />
+                          <abp-validation-summary [control]="nameCode" [controlEl]="nameCodeEl"></abp-validation-summary>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col">
+                      <div class="row">
+                        <div class="col">
+                          <label for="name">
+                            {{ "Tên đơn vị" | localize }}
+                          </label>
+                          <span style="color: red; margin-left: 5px; font-size: 14pt;">*</span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <input pInputText type="text" class="form-control" required [ngModelOptions]="{standalone: true}"
+                            maxlength="50" [(ngModel)]="structure.unitName" #nameModel="ngModel" #nameEl />
+                            <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="row" style="padding-bottom: 25px;">
+                  <div class="col">
+                      <div class="row">
+                        <div class="col required">
+                          <label for="name">
+                            {{ "Thuộc đơn vị" | localize }}
+                          </label>
+                          <span style="color: red; margin-left: 5px; font-size: 14pt;">*</span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                            <select
+                            required="structure.levelOfUnit === '0'"
+                            #selectModel="ngModel"
+                            #selectEl
+                            class="form-control"
+                            [(ngModel)]="structure.unitOf"
+                            [ngModelOptions]="{ standalone: true }"
+                            aria-label="Default select example"
+                          >
+                            <option value="0" selected>CÔNG TY CỔ PHẦN UTEN VIỆT - ĐỨC</option>
+                            <option
+                              *ngFor="let structure of getStructure; let i = index"
+                              value="{{ structure.unitCode }}"
+                            >
+                              {{ structure.unitName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                  </div>
+                </div>       
+                <div class="row" style="padding-bottom: 25px;">
+                  <div class="col">
+                      <div class="row">
+                        <div class="col required">
+                          <label for="name">
+                            {{ "Cấp tổ chức" | localize }}
+                          </label>
+                          <span style="color: red; margin-left: 5px; font-size: 14pt;">*</span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                            <select
+                            required="categoryCode === '0'"
+                            #selectModel="ngModel"
+                            #selectEl
+                            class="form-control"
+                            [(ngModel)]="structure.levelOfUnit"
+                            [ngModelOptions]="{ standalone: true }"
+                            aria-label="Default select example"
+                          >
+                            <option value="0" selected>Chi nhánh</option>
+                          </select>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                
+                <div class="row" style="padding-bottom: 25px;">
+                  <div class="col">
+                      <div class="row">
+                        <div class="col">
+                          <label for="name">
+                            {{ "Địa chỉ" | localize }}
+                          </label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <textarea pInputTextarea  class="form-control" name="description" id="description" [(ngModel)]="structure.address" cols="20"
+                            rows="10"></textarea> 
+                        </div>
+                      </div>
+                  </div>
+                </div>       
+                
+                <div class="row" style="padding-bottom: 25px;">
+                  <div class="col">
+                      <div class="row">
+                        <div class="col">
+                          <label for="name">
+                            {{ "Số đăng ký KD" | localize }}
+                          </label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                            <p-inputNumber required [ngModelOptions]="{standalone: true}" [useGrouping]="false"
+                            maxlength="50" [(ngModel)]="structure.businessRN" #nameModel="ngModel" #nameEl> </p-inputNumber>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col">
+                      <div class="row">
+                        <div class="col">
+                          <label for="name">
+                            {{ "Ngày cấp" | localize }}
+                          </label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                            <p-calendar dateFormat="dd/mm/yy" [(ngModel)]="structure.issuedDate" [showIcon]="true" [ngModelOptions]="{standalone: true}"></p-calendar>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col">
+                      <div class="row">
+                        <div class="col">
+                          <label for="name">
+                            {{ "Nơi cấp" | localize }}
+                          </label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                            <input type="text" pInputText required [ngModelOptions]="{standalone: true}"
+                            maxlength="50" [(ngModel)]="structure.issuedPlace" #nameModel="ngModel" #nameEl />
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <abp-modal-footer [cancelDisabled]="saving" [saveDisabled]="checkFormValid() || saving"
+                (onCancelClick)="Cancel()"></abp-modal-footer>
+            </div>
+          </div>  
+    </div>
+    
+  </form>
+</div>
