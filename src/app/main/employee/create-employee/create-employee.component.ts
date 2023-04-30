@@ -31,7 +31,7 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
     private appMain: AppComponent
   ) { 
     super(injector);
-    this._employeeService.getStructureSelect().subscribe(val => {
+    this._structureService.getStructureSelect().subscribe(val => {
       this.getemployee = val.items;
     })
   }
@@ -64,14 +64,24 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
 
   checkFormValid(): boolean {
     if (this.employee.employeeCode === undefined 
+      || this.employee.employeeName === undefined 
       || this.employee.employeeGender === undefined 
-      || this.employee.unitOf === undefined 
-      || this.employee.levelOfUnit === undefined 
+      || this.employee.employeeDateOfBirth === undefined 
       // || this.storageSelect.length === 0
-      || this.employee.address === ''
-      || this.employee.businessRN === undefined
-      || this.employee.issuedDate === undefined
-      || this.employee.issuedPlace === undefined
+      || this.employee.employeeCMND.soCMND === undefined
+      || this.employee.employeeCMND.quocTich === undefined
+      || this.employee.employeeCMND.noiCap === undefined
+      || this.employee.employeeCMND.ngayCap === undefined
+      || this.employee.jobTitle === undefined
+      || this.employee.workUnit === undefined
+      || this.employee.taxIdentification === undefined
+      || this.employee.employeeSalary === undefined
+      || this.employee.salaryFactor === undefined
+      || this.employee.typeOfContract === undefined
+      || this.employee.employeeBankAccount.bankId === undefined
+      || this.employee.employeeBankAccount.bankName === undefined
+      || this.employee.employeeBankAccount.bankCity === undefined
+      || this.employee.employeeBankAccount.bankAddress === undefined
       ) {
         console.log("1 check form valid");
         return true;
