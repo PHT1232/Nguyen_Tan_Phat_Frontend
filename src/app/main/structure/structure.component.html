@@ -85,7 +85,7 @@
                     </td>
                     <td>{{ structure.unitName }}</td>
                     <td>{{ structure.address }}</td>
-                    <td>{{ structure.levelOfUnit }}</td>
+                    <td *ngIf="structure.levelOfUnit == 0">Chi nhánh</td>
                     <!-- <td *ngIf="storageCode != '0'">{{ product.quantity }}</td> -->
                     <td>
                       {{ structure.creationTime | date : "dd/MM/yyyy" }}

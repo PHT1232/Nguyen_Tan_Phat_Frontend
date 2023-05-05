@@ -7,7 +7,7 @@
                 <div class="container-fluid">
                   <div class="row"> -->
           <div class="col-6">
-            <h1>{{ "Cơ cấu tổ chức" | localize }}</h1>
+            <h1>{{ "Nhân viên" | localize }}</h1>
           </div>
           <div class="col-6 text-right">
             <!-- <a href="javascript:;"
@@ -30,6 +30,16 @@
         </ng-template>
         <div class="card-header">
           <div class="row">
+            <div class="col-md-6">
+                <p-button
+                  label="Xóa"
+                  [disabled]="listToDelete.length === 0"
+                  (onClick)="DeleteMultiple()"
+                  styleClass="p-button-danger"
+                  icon="pi pi-trash"
+                  *ngIf="isGranted('Pages.System.Employee.Delete') === true"
+                ></p-button>
+            </div>
             <div class="col-md-6">
               <div class="input-group">
                 <div class="input-group-prepend">
@@ -58,56 +68,65 @@
             <p-scrollPanel [style]="{ width: '100%', height: '520px' }">
               <p-table
                 [value]="List"
-                dataKey="unitCode"
+                dataKey="employeeCode"
+                [(selection)]="listToDelete"
                 [tableStyle]="{ 'min-width': '50rem' }"
                 [busy]="isTableLoading"
                 [styleClass]="'p-datatable-sm'"
               >
                 <ng-template pTemplate="header">
                   <tr>
-                    <th pSortableColumn="unitCode">{{ "Mã đơn vị" | localize }}<p-sortIcon field="unitCode"></p-sortIcon></th>
-                    <th pSortableColumn="unitName">{{ "Tên đơn vị" | localize }}<p-sortIcon field="unitName"></p-sortIcon></th>
-                    <th pSortableColumn="address">{{ "Địa chỉ" | localize }}<p-sortIcon field="address"></p-sortIcon></th>
-                    <th pSortableColumn="levelOfUnit">{{ "Cấp tổ chức" | localize }}<p-sortIcon field="levelOfUnit"></p-sortIcon></th>
-                    <th pSortableColumn="creationTime">{{ "Ngày tạo" | localize }}<p-sortIcon field="creationTime"></p-sortIcon></th>
-                    <th pSortableColumn="lastDateModified">{{ "Ngày cập nhật" | localize }}<p-sortIcon field="lastDateModified"></p-sortIcon></th>
-                    <th pSortableColumn="username">{{ "Người cập nhật" | localize }}<p-sortIcon field="username"></p-sortIcon></th>
+                    <th>
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th pSortableColumn="employeeCode">{{ "Mã nhân viên" | localize }}<p-sortIcon field="employeeCode"></p-sortIcon></th>
+                    <th pSortableColumn="employeeName">{{ "Tên nhân viên" | localize }}<p-sortIcon field="employeeName"></p-sortIcon></th>
+                    <th pSortableColumn="taxIdentification">{{ "Mã số thuế" | localize }}<p-sortIcon field="taxIdentification"></p-sortIcon></th>
+                    <th pSortableColumn="jobTitle">{{ "Chức danh" | localize }}<p-sortIcon field="jobTitle"></p-sortIcon></th>
+                    <th pSortableColumn="workUnit">{{ "Tên đơn vị" | localize }}<p-sortIcon field="workUnit"></p-sortIcon></th>
+                    <th pSortableColumn="accountId">{{ "Số tài khoản" | localize }}<p-sortIcon field="workUnit"></p-sortIcon></th>
+                    <th pSortableColumn="accountName">{{ "Tên ngân hàng" | localize }}<p-sortIcon field="workUnit"></p-sortIcon></th>
                     <th style="width: 200px">{{ "Hành động" | localize }}</th>
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-structure>
+                <ng-template pTemplate="body" let-employee>
                   <tr></tr>
                   <tr>
                     <td>
-                      <a [routerLink]="['detail', structure.unitCode]">{{
-                        structure.unitCode
+                      <p-tableCheckbox [value]="employee"></p-tableCheckbox>
+                    </td>
+                    <td>
+                      <a [routerLink]="['detail', employee.employeeCode]">{{
+                        employee.employeeCode
                       }}</a>
                     </td>
-                    <td>{{ structure.unitName }}</td>
-                    <td>{{ structure.address }}</td>
-                    <td>{{ structure.levelOfUnit }}</td>
+                    <td>{{ employee.employeeName }}</td>
+                    <td>{{ employee.taxIdentification }}</td>
+                    <td>{{ employee.jobTitle }}</td>
                     <!-- <td *ngIf="storageCode != '0'">{{ product.quantity }}</td> -->
                     <td>
-                      {{ structure.creationTime | date : "dd/MM/yyyy" }}
-                    </td>
+                      {{ employee.workUnit }}
+                    </td>                   
                     <td>
-                      {{ structure.lastDateModified | date : "dd/MM/yyyy" }}
+                      {{ employee.accountId }}
+                    </td>                   
+                    <td>
+                      {{ employee.accountName }}
                     </td>
-                    <td>{{ structure.username }}</td>
                     <td>
                       <p-button
                         styleClass="p-button-secondary"
                         icon="pi pi-pencil"
                         [style]="{ 'margin-right': '10px' }"
-                        *ngIf="isGranted('Pages.System.Structure.Add') == true"
-                        [routerLink]="['edit', structure.unitCode]"
+                        *ngIf="isGranted('Pages.System.Employee.Add') == true"
+                        [routerLink]="['edit', employee.employeeCode]"
                       >
                       </p-button>
                       <p-button
                         styleClass="p-button-danger"
                         icon="pi pi-trash"
-                        (click)="delete(structure)"
-                        *ngIf="isGranted('Pages.System.Structure.Delete') == true"
+                        (click)="delete(employee)"
+                        *ngIf="isGranted('Pages.System.Employee.Delete') == true"
                       >
                       </p-button>
                     </td>

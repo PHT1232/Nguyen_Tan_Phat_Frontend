@@ -1,11 +1,11 @@
-export interface IStructureSelectList {
-  items: StructureSelectDto[] | undefined;
+export interface IEmployeeSelectForAccountList {
+  items: EmployeeSelectForAccount[] | undefined;
 }
 
-export class StructureSelectList implements IStructureSelectList {
-  items: StructureSelectDto[] | undefined;
+export class EmployeeSelectForAccountList implements IEmployeeSelectForAccountList {
+  items: EmployeeSelectForAccount[] | undefined;
 
-  constructor(data?: IStructureSelectList) {
+  constructor(data?: IEmployeeSelectForAccountList) {
     if (data) {
       this.items = data.items;
     }
@@ -17,9 +17,9 @@ export class StructureSelectList implements IStructureSelectList {
     }
   }
 
-  static fromJS(data: any): StructureSelectList {
+  static fromJS(data: any): EmployeeSelectForAccountList {
     data = typeof data === "object" ? data : {};
-    let result = new StructureSelectList();
+    let result = new EmployeeSelectForAccountList();
     result.init(data);
     return result;
   }
@@ -30,24 +30,24 @@ export class StructureSelectList implements IStructureSelectList {
     return data;
   }
 
-  clone(): StructureSelectList {
+  clone(): EmployeeSelectForAccountList {
     const json = this.toJSON();
-    let result = new StructureSelectList();
+    let result = new EmployeeSelectForAccountList();
     result.init(json);
     return result;
   }
 }
 
-export interface IStructureSelectDto {
-  code: string;
-  name: string;
+export interface IEmployeeSelectForAccount {
+    code: string;
+    name: string;
 }
 
-export class StructureSelectDto implements IStructureSelectDto {
-  code: string;
-  name: string;
+export class EmployeeSelectForAccount implements IEmployeeSelectForAccount {
+    code: string;
+    name: string;
 
-  constructor(data?: IStructureSelectDto) {
+  constructor(data?: IEmployeeSelectForAccount) {
     if (data) {
       this.code = data.code;
       this.name = data.name;
@@ -61,9 +61,9 @@ export class StructureSelectDto implements IStructureSelectDto {
     }
   }
 
-  static fromJS(data: any): StructureSelectDto {
+  static fromJS(data: any): EmployeeSelectForAccount {
     data = typeof data === "object" ? data : {};
-    let result = new StructureSelectDto();
+    let result = new EmployeeSelectForAccount();
     result.init(data);
     return result;
   }
@@ -75,9 +75,9 @@ export class StructureSelectDto implements IStructureSelectDto {
     return data;
   }
 
-  clone(): StructureSelectDto {
+  clone(): EmployeeSelectForAccount {
     const json = this.toJSON();
-    let result = new StructureSelectDto();
+    let result = new EmployeeSelectForAccount();
     result.init(json);
     return result;
   }

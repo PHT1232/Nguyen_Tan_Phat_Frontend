@@ -52,7 +52,7 @@
                       </div>
                       <div class="row">
                         <div class="col">
-                            <select
+                            <!-- <select
                             required="structure.levelOfUnit === '0'"
                             #selectModel="ngModel"
                             #selectEl
@@ -68,7 +68,8 @@
                             >
                               {{ structure.unitName }}
                             </option>
-                          </select>
+                          </select> -->
+                          <p-dropdown [style]="{'width':'100%'}" [options]="getStructure" [ngModelOptions]="{standalone: true}" [(ngModel)]="structureSelected" optionLabel="name"></p-dropdown>
                         </div>
                       </div>
                   </div>
@@ -130,7 +131,8 @@
                       </div>
                       <div class="row">
                         <div class="col">
-                            <p-inputNumber required [ngModelOptions]="{standalone: true}" [useGrouping]="false"
+                            <p-inputNumber class="pinputnumber"
+                            [style]="{'width':'100%'}" required [ngModelOptions]="{standalone: true}" [useGrouping]="false"
                             maxlength="50" [(ngModel)]="structure.businessRN" #nameModel="ngModel" #nameEl> </p-inputNumber>
                         </div>
                       </div>
@@ -145,7 +147,7 @@
                       </div>
                       <div class="row">
                         <div class="col">
-                            <p-calendar dateFormat="dd/mm/yy" [(ngModel)]="structure.issuedDate" [showIcon]="true" [ngModelOptions]="{standalone: true}"></p-calendar>
+                            <p-calendar [style]="{'width':'100%'}" dateFormat="dd/mm/yy" [(ngModel)]="structure.issuedDate" [showIcon]="true" [ngModelOptions]="{standalone: true}"></p-calendar>
                         </div>
                       </div>
                   </div>
@@ -159,7 +161,7 @@
                       </div>
                       <div class="row">
                         <div class="col">
-                            <input type="text" pInputText required [ngModelOptions]="{standalone: true}"
+                            <input [style]="{'width':'100%'}" type="text" pInputText required [ngModelOptions]="{standalone: true}"
                             maxlength="50" [(ngModel)]="structure.issuedPlace" #nameModel="ngModel" #nameEl />
                         </div>
                       </div>

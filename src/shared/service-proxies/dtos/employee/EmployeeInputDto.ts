@@ -80,12 +80,5 @@ export interface IEmployeeInputDto {
       data["employeeBankAccount"] = this.employeeBankAccount;
       return data;
     }
-  
-    clone(): EmployeeInputDto {
-      const json = this.toJSON();
-      let result = new EmployeeInputDto();
-      result.init(json);
-      return result;
-    }
   }
   

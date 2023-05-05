@@ -19,6 +19,7 @@
               <div class="row">
                 <div class="col">
                   <input
+                    disabled
                     pInputText
                     type="text"
                     required
@@ -238,7 +239,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <!-- <select
+                  <select
                     required="structure.levelOfUnit === '0'"
                     class="form-control"
                     #selectModel="ngModel"
@@ -253,8 +254,7 @@
                     >
                       {{ structure.unitName }}
                     </option>
-                  </select> -->
-                  <p-dropdown [style]="{'width':'100%'}" [options]="getStructure" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedStructure" optionLabel="name"></p-dropdown>
+                  </select>
                 </div>
               </div>
             </div>

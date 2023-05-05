@@ -16,7 +16,10 @@ import { PermissionDto, StructureServiceProxy } from '@shared/service-proxies/se
 export class CreateStructureComponent extends AppComponentBase implements OnInit {
   saving = false;
   structure = new StructureInputDto();
-  getStructure: StructureSelectDto[] = [];
+  getStructure: StructureSelectDto[];
+  levelOfUnit = [];
+  levelOUSelected = {code: "", name: ""};
+  structureSelected = new StructureSelectDto();
   permissions: PermissionDto[] = [];
   checkedPermissionMap: { [key: string]: boolean } = {};
   defaultPermissionCheckedStatus = true;
@@ -30,18 +33,26 @@ export class CreateStructureComponent extends AppComponentBase implements OnInit
     private appMain: AppComponent
   ) { 
     super(injector);
-    this._structureService.getStructureSelect().subscribe(val => {
-      this.getStructure = val.items;
-    })
+
   }
 
   ngOnInit(): void {
+    this._structureService.getStructureSelect().subscribe(val => {
+      this.getStructure = val.items;
+      this.getStructure.push(new StructureSelectDto({code: "0", name: "CÔNG TY CỔ PHẦN UNTEN"}))
+    })
+
+    this.levelOfUnit = [
+      {code: "0", name: "Chi nhánh"}
+    ]
   }
 
   save(): void {
     this.saving = true;
     const structureAdd = new StructureInputDto();
     structureAdd.init(this.structure);
+    structureAdd.levelOfUnit = this.levelOUSelected.code;
+    structureAdd.unitOf = this.structureSelected.code;
 
     console.log(this.structure.unitCode)
 
@@ -62,17 +73,16 @@ export class CreateStructureComponent extends AppComponentBase implements OnInit
   }
 
   checkFormValid(): boolean {
+    console.log(this.structure.unitOf);
     if (this.structure.unitCode === undefined 
       || this.structure.unitName === undefined 
-      || this.structure.unitOf === undefined 
-      || this.structure.levelOfUnit === undefined 
-      // || this.storageSelect.length === 0
+      || this.structureSelected === undefined 
+      || this.levelOUSelected === undefined 
+      || this.structure.address === undefined
+      || this.structure.unitCode === '' 
+      || this.structure.unitName === '' 
       || this.structure.address === ''
-      || this.structure.businessRN === undefined
-      || this.structure.issuedDate === undefined
-      || this.structure.issuedPlace === undefined
       ) {
-        console.log("1 check form valid");
         return true;
     }
   }

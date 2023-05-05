@@ -1,6 +1,5 @@
 import { Component, Injector } from '@angular/core';
 import { AppComponent } from '@app/app.component';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
 import { EmployeeGetAllDto } from '@shared/service-proxies/dtos/employee/EmployeeGetallDto';
 import { EmployeeGetAllPagedResultDto } from '@shared/service-proxies/dtos/employee/EmployeeGetallPagedResultDto';
@@ -14,12 +13,13 @@ class PagedEmployeeRequestDto extends PagedRequestDto {
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
-  styleUrls: ['./employee.component.css'],
-  animations: [appModuleAnimation()]
+  styleUrls: ['./employee.component.css']
 })
 export class EmployeeComponent extends PagedListingComponentBase<EmployeeGetAllDto> {
   keyword = '';
   List: EmployeeGetAllDto[] = [];
+  listToDelete: EmployeeGetAllDto[] = [];
+  employeeCodes: string[] = [];
   totalCount: number;
   first: number = 0;
   rows: number = 6;
@@ -87,6 +87,52 @@ export class EmployeeComponent extends PagedListingComponentBase<EmployeeGetAllD
           })
       }
     });
+  }
+
+  DeleteMultiple() {
+    this.swal.fire({
+      title: 'Bạn có chắc?',
+      text: this.listToDelete.length + ' nhân viên sẽ bị xóa',
+      showCancelButton: true,
+      confirmButtonColor: this.confirmButtonColor,
+      cancelButtonColor: this.cancelButtonColor,
+      cancelButtonText: 'Hủy',
+      confirmButtonText: 'Xóa',
+      reverseButtons: this.ReverseButtons,
+      icon: 'warning',
+    })
+    .then((result) => {
+      if (result.value) {
+        this.listToDelete.forEach(element => {
+          this.employeeCodes.push(element.employeeCode);
+        });
+        this.employeeCodes.forEach(element => {
+          console.log(element)
+        });
+        this._employeeService.deleteMutiple(this.employeeCodes).pipe(
+          catchError(err => {
+            return throwError(err);
+          }))
+          .subscribe({
+            next: (res) => {
+              this.appMain.showSuccessMessage("Xóa thành công", "Xóa thành công " + this.listToDelete.length + "/" + this.listToDelete.length + " nhân viên")
+              // abp.notify.success(this.l('Xóa thành công'));
+              this.refresh();
+              this.listToDelete = [];
+              this.employeeCodes = [];
+            },
+            error: (error) => {
+              console.log(error);
+              if (error.error && error.error.message) {
+                this.notify.error(error.error.message);
+              }
+            },
+            complete() {
+              
+            },
+          })
+      }
+      });
   }
 
   searched() {

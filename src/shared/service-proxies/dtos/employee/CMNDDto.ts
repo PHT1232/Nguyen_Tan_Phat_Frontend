@@ -1,13 +1,13 @@
 export interface ICMNDDto {
     soCMND: string;
-    ngayCap: string;
+    ngayCap: Date;
     noiCap: string;
     quocTich: string;
   }
   
   export class CMNDDto implements ICMNDDto {
     soCMND: string;
-    ngayCap: string;
+    ngayCap: Date;
     noiCap: string;
     quocTich: string;
   

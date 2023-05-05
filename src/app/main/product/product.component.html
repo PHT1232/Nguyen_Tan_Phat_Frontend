@@ -169,8 +169,6 @@
                     {{ "Số lượng tồn kho" | localize }}<p-sortIcon field="quantity"></p-sortIcon>
                   </th>
                   <th pSortableColumn="price">{{ "Giá" | localize }}<p-sortIcon field="price"></p-sortIcon></th>
-                  <th pSortableColumn="creationTime">{{ "Ngày tạo" | localize }}<p-sortIcon field="creationTime"></p-sortIcon></th>
-                  <th pSortableColumn="lastDateModified">{{ "Ngày cập nhật" | localize }}<p-sortIcon field="lastDateModified"></p-sortIcon></th>
                   <th pSortableColumn="username">{{ "Người cập nhật" | localize }}<p-sortIcon field="username"></p-sortIcon></th>
                   <th style="width: 200px">{{ "Hành động" | localize }}</th>
                 </tr>
@@ -193,12 +191,6 @@
                   <td>{{ product.quantity }}</td>
                   <td>
                     {{ product.price | currency : "VND" }}
-                  </td>
-                  <td>
-                    {{ product.creationTime | date : "dd/MM/yyyy" }}
-                  </td>
-                  <td>
-                    {{ product.lastDateModified | date : "dd/MM/yyyy" }}
                   </td>
                   <td>{{ product.username }}</td>
                   <td>

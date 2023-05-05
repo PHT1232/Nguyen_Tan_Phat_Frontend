@@ -27,6 +27,9 @@ import { DetailsExportImportComponent } from './main/export-import/details-expor
 import { StructureComponent } from './main/structure/structure.component';
 import { CreateStructureComponent } from './main/structure/create-structure/create-structure.component';
 import { EditStructureComponent } from './main/structure/edit-structure/edit-structure.component';
+import { EmployeeComponent } from './main/employee/employee.component';
+import { CreateEmployeeComponent } from './main/employee/create-employee/create-employee.component';
+import { EditEmployeeComponent } from './main/employee/edit-employee/edit-employee.component';
 
 @NgModule({
     imports: [
@@ -60,7 +63,11 @@ import { EditStructureComponent } from './main/structure/edit-structure/edit-str
                     { path: 'structure', component: StructureComponent, data: { permission: 'Pages.System.Structure.View'} , canActivate: [AppRouteGuard] },
                     { path: 'structure/create', component: CreateStructureComponent, data: { permission: 'Pages.System.Structure.Add'} , canActivate: [AppRouteGuard] },
                     { path: 'structure/edit/:id', component: EditStructureComponent, data: { permission: 'Pages.System.Structure.Update'} , canActivate: [AppRouteGuard] },
-                    { path: 'structure/detail/:id', component: DetailsExportImportComponent, data: { permission: 'Pages.System.Structure.View'} , canActivate: [AppRouteGuard] }
+                    { path: 'structure/detail/:id', component: DetailsExportImportComponent, data: { permission: 'Pages.System.Structure.View'} , canActivate: [AppRouteGuard] },                    
+                    { path: 'employee', component: EmployeeComponent, data: { permission: 'Pages.System.Employee.View'} , canActivate: [AppRouteGuard] },
+                    { path: 'employee/create', component: CreateEmployeeComponent, data: { permission: 'Pages.System.Employee.Add'} , canActivate: [AppRouteGuard] },
+                    { path: 'employee/edit/:id', component: EditEmployeeComponent, data: { permission: 'Pages.System.Employee.Update'} , canActivate: [AppRouteGuard] },
+                    { path: 'employee/detail/:id', component: DetailsExportImportComponent, data: { permission: 'Pages.System.Employee.View'} , canActivate: [AppRouteGuard] }
                 ]
             }
         ])

@@ -34,6 +34,7 @@ import { EmployeeGetAllPagedResultDto } from './dtos/employee/EmployeeGetallPage
 import { EmployeeInputDto } from './dtos/employee/EmployeeInputDto';
 import { CMNDDto } from './dtos/employee/CMNDDto';
 import { EmployeeOutputDto } from './dtos/employee/EmployeeOutputDto';
+import { EmployeeSelectForAccountList } from './dtos/employee/EmployeeSelectForAccount';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
@@ -3285,6 +3286,55 @@ export class EmployeeServiceProxy {
         return _observableOf<EmployeeOutputDto>(<any>null);
     }
     
+    getEmployeeForSelect(): Observable<EmployeeSelectForAccountList> {
+        let _url = this.baseUrl + "/api/services/app/Employee/GetEmployeeSelect";
+        _url = _url.replace(/[?&]$/, "");
+
+        let _options: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", _url, _options).pipe(_observableMergeMap((_response: any) => {
+            return this.processGetEmployeeSelect(_response);
+        })).pipe(_observableCatch((_response: any) => {
+            if (_response instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeeSelect(<any>_response);
+                } catch(e) {
+                    return <Observable<EmployeeSelectForAccountList>><any>_observableThrow(e);
+                }
+            } else {
+                return <Observable<EmployeeSelectForAccountList>><any>_observableThrow(_response);
+            }
+        }));
+    }
+
+    protected processGetEmployeeSelect(response: HttpResponseBase): Observable<EmployeeSelectForAccountList> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = EmployeeSelectForAccountList.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EmployeeSelectForAccountList>(<any>null);
+    }
+
     delete(id: string | undefined): Observable<void> {
         let _url = this.baseUrl + "/api/services/app/Employee/Delete?";
         if (id === null)
@@ -3331,6 +3381,56 @@ export class EmployeeServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    deleteMutiple(ids: string[] | undefined): Observable<string> {
+        let _url = this.baseUrl + "/api/services/app/Employee/DeleteMultiple?";
+        if (ids === null) {
+            throw new Error("The parameter 'id' cannot be null");
+        } else if (ids !== undefined) {
+            ids.forEach(element => {
+                _url += "ids=" + encodeURIComponent("" + element) + "&";
+            });
+        }
+        _url = _url.replace(/[?&]$/, "");
+
+        let _options: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({})
+        }
+
+        return this.http.request("delete", _url, _options).pipe(_observableMergeMap((_response: any) => {
+            return this.processDeleteMutiple(_response);
+        })).pipe(_observableCatch((_response: any) => {
+            if (_response instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteMutiple(<any>_response);
+                } catch (e) {
+                    return <Observable<string>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string>><any>_observableThrow(_response);
+        }));
+    }
+
+    protected processDeleteMutiple(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+                return _observableOf<string>(<any>_responseText);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(<any>null);
+    }    
 
     getStructureSelect(): Observable<StructureSelectList> {
         let url_ = this.baseUrl + "/api/services/app/Structure/GetStructureSelect";

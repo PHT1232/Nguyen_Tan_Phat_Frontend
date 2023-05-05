@@ -1,6 +1,6 @@
+import { formatDate } from '@angular/common';
 import { Component, EventEmitter, Injector, OnInit, Output } from '@angular/core';
-import { FormArray, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponent } from '@app/app.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
@@ -11,28 +11,29 @@ import { EmployeeInputDto } from '@shared/service-proxies/dtos/employee/Employee
 import { EmployeeServiceProxy, PermissionDto, StructureServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
-  selector: 'app-create-employee',
-  templateUrl: './create-employee.component.html',
-  styleUrls: ['./create-employee.component.css'],
+  selector: 'app-edit-employee',
+  templateUrl: './edit-employee.component.html',
+  styleUrls: ['./edit-employee.component.css'],
   animations: [appModuleAnimation()]
 })
-export class CreateEmployeeComponent extends AppComponentBase implements OnInit {
+export class EditEmployeeComponent extends AppComponentBase implements OnInit{
   saving = false;
   employee = new EmployeeInputDto();
   employeeBank = new BankAccount();
   employeeCmnd = new CMNDDto();
   getStructure: StructureSelectDto[] = [];
-  selectedStructure = new StructureSelectDto();
   permissions: PermissionDto[] = [];
   isExist: boolean[] = [];
   checkedPermissionMap: { [key: string]: boolean } = {};
   defaultPermissionCheckedStatus = true;
+  id = "";
 
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
     injector: Injector,
     private _router: Router,
+    private router: ActivatedRoute,
     private _employeeService: EmployeeServiceProxy,
     private _structureService: StructureServiceProxy,
     private appMain: AppComponent
@@ -44,6 +45,26 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
   }
 
   ngOnInit(): void {
+    this.router.params.subscribe(params => {
+      this.id = params['id'];
+    });
+    this._employeeService.get(this.id).subscribe(employeeOutput => {
+      this.employee.employeeCode = employeeOutput.employeeCode;
+      this.employee.employeeName = employeeOutput.employeeName;
+      this.employee.employeeGender = employeeOutput.employeeGender;
+      let formattedEmployeeDOB = formatDate(employeeOutput.employeeDateOfBirth, 'yyyy-MM-dd', 'en_US')
+      this.employee.employeeDateOfBirth = new Date(formattedEmployeeDOB);
+      this.employeeCmnd = employeeOutput.employeeCMND;
+      let formattedNgayCap = formatDate(employeeOutput.employeeCMND.ngayCap, 'yyyy-MM-dd', 'en_US')
+      this.employeeCmnd.ngayCap = new Date(formattedNgayCap);
+      this.employee.jobTitle = employeeOutput.jobTitle;
+      this.employee.workUnit = employeeOutput.workUnit;
+      this.employee.taxIdentification = employeeOutput.taxIdentification;
+      this.employee.employeeSalary = employeeOutput.employeeSalary;
+      this.employee.salaryFactor = employeeOutput.salaryFactor;
+      this.employee.typeOfContract = employeeOutput.typeOfContract;
+      this.employeeBank = employeeOutput.employeeBankAccount;
+    });
   }
 
   save(): void {
@@ -55,7 +76,7 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
     employeeAdd.employeeDateOfBirth = this.employee.employeeDateOfBirth;
     employeeAdd.employeeCMND = this.employeeCmnd;
     employeeAdd.jobTitle = this.employee.jobTitle;
-    employeeAdd.workUnit = this.selectedStructure.code;
+    employeeAdd.workUnit = this.employee.workUnit;
     employeeAdd.taxIdentification = this.employee.taxIdentification;
     employeeAdd.employeeSalary = this.employee.employeeSalary;
     employeeAdd.salaryFactor = this.employee.salaryFactor;
@@ -88,7 +109,7 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
       || this.employeeCmnd.noiCap === undefined
       || this.employeeCmnd.ngayCap === undefined
       || this.employee.jobTitle === undefined
-      || this.selectedStructure === undefined
+      || this.employee.workUnit === undefined
       || this.employee.employeeSalary === undefined
       || this.employee.typeOfContract === undefined
       || this.employee.employeeCode === '' 

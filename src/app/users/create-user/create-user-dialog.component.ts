@@ -11,9 +11,12 @@ import { AppComponentBase } from '@shared/app-component-base';
 import {
   UserServiceProxy,
   CreateUserDto,
-  RoleDto
+  RoleDto,
+  EmployeeServiceProxy
 } from '@shared/service-proxies/service-proxies';
 import { AbpValidationError } from '@shared/components/validation/abp-validation.api';
+import { EmployeeSelectForAccount, EmployeeSelectForAccountList } from '@shared/service-proxies/dtos/employee/EmployeeSelectForAccount';
+import { AppComponent } from '@app/app.component';
 
 @Component({
   templateUrl: './create-user-dialog.component.html'
@@ -22,6 +25,8 @@ export class CreateUserDialogComponent extends AppComponentBase
   implements OnInit {
   saving = false;
   user = new CreateUserDto();
+  employee: EmployeeSelectForAccount[];
+  employeeSelected = new EmployeeSelectForAccount();
   roles: RoleDto[] = [];
   checkedRolesMap: { [key: string]: boolean } = {};
   defaultRoleCheckedStatus = false;
@@ -44,9 +49,22 @@ export class CreateUserDialogComponent extends AppComponentBase
   constructor(
     injector: Injector,
     public _userService: UserServiceProxy,
+    public _employeeService: EmployeeServiceProxy,
+    // public appMain: AppComponent,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
+    this._employeeService.getEmployeeForSelect().subscribe((result) => {
+      this.employee = result.items;
+      // result.items.forEach(element => {
+      //   console.log(element.code)
+      //   this.employee.push(
+      //     new EmployeeSelectForAccount (
+      //       { name: element.name, code: element.code}
+      //       )
+      //     )
+      // });
+    })
   }
 
   ngOnInit(): void {
@@ -56,6 +74,8 @@ export class CreateUserDialogComponent extends AppComponentBase
       this.roles = result.items;
       this.setInitialRolesStatus();
     });
+
+    
   }
 
   setInitialRolesStatus(): void {
@@ -88,12 +108,15 @@ export class CreateUserDialogComponent extends AppComponentBase
 
   save(): void {
     this.saving = true;
-
     this.user.roleNames = this.getCheckedRoles();
-
+    console.log(this.employeeSelected.name);
+    this.user.surname = this.employeeSelected.name;
+    this.user.userName = this.employeeSelected.code;
+    this.user.name = this.employeeSelected.name;
     this._userService.create(this.user).subscribe(
       () => {
         this.notify.info(this.l('SavedSuccessfully'));
+        // this.appMain.showSuccessMessage("Thành công", "Tạo tài khoản thành công")
         this.bsModalRef.hide();
         this.onSave.emit();
       },

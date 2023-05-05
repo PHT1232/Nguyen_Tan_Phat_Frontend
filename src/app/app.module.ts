@@ -29,6 +29,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { TreeTableModule } from 'primeng/treetable';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { DropdownModule } from 'primeng/dropdown';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
@@ -88,6 +89,7 @@ import { CreateStructureComponent } from './main/structure/create-structure/crea
 import { EditStructureComponent } from './main/structure/edit-structure/edit-structure.component';
 import { EmployeeComponent } from './main/employee/employee.component';
 import { CreateEmployeeComponent } from './main/employee/create-employee/create-employee.component';
+import { EditEmployeeComponent } from './main/employee/edit-employee/edit-employee.component';
 
 @NgModule({
   declarations: [
@@ -146,6 +148,7 @@ import { CreateEmployeeComponent } from './main/employee/create-employee/create-
     EditStructureComponent,
     EmployeeComponent,
     CreateEmployeeComponent,
+    EditEmployeeComponent,
   ],
   imports: [
     CommonModule,
@@ -163,7 +166,6 @@ import { CreateEmployeeComponent } from './main/employee/create-employee/create-
     CollapseModule,
     TableModule,
     SidebarModule,
-    RadioButtonModule,
     ButtonModule,
     InputSwitchModule,
     PanelModule,
@@ -179,10 +181,12 @@ import { CreateEmployeeComponent } from './main/employee/create-employee/create-
     PaginatorModule,
     CascadeSelectModule,
     CalendarModule,
+    RadioButtonModule,
     BsDatepickerModule.forRoot(),
     TreeTableModule,
     InputTextareaModule,
     InputNumberModule,
+    DropdownModule,
   ],
   providers: [],
   entryComponents: [

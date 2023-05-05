@@ -20,6 +20,7 @@ export class EditStructureComponent extends AppComponentBase implements OnInit {
   getStructure: StructureSelectDto[] = [];
   permissions: PermissionDto[] = [];
   checkedPermissionMap: { [key: string]: boolean } = {};
+  structureSelected = new StructureSelectDto();
   defaultPermissionCheckedStatus = true;
   id: string;
 
@@ -35,6 +36,7 @@ export class EditStructureComponent extends AppComponentBase implements OnInit {
     super(injector);
     this._structureService.getStructureSelect().subscribe(val => {
       this.getStructure = val.items;
+      this.getStructure.push(new StructureSelectDto({code: "0", name: "CÔNG TY CỔ PHẦN UNTEN"}))
     })
   }
 
@@ -49,7 +51,13 @@ export class EditStructureComponent extends AppComponentBase implements OnInit {
         this.structure.businessRN = val.businessRN;
         this.structure.levelOfUnit = val.levelOfUnit;
         this.structure.unitOf = val.unitOf;
-        this.structure.issuedDate = new Date(formatDate(val.issuedDate,'dd/MM/yyyy','en-us'));
+        this.getStructure.forEach(element => {
+          if (element.code === val.unitOf) {
+            this.structureSelected = new StructureSelectDto({code: element.code, name: element.name});
+          }
+        });
+        let formattedDate = formatDate(val.issuedDate, 'yyyy-MM-dd', 'en_US')
+        this.structure.issuedDate = new Date(formattedDate);
         this.structure.issuedPlace = val.issuedPlace;
     });
   }
