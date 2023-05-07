@@ -115,7 +115,8 @@ export class EmployeeComponent extends PagedListingComponentBase<EmployeeGetAllD
           }))
           .subscribe({
             next: (res) => {
-              this.appMain.showSuccessMessage("Xóa thành công", "Xóa thành công " + this.listToDelete.length + "/" + this.listToDelete.length + " nhân viên")
+              // this.appMain.showSuccessMessage("Xóa thành công", "Xóa thành công " + this.listToDelete.length + "/" + this.listToDelete.length + " nhân viên")
+              this.appMain.showSuccessMessage("Xóa thành công", res)
               // abp.notify.success(this.l('Xóa thành công'));
               this.refresh();
               this.listToDelete = [];

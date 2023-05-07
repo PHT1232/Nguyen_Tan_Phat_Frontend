@@ -109,7 +109,7 @@ export class UsersComponent extends PagedListingComponentBase<UserDto> {
     .then((result) => {
       if (result.value) {
         this._userService.delete(user.id).subscribe(() => {
-          abp.notify.success(this.l('SuccessfullyDeleted'));
+          // abp.notify.success(this.l('SuccessfullyDeleted'));
           this.appMain.showSuccessMessage("Thành công", "xóa tài khoản thành công")
           this.refresh();
         });
