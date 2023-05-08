@@ -83,9 +83,9 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit{
     employeeAdd.typeOfContract = this.employee.typeOfContract;
     employeeAdd.employeeBankAccount = this.employeeBank;
 
-    this._employeeService.create(employeeAdd).subscribe(
+    this._employeeService.update(employeeAdd).subscribe(
       () => {
-        this.appMain.showSuccessMessage('Thêm mới thành công', 'Thêm mới nhân viên thành công')
+        this.appMain.showSuccessMessage('Cập nhật thành công', 'Cập nhật nhân viên thành công')
         this.onSave.emit();
         this._router.navigate(['app/employee']);
       },

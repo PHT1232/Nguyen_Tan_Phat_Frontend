@@ -90,6 +90,9 @@ import { EditStructureComponent } from './main/structure/edit-structure/edit-str
 import { EmployeeComponent } from './main/employee/employee.component';
 import { CreateEmployeeComponent } from './main/employee/create-employee/create-employee.component';
 import { EditEmployeeComponent } from './main/employee/edit-employee/edit-employee.component';
+import { CustomerComponent } from './main/customer/customer.component';
+import { CreateCustomerComponent } from './main/customer/create-customer/create-customer.component';
+import { EditCustomerComponent } from './main/customer/edit-customer/edit-customer.component';
 
 @NgModule({
   declarations: [
@@ -149,6 +152,9 @@ import { EditEmployeeComponent } from './main/employee/edit-employee/edit-employ
     EmployeeComponent,
     CreateEmployeeComponent,
     EditEmployeeComponent,
+    CustomerComponent,
+    CreateCustomerComponent,
+    EditCustomerComponent,
   ],
   imports: [
     CommonModule,
