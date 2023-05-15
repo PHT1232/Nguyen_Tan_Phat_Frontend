@@ -1,5 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { AppComponent } from '@app/app.component';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
 import { EmployeeGetAllDto } from '@shared/service-proxies/dtos/employee/EmployeeGetallDto';
 import { EmployeeGetAllPagedResultDto } from '@shared/service-proxies/dtos/employee/EmployeeGetallPagedResultDto';
@@ -13,7 +14,8 @@ class PagedEmployeeRequestDto extends PagedRequestDto {
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
-  styleUrls: ['./employee.component.css']
+  styleUrls: ['./employee.component.css'],
+  animations: [appModuleAnimation()]
 })
 export class EmployeeComponent extends PagedListingComponentBase<EmployeeGetAllDto> {
   keyword = '';

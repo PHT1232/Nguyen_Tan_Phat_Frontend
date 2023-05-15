@@ -1,1 +1,313 @@
-<p>edit-customer works!</p>
+<p-toast></p-toast>
+<div [@routerTransition]>
+  <form autocomplete="off" #createRoleForm="ngForm" (ngSubmit)="save()">
+    <div class="modal-body">
+      <div class="container-add">
+        <div class="container-row">
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Mã" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                    pInputText
+                    type="text"
+                    required
+                    [ngModelOptions]="{ standalone: true }"
+                    maxlength="32"
+                    [style]="{'width':'100%'}"
+                    [(ngModel)]="customer.orgCustomerCode"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Tên" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                    pInputText
+                    type="text"
+                    required
+                    [ngModelOptions]="{ standalone: true }"
+                    maxlength="50"
+                    [style]="{'width':'100%'}"
+                    [(ngModel)]="customer.orgCustomerName"
+                    #nameModel="ngModel"
+                    #nameEl
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Số điện thoại" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <!-- <p-inputNumber
+                    class="pinputnumber"
+                    required
+                    [style]="{'width': '100%'}"
+                    [useGrouping]="false"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="customer.orgCustomerPhone"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  ></p-inputNumber> -->
+                  <input
+                    pInputText
+                    type="text"
+                    required
+                    [ngModelOptions]="{ standalone: true }"
+                    maxlength="50"
+                    [style]="{'width':'100%'}"
+                    [(ngModel)]="customer.orgCustomerPhone"
+                    #nameModel="ngModel"
+                    #nameEl
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Email" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                    <input
+                    pInputText
+                    type="text"
+                    required
+                    [ngModelOptions]="{ standalone: true }"
+                    maxlength="50"
+                    [style]="{'width':'100%'}"
+                    [(ngModel)]="customer.orgCustomerEmail"
+                    #nameModel="ngModel"
+                    #nameEl
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Địa chỉ" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                    pInputText
+                    type="text"
+                    required
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="customer.orgCustomerAddress"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-bottom: 25px">
+              <div class="col">
+                <div class="row">
+                  <div class="col required">
+                    <label for="name">
+                      {{ "Website" | localize }}
+                    </label>
+                    <span style="color: red; margin-left: 5px; font-size: 14pt"
+                      >*</span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <input
+                      pInputText
+                      type="text"
+                      required
+                      [style]="{'width':'100%'}"
+                      [ngModelOptions]="{ standalone: true }"
+                      [(ngModel)]="customer.orgCustomerWebsite"
+                      #nameModel="ngModel"
+                      #nameEl
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Chú thích" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                    pInputText
+                    type="text"
+                    required
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="customer.orgCustomerDescription"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Số tài khoản" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p-inputNumber
+                    required
+                    class="pinputnumber"
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
+                    [useGrouping]="false"
+                    [(ngModel)]="customerBank.bankId"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  ></p-inputNumber>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Tên ngân hàng" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                  pInputText
+                  type="text"
+                  required
+                  [style]="{'width':'100%'}"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="customerBank.bankName"
+                  #nameCode="ngModel"
+                  #nameCodeEl
+                />
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Chi nhánh" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                  pInputText
+                  type="text"
+                  required
+                  [style]="{'width':'100%'}"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="customerBank.bankAddress"
+                  #nameCode="ngModel"
+                  #nameCodeEl
+                />
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Tỉnh/TP của ngân hàng" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                  pInputText
+                  type="text"
+                  required
+                  [style]="{'width':'100%'}"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="customerBank.bankCity"
+                  #nameCode="ngModel"
+                  #nameCodeEl
+                />
+                </div>
+              </div>
+            </div>
+          </div>
+          <abp-modal-footer
+            [cancelDisabled]="saving"
+            [saveDisabled]="checkFormValid() || saving"
+            (onCancelClick)="Cancel()"
+          ></abp-modal-footer>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
