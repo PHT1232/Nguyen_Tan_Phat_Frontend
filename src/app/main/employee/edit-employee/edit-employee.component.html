@@ -19,10 +19,9 @@
               <div class="row">
                 <div class="col">
                   <input
-                    disabled
+                    readonly
                     pInputText
                     type="text"
-                    required
                     [ngModelOptions]="{ standalone: true }"
                     maxlength="32"
                     [style]="{'width':'100%'}"
@@ -239,22 +238,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <select
-                    required="structure.levelOfUnit === '0'"
-                    class="form-control"
-                    #selectModel="ngModel"
-                    #selectEl
-                    [(ngModel)]="employee.workUnit"
-                    [ngModelOptions]="{ standalone: true }"
-                    aria-label="Default select example"
-                  >
-                    <option
-                      *ngFor="let structure of getStructure; let i = index"
-                      value="{{ structure.unitCode }}"
-                    >
-                      {{ structure.unitName }}
-                    </option>
-                  </select>
+                  <p-dropdown [style]="{'width':'100%'}" [options]="getStructure" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedStructure" optionLabel="name"></p-dropdown>
                 </div>
               </div>
             </div>
@@ -305,6 +289,27 @@
                     [(ngModel)]="employee.taxIdentification"
                     #nameCode="ngModel"
                     #nameCodeEl
+                  />
+                </div>
+              </div>
+            </div>            
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Số điện thoại" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                    pInputText
+                    pKeyFilter="int"
+                    required
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employee.phoneNumber"
                   />
                 </div>
               </div>
@@ -399,7 +404,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <p-inputNumber
+                  <!-- <p-inputNumber
                     required
                     class="pinputnumber"
                     [style]="{'width':'100%'}"
@@ -408,7 +413,18 @@
                     [(ngModel)]="employeeBank.bankId"
                     #nameCode="ngModel"
                     #nameCodeEl
-                  ></p-inputNumber>
+                  ></p-inputNumber> -->
+                  <input
+                    pInputText
+                    pKeyFilter="int"
+                    type="text"
+                    required
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employeeBank.bankId"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  />
                 </div>
               </div>
             </div>

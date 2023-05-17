@@ -39,8 +39,9 @@ export class CreateStructureComponent extends AppComponentBase implements OnInit
   ngOnInit(): void {
     this._structureService.getStructureSelect().subscribe(val => {
       this.getStructure = val.items;
-      this.getStructure.push(new StructureSelectDto({code: "0", name: "CÔNG TY CỔ PHẦN UNTEN"}))
+      this.getStructure.push(new StructureSelectDto({code: "0", name: "CÔNG TY CỔ PHẦN UNTEN"}));
     })
+    this.structureSelected = new StructureSelectDto({code: "0", name: "CÔNG TY CỔ PHẦN UNTEN"});
 
     this.levelOfUnit = [
       {code: "0", name: "Chi nhánh"}

@@ -64,7 +64,7 @@ export class CustomerComponent extends PagedListingComponentBase<CustomerGetAllD
     })
     .then((result) => {
       if (result.value) {
-        this._customerService.delete(entity.orgCustomerCode).pipe(
+        this._customerService.delete(entity.customerCode).pipe(
           catchError(err => {
             return throwError(err);
           }))

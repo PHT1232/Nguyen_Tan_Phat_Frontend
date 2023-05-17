@@ -30,6 +30,7 @@ import { TreeTableModule } from 'primeng/treetable';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
+import { KeyFilterModule } from 'primeng/keyfilter';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
@@ -93,6 +94,8 @@ import { EditEmployeeComponent } from './main/employee/edit-employee/edit-employ
 import { CustomerComponent } from './main/customer/customer.component';
 import { CreateCustomerComponent } from './main/customer/create-customer/create-customer.component';
 import { EditCustomerComponent } from './main/customer/edit-customer/edit-customer.component';
+import { ExpensesComponent } from './main/expenses/expenses.component';
+import { CreateExpensesComponent } from './main/expenses/create-expenses/create-expenses.component';
 
 @NgModule({
   declarations: [
@@ -155,6 +158,8 @@ import { EditCustomerComponent } from './main/customer/edit-customer/edit-custom
     CustomerComponent,
     CreateCustomerComponent,
     EditCustomerComponent,
+    ExpensesComponent,
+    CreateExpensesComponent,
   ],
   imports: [
     CommonModule,
@@ -193,6 +198,7 @@ import { EditCustomerComponent } from './main/customer/edit-customer/edit-custom
     InputTextareaModule,
     InputNumberModule,
     DropdownModule,
+    KeyFilterModule,
   ],
   providers: [],
   entryComponents: [

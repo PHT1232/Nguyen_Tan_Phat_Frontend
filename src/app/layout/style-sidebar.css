@@ -14,3 +14,13 @@
     color: #eeeeee;
     background-color: red;
 }
+
+#arrow i{
+    transition: color 0.3s;
+    transition: margin-left 0.4s;
+}
+
+#arrow i:hover {
+    color: blue;
+    margin-left: 10px;
+} 

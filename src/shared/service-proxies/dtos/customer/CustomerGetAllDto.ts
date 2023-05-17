@@ -1,21 +1,21 @@
-import { BankAccount } from "../BankAccount";
-
 export interface ICustomerGetAllDto {
-    orgCustomerCode: string;
-    orgCustomerName: string;
-    orgCustomerPhone: string;
-    orgCustomerAddress: string;
-    orgCustomerWebsite: string;
-    orgCustomerBankAccount: BankAccount
+    customerCode: string;
+    customerName: string;
+    customerPhone: string;
+    customerAddress: string;
+    customerWebsite: string;
+    customerBankId: string;
+    customerBankName: string;
   }
   
   export class CustomerGetAllDto implements ICustomerGetAllDto {
-    orgCustomerCode: string;
-    orgCustomerName: string;
-    orgCustomerPhone: string;
-    orgCustomerAddress: string;
-    orgCustomerWebsite: string;
-    orgCustomerBankAccount: BankAccount
+    customerCode: string;
+    customerName: string;
+    customerPhone: string;
+    customerAddress: string;
+    customerWebsite: string;
+    customerBankId: string;
+    customerBankName: string;
   
     constructor(data?: ICustomerGetAllDto) {
       if (data) {
@@ -29,12 +29,13 @@ export interface ICustomerGetAllDto {
   
     init(data?: any) {
       if (data) {
-        this.orgCustomerCode = data["orgCustomerCode"];
-        this.orgCustomerName = data["orgCustomerName"];
-        this.orgCustomerPhone = data["orgCustomerPhone"];
-        this.orgCustomerAddress = data["orgCustomerAddress"];
-        this.orgCustomerWebsite = data["orgCustomerWebsite"];
-        this.orgCustomerBankAccount = data["orgCustomerBankAccount"];
+        this.customerCode = data["customerCode"];
+        this.customerName = data["customerName"];
+        this.customerPhone = data["customerPhone"];
+        this.customerAddress = data["customerAddress"];
+        this.customerWebsite = data["customerWebsite"];
+        this.customerBankId = data["customerBankId"];
+        this.customerBankName = data["customerBankName"];
       }
     }
   
@@ -47,12 +48,13 @@ export interface ICustomerGetAllDto {
   
     toJSON(data?: any) {
       data = typeof data === "object" ? data : {};
-      data["orgCustomerCode"] = this.orgCustomerCode;
-      data["orgCustomerName"] = this.orgCustomerName;
-      data["orgCustomerPhone"] = this.orgCustomerPhone;
-      data["orgCustomerAddress"] = this.orgCustomerAddress;
-      data["orgCustomerWebsite"] = this.orgCustomerWebsite;
-      data["orgCustomerBankAccount"] = this.orgCustomerBankAccount;
+      data["customerCode"] = this.customerCode;
+      data["customerName"] = this.customerName;
+      data["customerPhone"] = this.customerPhone;
+      data["customerAddress"] = this.customerAddress;
+      data["customerWebsite"] = this.customerWebsite;
+      data["customerBankId"] = this.customerBankId;
+      data["customerBankName"] = this.customerBankName;
       return data;
     }
   

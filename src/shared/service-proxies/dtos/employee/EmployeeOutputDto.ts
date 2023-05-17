@@ -7,6 +7,7 @@ export interface IEmployeeOutputDto {
     employeeGender: string;
     employeeDateOfBirth: Date;
     employeeCMND: CMNDDto;
+    employeePhone: number;
     jobTitle: string;
     workUnit: string;
     taxIdentification: string;
@@ -22,6 +23,7 @@ export interface IEmployeeOutputDto {
     employeeGender: string;
     employeeDateOfBirth: Date;
     employeeCMND: CMNDDto;
+    employeePhone: number;
     jobTitle: string;
     workUnit: string;
     taxIdentification: string;
@@ -47,6 +49,7 @@ export interface IEmployeeOutputDto {
         this.employeeGender = data["employeeGender"];
         this.employeeDateOfBirth = data["employeeDateOfBirth"];
         this.employeeCMND = data["employeeCMND"];
+        this.employeePhone = data["employeePhone"];
         this.jobTitle = data["jobTitle"];
         this.workUnit = data["workUnit"];
         this.taxIdentification = data["taxIdentification"];
@@ -71,6 +74,7 @@ export interface IEmployeeOutputDto {
       data["employeeGender"] = this.employeeGender;
       data["employeeDateOfBirth"] = this.employeeDateOfBirth;
       data["employeeCMND"] = this.employeeCMND;
+      data["employeePhone"] = this.employeePhone;
       data["jobTitle"] = this.jobTitle;
       data["workUnit"] = this.workUnit;
       data["taxIdentification"] = this.taxIdentification;

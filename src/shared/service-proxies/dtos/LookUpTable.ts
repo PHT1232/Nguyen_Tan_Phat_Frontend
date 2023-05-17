@@ -36,7 +36,7 @@ export class LookUpTableList implements ILookUpTableList {
 }
 
 export class LookUpTable {
-  id: number;
+  code: number;
   name: string;
 
   constructor(data?: LookUpTable) {
@@ -50,7 +50,7 @@ export class LookUpTable {
 
   init(_data: any) {
     if (_data) {
-      this.id = _data["id"];
+      this.code = _data["code"];
       this.name = _data["name"];
     }
   }
@@ -64,7 +64,7 @@ export class LookUpTable {
 
   toJSON(data?: any) {
     data = typeof data === "object" ? data : {};
-    data["id"] = this.id;
+    data["code"] = this.code;
     data["name"] = this.name;
     return data;
   }

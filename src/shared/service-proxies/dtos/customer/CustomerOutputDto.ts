@@ -1,24 +1,24 @@
 import { BankAccount } from "../BankAccount";
 
 export interface ICustomerOutputDto {
-    orgCustomerCode: string;
-    orgCustomerName: string;
-    orgCustomerPhone: string;
-    orgCustomerAddress: string;
-    orgCustomerWebsite: string;
-    orgCustomerEmail: string;
-    orgCustomerDescription: string;
+    customerCode: string;
+    customerName: string;
+    customerPhone: string;
+    customerAddress: string;
+    customerWebsite: string;
+    customerEmail: string;
+    customerDescription: string;
     bankAccount: BankAccount;
   }
   
   export class CustomerOutputDto implements ICustomerOutputDto {
-    orgCustomerCode: string;
-    orgCustomerName: string;
-    orgCustomerPhone: string;
-    orgCustomerAddress: string;
-    orgCustomerWebsite: string;
-    orgCustomerEmail: string;
-    orgCustomerDescription: string;
+    customerCode: string;
+    customerName: string;
+    customerPhone: string;
+    customerAddress: string;
+    customerWebsite: string;
+    customerEmail: string;
+    customerDescription: string;
     bankAccount: BankAccount;
   
     constructor(data?: ICustomerOutputDto) {
@@ -32,13 +32,13 @@ export interface ICustomerOutputDto {
   
     init(_data?: any) {
       if (_data) {
-        this.orgCustomerCode = _data["orgCustomerCode"];
-        this.orgCustomerName = _data["orgCustomerName"];
-        this.orgCustomerPhone = _data["orgCustomerPhone"];
-        this.orgCustomerAddress = _data["orgCustomerAddress"];
-        this.orgCustomerWebsite = _data["orgCustomerWebsite"];
-        this.orgCustomerEmail = _data["orgCustomerEmail"];
-        this.orgCustomerDescription = _data["orgCustomerDescription"];
+        this.customerCode = _data["customerCode"];
+        this.customerName = _data["customerName"];
+        this.customerPhone = _data["customerPhone"];
+        this.customerAddress = _data["customerAddress"];
+        this.customerWebsite = _data["customerWebsite"];
+        this.customerEmail = _data["customerEmail"];
+        this.customerDescription = _data["customerDescription"];
         this.bankAccount = _data["bankAccount"];
       }
     }
@@ -52,13 +52,13 @@ export interface ICustomerOutputDto {
   
     toJSON(data?: any) {
       data = typeof data === "object" ? data : {};
-      data["orgCustomerCode"] = this.orgCustomerCode;
-      data["orgCustomerName"] = this.orgCustomerName;
-      data["orgCustomerPhone"] = this.orgCustomerPhone;
-      data["orgCustomerAddress"] = this.orgCustomerAddress;
-      data["orgCustomerWebsite"] = this.orgCustomerWebsite;
-      data["orgCustomerEmail"] = this.orgCustomerEmail;
-      data["orgCustomerDescription"] = this.orgCustomerDescription;
+      data["customerCode"] = this.customerCode;
+      data["customerName"] = this.customerName;
+      data["customerPhone"] = this.customerPhone;
+      data["customerAddress"] = this.customerAddress;
+      data["customerWebsite"] = this.customerWebsite;
+      data["customerEmail"] = this.customerEmail;
+      data["customerDescription"] = this.customerDescription;
       data["bankAccount"] = this.bankAccount;
       return data;
     }

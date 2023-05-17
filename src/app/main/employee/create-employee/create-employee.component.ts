@@ -40,6 +40,7 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
     super(injector);
     this._structureService.getStructureSelect().subscribe(val => {
       this.getStructure = val.items;
+      this.getStructure.push(new StructureSelectDto({code: "0", name: "CÔNG TY CỔ PHẦN UNTEN"}))
     })
   }
 
@@ -61,6 +62,7 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
     employeeAdd.salaryFactor = this.employee.salaryFactor;
     employeeAdd.typeOfContract = this.employee.typeOfContract;
     employeeAdd.employeeBankAccount = this.employeeBank;
+    employeeAdd.phoneNumber = this.employee.phoneNumber;
 
     this._employeeService.create(employeeAdd).subscribe(
       () => {

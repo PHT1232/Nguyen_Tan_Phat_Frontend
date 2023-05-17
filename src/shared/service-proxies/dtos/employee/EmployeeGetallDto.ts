@@ -5,7 +5,7 @@ export interface IEmployeeGetAllDto {
     employeeName: string;
     jobTitle: string;
     workUnit: string;
-    taxIdentification: string;
+    employeePhone: number;
     accountId: string;
     accountName: string;
     creationTime: Date;
@@ -17,7 +17,7 @@ export interface IEmployeeGetAllDto {
     employeeName: string;
     jobTitle: string;
     workUnit: string;
-    taxIdentification: string;
+    employeePhone: number;
     accountId: string;
     accountName: string;
     creationTime: Date;
@@ -39,7 +39,7 @@ export interface IEmployeeGetAllDto {
         this.employeeName = data["employeeName"];
         this.jobTitle = data["jobTitle"];
         this.workUnit = data["workUnit"];
-        this.taxIdentification = data["taxIdentification"];
+        this.employeePhone = data["employeePhone"];
         this.accountId = data["accountId"];
         this.accountName = data["accountName"];
         this.creationTime = data["creationTime"];
@@ -60,7 +60,7 @@ export interface IEmployeeGetAllDto {
       data["employeeName"] = this.employeeName;
       data["jobTitle"] = this.jobTitle;
       data["workUnit"] = this.workUnit;
-      data["taxIdentification"] = this.taxIdentification;
+      data["employeePhone"] = this.employeePhone;
       data["accountId"] = this.accountId;
       data["accountName"] = this.accountName;
       data["creationTime"] = this.creationTime;

@@ -85,12 +85,6 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                     '',
                     'Pages.System.Product.View'
                 ),
-                new MenuItem(
-                    this.l('Mua hàng hóa'),
-                    '/app/buy',
-                    '',
-                    'Pages.System.Product.View'
-                ),
             ]),
             new MenuItem(this.l('Kho'), '', '', '', [
                 new MenuItem(
@@ -104,6 +98,14 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                     '/app/exportimport',
                     '',
                     'Pages.System.ExportImport.View'
+                ),
+            ]),
+            new MenuItem(this.l('Thu chi'), '', '', '', [
+                new MenuItem(
+                    this.l('Mua hàng hóa'),
+                    '/app/buy',
+                    '',
+                    'Pages.System.Storage.View'
                 ),
             ]),
             new MenuItem(this.l('Người dùng'), '', '', '', [

@@ -81,7 +81,7 @@
                     </th>
                     <th pSortableColumn="employeeCode">{{ "Mã nhân viên" | localize }}<p-sortIcon field="employeeCode"></p-sortIcon></th>
                     <th pSortableColumn="employeeName">{{ "Tên nhân viên" | localize }}<p-sortIcon field="employeeName"></p-sortIcon></th>
-                    <th pSortableColumn="taxIdentification">{{ "Mã số thuế" | localize }}<p-sortIcon field="taxIdentification"></p-sortIcon></th>
+                    <th pSortableColumn="employeePhone">{{ "Số Điện thoại" | localize }}<p-sortIcon field="employeePhone"></p-sortIcon></th>
                     <th pSortableColumn="jobTitle">{{ "Chức danh" | localize }}<p-sortIcon field="jobTitle"></p-sortIcon></th>
                     <th pSortableColumn="workUnit">{{ "Tên đơn vị" | localize }}<p-sortIcon field="workUnit"></p-sortIcon></th>
                     <th pSortableColumn="accountId">{{ "Số tài khoản" | localize }}<p-sortIcon field="workUnit"></p-sortIcon></th>
@@ -101,7 +101,7 @@
                       }}</a>
                     </td>
                     <td>{{ employee.employeeName }}</td>
-                    <td>{{ employee.taxIdentification }}</td>
+                    <td>{{ employee.employeePhone }}</td>
                     <td>{{ employee.jobTitle }}</td>
                     <!-- <td *ngIf="storageCode != '0'">{{ product.quantity }}</td> -->
                     <td>

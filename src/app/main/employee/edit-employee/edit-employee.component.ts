@@ -22,6 +22,7 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit{
   employeeBank = new BankAccount();
   employeeCmnd = new CMNDDto();
   getStructure: StructureSelectDto[] = [];
+  selectedStructure = new StructureSelectDto();
   permissions: PermissionDto[] = [];
   isExist: boolean[] = [];
   checkedPermissionMap: { [key: string]: boolean } = {};
@@ -63,6 +64,7 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit{
       this.employee.employeeSalary = employeeOutput.employeeSalary;
       this.employee.salaryFactor = employeeOutput.salaryFactor;
       this.employee.typeOfContract = employeeOutput.typeOfContract;
+      this.employee.phoneNumber = employeeOutput.employeePhone;
       this.employeeBank = employeeOutput.employeeBankAccount;
     });
   }
@@ -76,12 +78,13 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit{
     employeeAdd.employeeDateOfBirth = this.employee.employeeDateOfBirth;
     employeeAdd.employeeCMND = this.employeeCmnd;
     employeeAdd.jobTitle = this.employee.jobTitle;
-    employeeAdd.workUnit = this.employee.workUnit;
+    employeeAdd.workUnit = this.selectedStructure.code;
     employeeAdd.taxIdentification = this.employee.taxIdentification;
     employeeAdd.employeeSalary = this.employee.employeeSalary;
     employeeAdd.salaryFactor = this.employee.salaryFactor;
     employeeAdd.typeOfContract = this.employee.typeOfContract;
     employeeAdd.employeeBankAccount = this.employeeBank;
+    employeeAdd.phoneNumber = this.employee.phoneNumber;
 
     this._employeeService.update(employeeAdd).subscribe(
       () => {

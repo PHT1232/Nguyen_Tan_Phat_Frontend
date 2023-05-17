@@ -292,6 +292,27 @@
                   />
                 </div>
               </div>
+            </div>            
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Số điện thoại" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                    pInputText
+                    pKeyFilter="int"
+                    required
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employee.phoneNumber"
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div class="row" style="padding-bottom: 25px">
@@ -383,7 +404,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <p-inputNumber
+                  <!-- <p-inputNumber
                     required
                     class="pinputnumber"
                     [style]="{'width':'100%'}"
@@ -392,7 +413,18 @@
                     [(ngModel)]="employeeBank.bankId"
                     #nameCode="ngModel"
                     #nameCodeEl
-                  ></p-inputNumber>
+                  ></p-inputNumber> -->
+                  <input
+                    pInputText
+                    pKeyFilter="int"
+                    type="text"
+                    required
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employeeBank.bankId"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  />
                 </div>
               </div>
             </div>

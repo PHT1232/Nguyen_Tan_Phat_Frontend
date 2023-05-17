@@ -70,7 +70,6 @@
                     <th pSortableColumn="address">{{ "Địa chỉ" | localize }}<p-sortIcon field="address"></p-sortIcon></th>
                     <th pSortableColumn="levelOfUnit">{{ "Cấp tổ chức" | localize }}<p-sortIcon field="levelOfUnit"></p-sortIcon></th>
                     <th pSortableColumn="creationTime">{{ "Ngày tạo" | localize }}<p-sortIcon field="creationTime"></p-sortIcon></th>
-                    <th pSortableColumn="lastDateModified">{{ "Ngày cập nhật" | localize }}<p-sortIcon field="lastDateModified"></p-sortIcon></th>
                     <th pSortableColumn="username">{{ "Người cập nhật" | localize }}<p-sortIcon field="username"></p-sortIcon></th>
                     <th style="width: 200px">{{ "Hành động" | localize }}</th>
                   </tr>
@@ -89,9 +88,6 @@
                     <!-- <td *ngIf="storageCode != '0'">{{ product.quantity }}</td> -->
                     <td>
                       {{ structure.creationTime | date : "dd/MM/yyyy" }}
-                    </td>
-                    <td>
-                      {{ structure.lastDateModified | date : "dd/MM/yyyy" }}
                     </td>
                     <td>{{ structure.username }}</td>
                     <td>

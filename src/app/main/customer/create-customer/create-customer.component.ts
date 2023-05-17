@@ -37,13 +37,13 @@ export class CreateCustomerComponent extends AppComponentBase implements OnInit 
   save(): void {
     this.saving = true;
     const customerAdd = new CustomerInputDto();
-    customerAdd.orgCustomerCode = this.customer.orgCustomerCode;
-    customerAdd.orgCustomerName = this.customer.orgCustomerName;
-    customerAdd.orgCustomerEmail = this.customer.orgCustomerEmail;
-    customerAdd.orgCustomerAddress = this.customer.orgCustomerAddress;
-    customerAdd.orgCustomerPhone = this.customer.orgCustomerPhone;
-    customerAdd.orgCustomerDescription = this.customer.orgCustomerDescription;
-    customerAdd.orgCustomerWebsite = this.customer.orgCustomerWebsite;
+    customerAdd.customerCode = this.customer.customerCode;
+    customerAdd.customerName = this.customer.customerName;
+    customerAdd.customerEmail = this.customer.customerEmail;
+    customerAdd.customerAddress = this.customer.customerAddress;
+    customerAdd.customerPhone = this.customer.customerPhone;
+    customerAdd.customerDescription = this.customer.customerDescription;
+    customerAdd.customerWebsite = this.customer.customerWebsite;
     customerAdd.bankAccount = this.customerBank;
 
     this._customerService.create(customerAdd).subscribe(
@@ -63,27 +63,14 @@ export class CreateCustomerComponent extends AppComponentBase implements OnInit 
   }
 
   checkFormValid(): boolean {
-    if (this.customer.orgCustomerCode === undefined
-      || this.customer.orgCustomerName === undefined
-      || this.customer.orgCustomerEmail === undefined
-      || this.customer.orgCustomerAddress === undefined
-      || this.customer.orgCustomerPhone === undefined
-      || this.customer.orgCustomerDescription === undefined
-      || this.customer.orgCustomerWebsite === undefined
-      || this.customerBank.bankId === undefined
-      || this.customerBank.bankName === undefined
-      || this.customerBank.bankCity === undefined
-      || this.customerBank.bankAddress === undefined
-      || this.customer.orgCustomerCode === ''
-      || this.customer.orgCustomerName === ''
-      || this.customer.orgCustomerEmail === ''
-      || this.customer.orgCustomerAddress === ''
-      || this.customer.orgCustomerPhone === ''
-      || this.customer.orgCustomerDescription === ''
-      || this.customer.orgCustomerWebsite === ''
-      || this.customerBank.bankName === ''
-      || this.customerBank.bankCity === ''
-      || this.customerBank.bankAddress === ''
+    if (this.customer.customerCode === undefined
+      || this.customer.customerName === undefined
+      || this.customer.customerAddress === undefined
+      || this.customer.customerPhone === undefined
+      || this.customer.customerCode === ''
+      || this.customer.customerName === ''
+      || this.customer.customerAddress === ''
+      || this.customer.customerPhone === ''
       ) {
         console.log("1 check form valid");
         return true;
