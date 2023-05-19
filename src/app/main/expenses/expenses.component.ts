@@ -7,6 +7,7 @@ import { AppComponent } from '@app/app.component';
 import { ExpensesGetAllPagedResultDto } from '@shared/service-proxies/dtos/expenses/ExpensesGetAllPagedResultDto';
 import { ExpensesInputDto } from '@shared/service-proxies/dtos/expenses/ExpensesInputDto';
 import { finalize } from 'rxjs';
+import { LookUpTable } from '@shared/service-proxies/dtos/LookUpTable';
 
 class PagedExpensesRequestDto extends PagedRequestDto {
   keyword: string;
@@ -23,16 +24,17 @@ class PagedExpensesRequestDto extends PagedRequestDto {
 export class ExpensesComponent extends PagedListingComponentBase<ExpensesGetAllDto>{
   exportImports: ExpensesGetAllDto[];
   keyword = "";
-  storageCode = "0";
+  storageCode = new LookUpTable();
   orderStatus = 1;
   nameOfReciever = "";
   bsInlineRangeValue: Date[];
   expensesList: ExpensesGetAllDto[] = [];
-  getStorage: StorageProductDetailList = new StorageProductDetailList();
+  getStorage: LookUpTable[];
   totalCount: number;
   isLoading = false;
   first: number = 0;
   rows: number = 6;
+  tableClass = "p-datatable-sm";
 
   constructor(
     injector: Injector,
@@ -41,8 +43,8 @@ export class ExpensesComponent extends PagedListingComponentBase<ExpensesGetAllD
     private appMain: AppComponent
   ) {
     super(injector);
-    this._productService.getStorageProduct().subscribe((val) => {
-      this.getStorage = val;
+    this._productService.getStorageExpense().subscribe((val) => {
+      this.getStorage = val.items;
       // this.storageCode = val[val.items.length].storageCode;
     });
   }
@@ -57,7 +59,7 @@ export class ExpensesComponent extends PagedListingComponentBase<ExpensesGetAllD
     request.keyword = this.keyword;
     request.orderStatus = this.orderStatus;
     setTimeout(() => {
-      request.storageCode = this.storageCode;
+      request.storageCode = this.storageCode.code;
       if (this.bsInlineRangeValue !== undefined) {
         request.dateTime = [];
         this.bsInlineRangeValue.forEach(element => {
@@ -83,7 +85,7 @@ export class ExpensesComponent extends PagedListingComponentBase<ExpensesGetAllD
           })
         )
         .subscribe((result: ExpensesGetAllPagedResultDto) => {
-          this.exportImportList = result.items;
+          this.expensesList = result.items;
           this.showPaging(result, pageNumber);
           this.isLoading = false;
         });

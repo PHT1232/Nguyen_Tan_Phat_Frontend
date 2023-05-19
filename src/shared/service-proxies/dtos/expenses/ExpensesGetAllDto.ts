@@ -5,6 +5,7 @@ export interface IExpensesGetAllDto {
     description: string;
     paymentDate: Date;
     orderStatus: number;
+    employeeCode: string;
     totalPrice: number;
     totalPriceAfterDiscount: number;
     creationTime: Date;
@@ -17,6 +18,7 @@ export interface IExpensesGetAllDto {
     description: string;
     paymentDate: Date;
     orderStatus: number;
+    employeeCode: string;
     totalPrice: number;
     totalPriceAfterDiscount: number;
     creationTime: Date;
@@ -38,6 +40,7 @@ export interface IExpensesGetAllDto {
         this.description = _data["description"];
         this.paymentDate = _data["paymentDate"];
         this.orderStatus = _data["orderStatus"];
+        this.employeeCode = _data["employeeCode"];
         this.totalPrice = _data["totalPrice"];
         this.totalPriceAfterDiscount = _data["totalPriceAfterDiscount"];
         this.creationTime = _data["creationTime"];
@@ -59,6 +62,7 @@ export interface IExpensesGetAllDto {
       data["description"] = this.description;
       data["paymentDate"] = this.paymentDate;
       data["orderStatus"] = this.orderStatus;
+      data["employeeCode"] = this.employeeCode;
       data["totalPrice"] = this.totalPrice;
       data["totalPriceAfterDiscount"] = this.totalPriceAfterDiscount;
       data["creationTime"] = this.creationTime;

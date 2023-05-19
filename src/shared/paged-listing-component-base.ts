@@ -23,6 +23,7 @@ export class PagedRequestDto {
 export abstract class PagedListingComponentBase<TEntityDto> extends AppComponentBase implements OnInit {
     swal = Swal;
     confirmButtonColor = '#3085d6';
+    deleteButtonColor = '';
     cancelButtonColor = '#d33';
     cancelButtonText = 'No, cancel';
     deleteButtonText = 'Yes, delete';

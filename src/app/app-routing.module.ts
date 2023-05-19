@@ -33,6 +33,9 @@ import { EditEmployeeComponent } from './main/employee/edit-employee/edit-employ
 import { CustomerComponent } from './main/customer/customer.component';
 import { CreateCustomerComponent } from './main/customer/create-customer/create-customer.component';
 import { EditCustomerComponent } from './main/customer/edit-customer/edit-customer.component';
+import { ExpensesComponent } from './main/expenses/expenses.component';
+import { CreateExpensesComponent } from './main/expenses/create-expenses/create-expenses.component';
+import { DetailExpensesComponent } from './main/expenses/detail-expenses/detail-expenses.component';
 
 @NgModule({
     imports: [
@@ -74,7 +77,11 @@ import { EditCustomerComponent } from './main/customer/edit-customer/edit-custom
                     { path: 'customer', component: CustomerComponent, data: { permission: 'Pages.System.Customer.View'} , canActivate: [AppRouteGuard] },
                     { path: 'customer/create', component: CreateCustomerComponent, data: { permission: 'Pages.System.Customer.Add'} , canActivate: [AppRouteGuard] },
                     { path: 'customer/edit/:id', component: EditCustomerComponent, data: { permission: 'Pages.System.Customer.Update'} , canActivate: [AppRouteGuard] },
-                    { path: 'customer/detail/:id', component: DetailsExportImportComponent, data: { permission: 'Pages.System.Employee.View'} , canActivate: [AppRouteGuard] }
+                    { path: 'customer/detail/:id', component: DetailsExportImportComponent, data: { permission: 'Pages.System.Employee.View'} , canActivate: [AppRouteGuard] },                    
+                    { path: 'expense', component: ExpensesComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] },
+                    { path: 'expense/create', component: CreateExpensesComponent, data: { permission: 'Pages.System.Revenue.Add'} , canActivate: [AppRouteGuard] },
+                    { path: 'expense/edit/:id', component: EditCustomerComponent, data: { permission: 'Pages.System.Revenue.Update'} , canActivate: [AppRouteGuard] },
+                    { path: 'expense/detail/:id', component: DetailExpensesComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] }
                 ]
             }
         ])

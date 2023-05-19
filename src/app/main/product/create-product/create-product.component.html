@@ -18,12 +18,11 @@
               <div class="row">
                 <div class="col">
                   <input
+                    pInputText
                     type="text"
-                    class="form-control"
-                    name="productCode"
-                    id="productCode"
                     required
-                    maxlength="32"
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="products.productCode"
                     #nameCode="ngModel"
                     #nameCodeEl
@@ -50,11 +49,10 @@
                 <div class="col">
                   <input
                     type="text"
-                    class="form-control"
-                    name="productName"
-                    id="productName"
+                    pInputText
                     required
-                    maxlength="50"
+                    [ngModelOptions]="{ standalone: true }"
+                    [style]="{'width':'100%'}"
                     [(ngModel)]="products.productName"
                     #nameModel="ngModel"
                     #nameEl
@@ -155,7 +153,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <input
+                  <!-- <input
                     class="form-control"
                     name="price"
                     id="price"
@@ -164,7 +162,17 @@
                     #priceModel="ngModel"
                     #priceEl
                     required
-                  />
+                  /> -->
+                  <p-inputNumber
+                    required
+                    class="pinputnumber"
+                    [style]="{'width':'100%'}"
+                    mode="currency" currency="VND"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="products.price"
+                    #priceModel="ngModel"
+                    #priceEl
+                  ></p-inputNumber>
                   <abp-validation-summary
                     [control]="priceModel"
                     [controlEl]="priceEl"
@@ -186,11 +194,12 @@
               <div class="row">
                 <div class="col">
                   <input
-                    class="form-control"
-                    name="unit"
-                    id="unit"
-                    [(ngModel)]="this.products.unit"
                     type="text"
+                    pInputText
+                    required
+                    [ngModelOptions]="{ standalone: true }"
+                    [style]="{'width':'100%'}"
+                    [(ngModel)]="this.products.unit"
                     #unitModel="ngModel"
                     #unitEl
                     required
@@ -220,7 +229,7 @@
                     id="description"
                     [(ngModel)]="products.productDescription"
                     cols="20"
-                    rows="10"
+                    rows="5"
                   ></textarea>
                 </div>
               </div>
@@ -243,7 +252,7 @@
                     id="description"
                     [(ngModel)]="products.productDetail"
                     cols="20"
-                    rows="10"
+                    rows="6"
                   ></textarea>
                 </div>
               </div>

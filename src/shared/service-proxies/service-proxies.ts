@@ -6272,6 +6272,87 @@ export class ProductServiceProxy {
       );
     }
     return _observableOf<StorageProductDetailList>(<any>null);
+  }  
+  
+  getStorageExpense(): Observable<LookUpTableList> {
+    let url_ = this.baseUrl + "/api/services/app/Product/GetStorageExpense";
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "text/plain",
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetStorageExpenses(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetStorageExpenses(<any>response_);
+            } catch (e) {
+              return <Observable<LookUpTableList>>(
+                (<any>_observableThrow(e))
+              );
+            }
+          } else
+            return <Observable<LookUpTableList>>(
+              (<any>_observableThrow(response_))
+            );
+        })
+      );
+  }
+
+  protected processGetStorageExpenses(
+    response: HttpResponseBase
+  ): Observable<LookUpTableList> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+        ? (<any>response).error
+        : undefined;
+
+    let _headers: any = {};
+    if (response.headers) {
+      for (let key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          let resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          result200 = LookUpTableList.fromJS(resultData200);
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<LookUpTableList>(<any>null);
   }
 
   getProduct(id: string | undefined): Observable<ProductOutputDto> {
@@ -7362,7 +7443,7 @@ export class ExportImportService {
 }
 //#endregion
 //#endregion
-//#region Export import service
+//#region Expense service
 @Injectable()
 export class ExpensesService {
   private http: HttpClient;
@@ -7535,6 +7616,88 @@ export class ExpensesService {
     return _observableOf<ExpensesInputDto>(<any>null);
   }
 
+  get(id: string | undefined): Observable<ExpensesInputDto> {
+    let url_ = this.baseUrl + "/api/services/app/Expenses/Get?";
+    if (id === null) throw new Error("The parameter 'id' cannot be null.");
+    else if (id !== undefined)
+      url_ += "id=" + encodeURIComponent("" + id) + "&";
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "text/plain",
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGet(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGet(<any>response_);
+            } catch (e) {
+              return <Observable<ExpensesInputDto>>(<any>_observableThrow(e));
+            }
+          } else
+            return <Observable<ExpensesInputDto>>(
+              (<any>_observableThrow(response_))
+            );
+        })
+      );
+  }
+
+  protected processGet(
+    response: HttpResponseBase
+  ): Observable<ExpensesInputDto> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+        ? (<any>response).error
+        : undefined;
+
+    let _headers: any = {};
+    if (response.headers) {
+      for (let key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          let resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          result200 = ExpensesInputDto.fromJS(resultData200);
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<ExpensesInputDto>(<any>null);
+  }
+
   getRandomCode(): Observable<string> {
     let url_ = this.baseUrl + "/api/services/app/ExportImport/GetRandomCode";
     url_ = url_.replace(/[?&]$/, "");
@@ -7612,7 +7775,7 @@ export class ExpensesService {
   }
 
   delete(id: string | undefined): Observable<void> {
-    let _url = this.baseUrl + "/api/services/app/ExportImport/Delete?";
+    let _url = this.baseUrl + "/api/services/app/Expenses/Delete?";
     if (id === null) throw new Error("The parameter 'id' cannot be null");
     else if (id !== undefined)
       _url += "Id=" + encodeURIComponent("" + id) + "&";
@@ -7683,12 +7846,15 @@ export class ExpensesService {
   getProduct(
     storageId: string,
     isInsert: boolean,
+    keyword: string,    
     skipCount: number | undefined,
     maxResultCount: number | undefined
   ): Observable<ExpensesProductPagedResultDto> {
     let url_ = this.baseUrl + "/api/services/app/Expenses/GetProduct?";
     if (storageId !== undefined)
-      url_ += "StorageId=" + encodeURIComponent("" + storageId) + "&";
+      url_ += "StorageId=" + encodeURIComponent("" + storageId) + "&";    
+    if (keyword !== undefined)
+      url_ += "keyword=" + encodeURIComponent("" + keyword) + "&";
     if (isInsert !== undefined)
       url_ += "isInsert=" + encodeURIComponent("" + isInsert) + "&";
     if (skipCount === null)
@@ -7780,7 +7946,7 @@ export class ExpensesService {
   }
 
   getUser(): Observable<LookUpTableList> {
-    let url_ = this.baseUrl + "/api/services/app/ExportImport/GetCreator";
+    let url_ = this.baseUrl + "/api/services/app/Expenses/GetCreator";
     url_ = url_.replace(/[?&]$/, "");
 
     let options_: any = {
@@ -7866,7 +8032,7 @@ export class ExpensesService {
     skipCount: number | undefined,
     maxResultCount: number | undefined
   ): Observable<ExpensesGetAllPagedResultDto> {
-    let _url = this.baseUrl + "/api/services/app/ExportImport/GetAll";
+    let _url = this.baseUrl + "/api/services/app/Expenses/GetAll";
     if (keyword === null)
       throw new Error("The parameter 'keyword' cannot be null.");
     else if (keyword !== undefined)

@@ -96,6 +96,7 @@ import { CreateCustomerComponent } from './main/customer/create-customer/create-
 import { EditCustomerComponent } from './main/customer/edit-customer/edit-customer.component';
 import { ExpensesComponent } from './main/expenses/expenses.component';
 import { CreateExpensesComponent } from './main/expenses/create-expenses/create-expenses.component';
+import { DetailExpensesComponent } from './main/expenses/detail-expenses/detail-expenses.component';
 
 @NgModule({
   declarations: [
@@ -160,6 +161,7 @@ import { CreateExpensesComponent } from './main/expenses/create-expenses/create-
     EditCustomerComponent,
     ExpensesComponent,
     CreateExpensesComponent,
+    DetailExpensesComponent,
   ],
   imports: [
     CommonModule,

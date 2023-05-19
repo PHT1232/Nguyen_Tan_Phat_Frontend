@@ -36,7 +36,7 @@ export class LookUpTableList implements ILookUpTableList {
 }
 
 export class LookUpTable {
-  code: number;
+  code: string;
   name: string;
 
   constructor(data?: LookUpTable) {

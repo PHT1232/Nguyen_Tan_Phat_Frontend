@@ -72,20 +72,6 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                     'Pages.System.Customer.View'
                 ),
             ]),
-            new MenuItem(this.l('Vật tư hàng hóa'),  '', '', 'Pages.System.Product.View', [
-                new MenuItem(
-                    this.l('Loại vật tư hàng hóa'),
-                    '/app/category',
-                    '',
-                    'Pages.System.Category.View'
-                ),
-                new MenuItem(
-                    this.l('Vật tư hàng hóa'),
-                    '/app/product',
-                    '',
-                    'Pages.System.Product.View'
-                ),
-            ]),
             new MenuItem(this.l('Kho'), '', '', '', [
                 new MenuItem(
                     this.l('Kho'),
@@ -100,12 +86,26 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                     'Pages.System.ExportImport.View'
                 ),
             ]),
+            new MenuItem(this.l('Vật tư hàng hóa'),  '', '', 'Pages.System.Product.View', [
+                new MenuItem(
+                    this.l('Loại vật tư hàng hóa'),
+                    '/app/category',
+                    '',
+                    'Pages.System.Category.View'
+                ),
+                new MenuItem(
+                    this.l('Vật tư hàng hóa'),
+                    '/app/product',
+                    '',
+                    'Pages.System.Product.View'
+                ),
+            ]),
             new MenuItem(this.l('Thu chi'), '', '', '', [
                 new MenuItem(
                     this.l('Mua hàng hóa'),
-                    '/app/buy',
+                    '/app/expense',
                     '',
-                    'Pages.System.Storage.View'
+                    'Pages.System.Revenue.View'
                 ),
             ]),
             new MenuItem(this.l('Người dùng'), '', '', '', [

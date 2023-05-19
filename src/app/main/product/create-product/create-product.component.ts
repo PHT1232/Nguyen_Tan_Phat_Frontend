@@ -139,6 +139,7 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
     if (this.products.productCode === undefined 
       || this.products.productName === undefined 
       || this.products.price === undefined 
+      || this.products.unit === undefined
       // || this.storageSelect.length === 0
       || this.categoryCode === '0' 
       || this.products.unit === ''

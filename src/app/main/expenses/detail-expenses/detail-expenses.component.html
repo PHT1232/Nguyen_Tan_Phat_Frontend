@@ -1,0 +1,188 @@
+<div [@routerTransition]>
+    <div class="modal-body">
+          <div class="container-add">
+            <div class="container-row">
+              <div class="row" style="padding-bottom: 25px">
+                <div class="col">
+                  <div class="row">
+                    <div class="col required">
+                      <label for="name">
+                        {{ "Mã đơn:" | localize }}
+                      </label>
+                      <span style="margin-left: 20px;">
+                          {{ expense.expensesCode }}
+                      </span>
+                    </div>
+                    <div class="col"></div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row">
+                    <div class="col">
+                      <label for="name">
+                        {{ "Người lập phiếu:" | localize }}
+                      </label>
+                      <span style="margin-left: 20px;">
+                          {{ expense.employeeCode }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <hr style="
+                margin-top: -10px;
+                border-top: 1px solid rgba(0,0,0,1);
+            ">
+              <div class="row" *ngIf="customer.customerPhone !== null" style="padding-bottom: 25px">
+                <div class="col">
+                  <div class="row">
+                    <div class="col required">
+                      <label for="name">
+                        {{ "Nhà cung cấp:" | localize }}
+                      </label>
+                      <span style="margin-left: 20px;">
+                          {{ expense.productProvider }}
+                      </span>
+                    </div>
+                  </div>
+                </div>                
+                <div class="col">
+                  <div class="row">
+                    <div class="col required">
+                      <label for="name">
+                        {{ "Chiết khấu:" | localize }}
+                      </label>
+                      <span style="margin-left: 20px;">
+                          {{ expense.discount + "%" }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>  
+              <hr style="
+              margin-top: -10px;
+              border-top: 1px solid rgba(0,0,0,1);
+          ">            
+              <div class="row" *ngIf="customer.customerPhone !== null" style="padding-bottom: 25px">
+                <div class="col">
+                  <div class="row">
+                    <div class="col required">
+                      <label for="name">
+                        {{ "Ngày thanh toán:" | localize }}
+                      </label>
+                      <span style="margin-left: 20px;">
+                          {{ expense.paymentDate | date: 'dd/MM/yyyy'}}
+                      </span>
+                    </div>
+                  </div>
+                </div>                
+                <div class="col">
+                  <div class="row">
+                    <div class="col required">
+                      <label for="name">
+                        {{ "Tổng giá trị:" | localize }}
+                      </label>
+                      <span style="margin-left: 20px;">
+                          {{ expense.totalPrice | currency : "VND" }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr style="
+              margin-top: -10px;
+              border-top: 1px solid rgba(0,0,0,1);
+          "> 
+              <div class="row" *ngIf="customer.customerPhone !== null" style="padding-bottom: 25px">
+                <div class="col">
+                  <div class="row">
+                    <div class="col required">
+                        <label  for="name">
+                        {{ "Kho nhập:" | localize }}
+                        </label>
+                        <span style="margin-left: 20px;">
+                            {{ expense.storageId }}
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr style="
+              margin-top: -10px;
+              border-top: 1px solid rgba(0,0,0,1);
+          "> 
+              <div class="row" *ngIf="customer.customerPhone !== null" style="padding-bottom: 25px">
+                <div class="col">
+                  <div class="row">
+                    <div class="col required">
+                        <label  for="name">
+                        {{ "Diễn giải:" | localize }}
+                        </label>
+                        <span style="margin-left: 20px;">
+                            {{ expense.description }}
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr style="
+              margin-top: -10px;
+              border-top: 1px solid rgba(0,0,0,1);
+          "> 
+              <div class="row" style="padding-bottom: 25px">
+                <div class="col">
+                  <div class="row" style="margin-bottom: 10px">
+                    <div class="col">
+                      <label for="name">
+                        {{ "Sản phẩm" | localize }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top: 15px">
+                    <div class="table-responsive">
+                      <p-table [value]="products" dataKey="productId"
+                      [busy]="isTableLoading">
+                        <ng-template pTemplate="header">
+                          <tr>
+                            <th>{{ "Mã sản phẩm" | localize }}</th>
+                            <th>{{ "Tên sản phẩm" | localize }}</th>
+                            <th>{{ "Số lượng" | localize }}</th>
+                            <th>{{ "Đơn vị tính" | localize }}</th>
+                            <th>{{ "Giá" | localize }}</th>
+                            <th>{{ "Đơn giá" | localize }}</th>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-product let-i="index">
+                          <tr>
+                            <td>{{ product.productId }}</td>
+                            <td>{{ product.productName }}</td>
+                            <td>
+                                {{ product.quantity }}
+                            </td>
+                            <td>{{ product.unit }}</td>
+                            <td>{{ product.price | currency : "VND" }}</td>
+                            <td [innerHTML]="product.finalPrice | currency: 'VND'"></td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top: 15px">
+                      <strong>Cộng:</strong>
+                      <span style="margin-left: 20px;">{{ totalAmountAfterDiscount | currency : "VND" }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer justify-content-center">
+                <p-button
+                type="button"
+                label="Hủy"
+                styleClass="p-button-outlined"
+                (click)="Cancel()"
+              >
+              </p-button>
+              </div>
+            </div>
+          </div>
+    </div>
+</div>

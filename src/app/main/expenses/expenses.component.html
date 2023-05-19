@@ -46,7 +46,7 @@
                   <div class="col-md-6">
                     <div class="form-group row mb-0">
                       <div class="col pt-2">
-                        <select
+                        <!-- <select
                           class="form-control"
                           [(ngModel)]="storageCode"
                           [ngModelOptions]="{ standalone: true }"
@@ -63,12 +63,20 @@
                           >
                             {{ storage.storageName }}
                           </option>
-                        </select>
+                        </select> -->
+                        <p-dropdown [style]="{'width':'100%'}" 
+                        [options]="getStorage" 
+                        [(ngModel)]="storageCode" 
+                        [ngModelOptions]="{standalone: true}" 
+                        (onChange)="getDataPage(1)"
+                        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Kho">
+                        </p-dropdown>
                       </div>
                       <div class="col pt-2">
                         <input type="text"
                               placeholder="Ngày/tháng/năm"
                               class="form-control"
+                              style="height: 49px;"
                               bsDaterangepicker
                               [bsConfig]="{ isAnimated: true }"
                               [(ngModel)]="bsInlineRangeValue"
@@ -83,39 +91,56 @@
             </div>
           </div>
         </div>
+        <tabset style="margin-left: 10px; margin-top: 10px">
+          <tab
+            (selectTab)="orderStatus = 1; getDataPage(1)"
+            [heading]="'Đang thực hiện'"
+          >
+          </tab>
+          <tab
+            (selectTab)="orderStatus = 2; getDataPage(1)"
+            [heading]="'Đã hoàn thành'"
+          >
+          </tab>
+          <tab (selectTab)="orderStatus = 3; getDataPage(1)" [heading]="'Đã hủy'">
+          </tab>
+        </tabset>
         <div class="card-body">
           <div class="table-responsive" style="margin-top: 15px">
-            <p-table [value]="expensesList" [busy]="isLoading">
+            <p-table [value]="expensesList" [busy]="isLoading" [styleClass]="tableClass">
               <ng-template pTemplate="header">
                 <tr>
-                  <th pSortableColumn="exportImportCode">
+                  <th pSortableColumn="expensesCode">
                     {{ "Mã đơn" | localize
-                    }}<p-sortIcon field="exportImportCode"></p-sortIcon>
+                    }}<p-sortIcon field="expensesCode"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="nameOfReceiver">
-                    {{ "Người nhận" | localize
-                    }}<p-sortIcon field="nameOfReceiver"></p-sortIcon>
+                  <th pSortableColumn="productProvider">
+                    {{ "Nhà cung cấp" | localize
+                    }}<p-sortIcon field="productProvider"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="address">
-                    {{ "Địa chỉ nhận" | localize
-                    }}<p-sortIcon field="address"></p-sortIcon>
+                  <th pSortableColumn="description">
+                    {{ "Diễn giải" | localize
+                    }}<p-sortIcon field="description"></p-sortIcon>
                   </th>
-                  <th>{{ "Kho xuất" | localize }}</th>
-                  <th pSortableColumn="orderType">
-                    {{ "Loại đơn" | localize
-                    }}<p-sortIcon field="orderType"></p-sortIcon>
+                  <th pSortableColumn="storageName">
+                    {{ "Kho Nhập" | localize }}
+                    <p-sortIcon field="storageName"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="paymentDate">
+                    {{ "Ngày thanh toán" | localize
+                    }}<p-sortIcon field="paymentDate"></p-sortIcon>
                   </th>
                   <th pSortableColumn="totalPrice">
                     {{ "Tổng tiền" | localize
                     }}<p-sortIcon field="totalPrice"></p-sortIcon>
                   </th>
+                  <th pSortableColumn="totalPrice">
+                    {{ "Tiền chiết khấu" | localize
+                    }}<p-sortIcon field="totalPrice"></p-sortIcon>
+                  </th>
                   <th pSortableColumn="creationTime">
                     {{ "Ngày tạo" | localize
                     }}<p-sortIcon field="creationTime"></p-sortIcon>
-                  </th>
-                  <th pSortableColumn="lastModifiedDate">
-                    {{ "Ngày cập nhật" | localize
-                    }}<p-sortIcon field="lastModifiedDate"></p-sortIcon>
                   </th>
                   <th pSortableColumn="username">
                     {{ "Người tạo đơn" | localize
@@ -126,80 +151,63 @@
                   </th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-exportImport>
+              <ng-template pTemplate="body" let-expense>
                 <tr>
                   <td>
-                    <a [routerLink]="['detail', exportImport.exportImportCode]">{{
-                      exportImport.exportImportCode
+                    <a [routerLink]="['detail', expense.expensesCode]">{{
+                      expense.expensesCode
                     }}</a>
                   </td>
-                  <td>{{ exportImport.nameOfReceiver }}</td>
-                  <td>{{ exportImport.address }}</td>
-                  <td *ngIf="exportImport.nameOfExport == null">
-                    {{ exportImport.storageName }}
-                  </td>
-                  <td *ngIf="exportImport.nameOfExport != null">
-                    {{ exportImport.nameOfExport }}
+                  <td>{{ expense.productProvider }}</td>
+                  <td>{{ expense.description }}</td>
+                  <td>
+                    {{ expense.storageName }}
                   </td>
                   <td>
-                    <span *ngIf="exportImport.orderType == 1">Xuất kho</span>
-                    <span *ngIf="exportImport.orderType == 2">Nhập trả kho</span>
-                    <span *ngIf="exportImport.orderType == 3">Nhập kho</span>
+                    {{ expense.paymentDate | date : "dd/MM/yyyy" }}
                   </td>
                   <td>
-                    {{ exportImport.totalPrice | currency : "VND" }}
+                    {{ expense.totalPrice | currency : "VND" }}
                   </td>
                   <td>
-                    {{ exportImport.creationTime | date : "dd/MM/yyyy" }}
+                    {{ expense.totalPriceAfterDiscount | currency : "VND" }}
                   </td>
                   <td>
-                    {{ exportImport.lastModifiedDate | date : "dd/MM/yyyy" }}
+                    {{ expense.creationTime | date : "dd/MM/yyyy" }}
                   </td>
-                  <td>{{ exportImport.username }}</td>
+                  <td>{{ expense.employeeCode }}</td>
                   <td *ngIf="orderStatus == 1">
                     <table>
                       <tr>
                         <td>
-                          <button
-                            type="button"
-                            class="btn btn-sm bg-secondary"
-                            *ngIf="
-                              isGranted('Pages.System.ExportImport.Add') == true
-                            "
-                            [routerLink]="['edit', exportImport.exportImportCode]"
-                            style="width: 70px"
+                          <p-button
+                            styleClass="p-button-secondary"
+                            icon="pi pi-pencil"
+                            [style]="{ 'margin-right': '10px' }"
+                            *ngIf="isGranted('Pages.System.Revenue.Update') == true"
+                            [routerLink]="['edit', expense.expensesCode]"
                           >
-                            <i class="fas fa-pencil-alt"></i>
-                            {{ "Sửa" | localize }}
-                          </button>
+                          </p-button>
                         </td>
                         <td>
-                          <button
-                            type="button"
-                            class="btn btn-sm bg-success"
-                            *ngIf="
-                              isGranted('Pages.System.ExportImport.View') == true
-                            "
-                            (click)="finishOrder(exportImport)"
-                            style="width: 103px"
+                          <p-button
+                            styleClass="p-button-success"
+                            icon="pi pi-check"
+                            [style]="{ 'margin-right': '10px' }"
+                            *ngIf="isGranted('Pages.System.Revenue.View') == true"
+                            (click)="finishOrder(expense)"
                           >
-                            <i class="far fa-check-circle"></i>
-                            {{ "Hoàn thành" | localize }}
-                          </button>
+                          </p-button>
                         </td>
                         <td>
-                          <button
-                            type="button"
-                            class="btn btn-sm bg-danger"
-                            (click)="delete(exportImport)"
-                            *ngIf="
-                              isGranted('Pages.System.ExportImport.View') == true
-                            "
-                            style="width: 70px"
+                          <p-button
+                            styleClass="p-button-danger"
+                            icon="pi pi-times"
+                            [style]="{ 'margin-right': '10px' }"
+                            *ngIf="isGranted('Pages.System.Revenue.View') == true"
+                            (click)="delete(expense)"
                           >
-                            <i class="fas fa-trash"></i>
-                            {{ "Hủy" | localize }}
-                          </button>
+                          </p-button>
                         </td>
                       </tr>
                     </table>
