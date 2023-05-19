@@ -13,6 +13,7 @@ import { SubcategoryProduct, SubcategoryProductList } from '@shared/service-prox
 import { throwError } from 'rxjs';
 import { catchError, delay, finalize } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
+import { AppComponent } from '@app/app.component';
 
 class PagedProductRequestDto extends PagedRequestDto {
   keyword: string;
@@ -39,10 +40,12 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
   totalCount: number;
   first: number = 0;
   rows: number = 6;
+  selectedProducts: ProductGetAllDto[] = [];
 
   constructor(
     injector: Injector,
-    private _productService: ProductServiceProxy
+    private _productService: ProductServiceProxy,
+    private appMain: AppComponent
   ) { 
     super(injector);
       this._productService.getStorageProduct().subscribe(val => {
@@ -65,6 +68,7 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
     request.keyword = this.keyword;
     request.storageCode = this.storageCode;
     request.categoryCode = this.categoryCode;
+
     setTimeout(() => { 
       request.subcategoryCode = this.subcategoryCode; 
       
@@ -106,7 +110,7 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
           }))
           .subscribe({
             next: () => {
-              abp.notify.success(this.l('Xóa thành công'));
+              this.appMain.showSuccessMessage('Xóa thành công', 'Xóa thành công sản phẩm thành công')
               this.refresh();
             },
             error: (error) => {
@@ -123,6 +127,51 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
     });
   }
 
+  checkOnDelete() {
+    // console.log("Selected storage: " + this.selectedStorages.storageCode)
+    this.swal.fire({
+      title: 'Bạn có chắc?',
+      text: this.selectedProducts.length + ' sản phẩm sẽ bị xóa',
+      showCancelButton: true,
+      confirmButtonColor: this.confirmButtonColor,
+      cancelButtonColor: this.cancelButtonColor,
+      cancelButtonText: 'Hủy',
+      confirmButtonText: 'Xóa',
+      reverseButtons: this.ReverseButtons,
+      icon: 'warning',
+    })
+    .then((result) => {
+      if (result.value) {
+        var numOfDeleted = 0;
+        var numToDelete = this.selectedProducts.length;
+        this.selectedProducts.forEach(element => {
+          this._productService.delete(element.productCode).pipe(
+            catchError(err => {
+              return throwError(err);
+            }))
+            .subscribe({
+              next: () => {
+                // this.message.add({ severity: 'success', summary: 'Xóa thành công', detail: 'Xóa thành công kho thành công'})
+                numOfDeleted += 1;
+                // abp.notify.success(this.l('Xóa thành công'));
+                this.refresh();
+              },
+              error: (error) => {
+                console.log(error);
+                if (error.error && error.error.message) {
+                  this.notify.error(error.error.message);
+                }
+              },
+              complete() {
+                
+              },
+            })
+          });
+          this.appMain.showSuccessMessage('Xóa thành công', 'Xóa thành công ' + numOfDeleted + '/' + numToDelete + ' kho thành công')
+        }
+      });
+  }
+
   getSubcategory() {
     if (this.categoryCode !== '0') {
       this._productService.getSubcategoryProduct(this.categoryCode).subscribe(val => {
@@ -130,5 +179,14 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
           this.subcategoryCode = 0;
       });
     } 
+  }
+
+  searched() {
+    if (this.keyword !== undefined) {
+      this.storageCode = '-1';
+      this.categoryCode = '-1';
+      this.rows = this.totalItems;
+      this.pageSize = this.totalItems;
+    }
   }
 }

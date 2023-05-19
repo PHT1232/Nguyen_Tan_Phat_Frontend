@@ -24,6 +24,18 @@ import { ExportImportComponent } from './main/export-import/export-import.compon
 import { CreateExportImportComponent } from './main/export-import/create-export-import/create-export-import.component';
 import { EditExportImportComponent } from './main/export-import/edit-export-import/edit-export-import.component';
 import { DetailsExportImportComponent } from './main/export-import/details-export-import/details-export-import.component';
+import { StructureComponent } from './main/structure/structure.component';
+import { CreateStructureComponent } from './main/structure/create-structure/create-structure.component';
+import { EditStructureComponent } from './main/structure/edit-structure/edit-structure.component';
+import { EmployeeComponent } from './main/employee/employee.component';
+import { CreateEmployeeComponent } from './main/employee/create-employee/create-employee.component';
+import { EditEmployeeComponent } from './main/employee/edit-employee/edit-employee.component';
+import { CustomerComponent } from './main/customer/customer.component';
+import { CreateCustomerComponent } from './main/customer/create-customer/create-customer.component';
+import { EditCustomerComponent } from './main/customer/edit-customer/edit-customer.component';
+import { ExpensesComponent } from './main/expenses/expenses.component';
+import { CreateExpensesComponent } from './main/expenses/create-expenses/create-expenses.component';
+import { DetailExpensesComponent } from './main/expenses/detail-expenses/detail-expenses.component';
 
 @NgModule({
     imports: [
@@ -53,7 +65,23 @@ import { DetailsExportImportComponent } from './main/export-import/details-expor
                     { path: 'exportimport', component: ExportImportComponent, data: { permission: 'Pages.System.ExportImport.View'} , canActivate: [AppRouteGuard] },
                     { path: 'exportimport/create', component: CreateExportImportComponent, data: { permission: 'Pages.System.ExportImport.Add'} , canActivate: [AppRouteGuard] },
                     { path: 'exportimport/edit/:id', component: EditExportImportComponent, data: { permission: 'Pages.System.ExportImport.Update'} , canActivate: [AppRouteGuard] },
-                    { path: 'exportimport/detail/:id', component: DetailsExportImportComponent, data: { permission: 'Pages.System.ExportImport.View'} , canActivate: [AppRouteGuard] }
+                    { path: 'exportimport/detail/:id', component: DetailsExportImportComponent, data: { permission: 'Pages.System.ExportImport.View'} , canActivate: [AppRouteGuard] },
+                    { path: 'structure', component: StructureComponent, data: { permission: 'Pages.System.Structure.View'} , canActivate: [AppRouteGuard] },
+                    { path: 'structure/create', component: CreateStructureComponent, data: { permission: 'Pages.System.Structure.Add'} , canActivate: [AppRouteGuard] },
+                    { path: 'structure/edit/:id', component: EditStructureComponent, data: { permission: 'Pages.System.Structure.Update'} , canActivate: [AppRouteGuard] },
+                    { path: 'structure/detail/:id', component: DetailsExportImportComponent, data: { permission: 'Pages.System.Structure.View'} , canActivate: [AppRouteGuard] },                    
+                    { path: 'employee', component: EmployeeComponent, data: { permission: 'Pages.System.Employee.View'} , canActivate: [AppRouteGuard] },
+                    { path: 'employee/create', component: CreateEmployeeComponent, data: { permission: 'Pages.System.Employee.Add'} , canActivate: [AppRouteGuard] },
+                    { path: 'employee/edit/:id', component: EditEmployeeComponent, data: { permission: 'Pages.System.Employee.Update'} , canActivate: [AppRouteGuard] },
+                    { path: 'employee/detail/:id', component: DetailsExportImportComponent, data: { permission: 'Pages.System.Employee.View'} , canActivate: [AppRouteGuard] },                    
+                    { path: 'customer', component: CustomerComponent, data: { permission: 'Pages.System.Customer.View'} , canActivate: [AppRouteGuard] },
+                    { path: 'customer/create', component: CreateCustomerComponent, data: { permission: 'Pages.System.Customer.Add'} , canActivate: [AppRouteGuard] },
+                    { path: 'customer/edit/:id', component: EditCustomerComponent, data: { permission: 'Pages.System.Customer.Update'} , canActivate: [AppRouteGuard] },
+                    { path: 'customer/detail/:id', component: DetailsExportImportComponent, data: { permission: 'Pages.System.Employee.View'} , canActivate: [AppRouteGuard] },                    
+                    { path: 'expense', component: ExpensesComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] },
+                    { path: 'expense/create', component: CreateExpensesComponent, data: { permission: 'Pages.System.Revenue.Add'} , canActivate: [AppRouteGuard] },
+                    { path: 'expense/edit/:id', component: EditCustomerComponent, data: { permission: 'Pages.System.Revenue.Update'} , canActivate: [AppRouteGuard] },
+                    { path: 'expense/detail/:id', component: DetailExpensesComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] }
                 ]
             }
         ])

@@ -66,7 +66,7 @@ export class ImportComponent extends AppComponentBase implements OnInit {
     super(injector);
     this._productservice.getStorageProduct().subscribe(val => {
       this.getStorage = val;
-      this.storageCode = val[val.items.length - 1].storageCode;
+      // this.storageCode = val[val.items.length - 1].storageCode;
     });
 
     setTimeout(() => {

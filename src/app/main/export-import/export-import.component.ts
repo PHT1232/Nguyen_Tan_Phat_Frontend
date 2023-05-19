@@ -16,11 +16,14 @@ import { ProductGetAllDto } from '@shared/service-proxies/dtos/products/ProductG
 import { StorageProductDetail, StorageProductDetailList } from '@shared/service-proxies/dtos/products/StorageProductDetail';
 import { throwError } from "rxjs";
 import { catchError, finalize } from "rxjs/operators";
+import { AppComponent } from "@app/app.component";
+import * as moment from "moment";
+import { Console } from "console";
 
 class PagedExportImportRequestDto extends PagedRequestDto {
   keyword: string;
   storageCode: string;
-  dateTime: Date[];
+  dateTime: string[] = [];
   orderStatus: number;
 }
 
@@ -33,23 +36,27 @@ class PagedExportImportRequestDto extends PagedRequestDto {
 export class ExportImportComponent extends PagedListingComponentBase<GetAllExportImportDto> {
   exportImports: GetAllExportImportDto[];
   keyword = "";
-  storageCode = "";
+  storageCode = "0";
   orderStatus = 1;
   nameOfReciever = "";
   bsInlineRangeValue: Date[];
   exportImportList: GetAllExportImportDto[] = [];
   getStorage: StorageProductDetailList = new StorageProductDetailList();
   totalCount: number;
+  isLoading = false;
+  first: number = 0;
+  rows: number = 6;
 
   constructor(
     injector: Injector,
     private _productService: ProductServiceProxy,
-    private _exportImportService: ExportImportService
+    private _exportImportService: ExportImportService,
+    private appMain: AppComponent
   ) {
     super(injector);
     this._productService.getStorageProduct().subscribe((val) => {
       this.getStorage = val;
-      this.storageCode = val[val.items.length - 1].storageCode;
+      // this.storageCode = val[val.items.length].storageCode;
     });
   }
 
@@ -59,11 +66,20 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
     finishedCallback: Function
   ): void {
     // throw new Error('Method not implemented.');
+    this.isLoading = true;
     request.keyword = this.keyword;
     request.orderStatus = this.orderStatus;
     setTimeout(() => {
       request.storageCode = this.storageCode;
-      request.dateTime = this.bsInlineRangeValue;
+      if (this.bsInlineRangeValue !== undefined) {
+        request.dateTime = [];
+        this.bsInlineRangeValue.forEach(element => {
+          var date = element.toLocaleString();
+          
+          request.dateTime.push(date);
+        });
+      }
+      
 
       this._exportImportService
         .getAll(
@@ -82,6 +98,7 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
         .subscribe((result: GetAllExportImportPagedResult) => {
           this.exportImportList = result.items;
           this.showPaging(result, pageNumber);
+          this.isLoading = false;
         });
     }, 500);
   }
@@ -105,7 +122,7 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
           input.orderStatus = 3;
           this._exportImportService.updateOrder(input).subscribe(
             () => {
-              this.notify.success(this.l("Cập nhật thành công"));
+              this.appMain.showSuccessMessage('Cập nhật thành công', 'Hủy đơn thành công');
               this.refresh();
             },
             () => {}
@@ -134,12 +151,16 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
           input.orderStatus = 2;
           this._exportImportService.updateOrder(input).subscribe(
             () => {
-              this.notify.success(this.l("Cập nhật thành công"));
+              this.appMain.showSuccessMessage('Cập nhật thành công', 'Hoàn thành đơn');
               this.refresh();
             },
             () => {}
           );
         }
       });
+  }
+
+  checkDate() {
+    console.log(this.bsInlineRangeValue.toLocaleString());
   }
 }

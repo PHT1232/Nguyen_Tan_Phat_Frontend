@@ -11,6 +11,7 @@ import { PermissionDto, StorageForUpdate, StorageInput, StorageServiceProxy } fr
 import { forEach as _forEach, map as _map } from 'lodash-es';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppComponent } from '@app/app.component';
 
 @Component({
   selector: 'app-edit-storage',
@@ -32,7 +33,8 @@ export class EditStorageComponent extends AppComponentBase implements OnInit {
     injector: Injector,
     private _router: Router,
     private router: ActivatedRoute,
-    private _storageService: StorageServiceProxy
+    private _storageService: StorageServiceProxy,
+    private appMain: AppComponent
   ) 
   { 
     super(injector);
@@ -59,7 +61,7 @@ export class EditStorageComponent extends AppComponentBase implements OnInit {
     
     this._storageService.update(storageAdd).subscribe(
       () => {
-        this.notify.info(this.l('Sửa thành công'));
+        this.appMain.showSuccessMessage('Sửa thành công', 'Sửa kho thành công');
         this.onSave.emit();
         this._router.navigate(['app/storage']);
       },

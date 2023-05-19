@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Injector } from '@angular/core';
 import { FormArray, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppComponent } from '@app/app.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
 import { CategoryInput, CategoryOutputDto, CategoryServiceProxy, PermissionDto } from '@shared/service-proxies/service-proxies';
@@ -27,7 +28,8 @@ export class EditCategoryComponent extends AppComponentBase implements OnInit {
     injector: Injector,
     private _router: Router,
     private router: ActivatedRoute,
-    private _categoryService: CategoryServiceProxy
+    private _categoryService: CategoryServiceProxy,
+    private appMain: AppComponent
   ) { 
     super(injector);
   }
@@ -61,7 +63,7 @@ export class EditCategoryComponent extends AppComponentBase implements OnInit {
     
     this._categoryService.update(categoryAdd).subscribe(
       () => {
-        this.notify.info(this.l('Cập nhật thành công'));
+        this.appMain.showSuccessMessage('Cập nhật thành công', 'Câp nhật danh mục thành công');
         this.onSave.emit();
         this._router.navigate(['app/category']);
       },

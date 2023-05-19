@@ -1,0 +1,510 @@
+<p-toast></p-toast>
+<div [@routerTransition]>
+  <form autocomplete="off" #createRoleForm="ngForm" (ngSubmit)="save()">
+    <div class="modal-body">
+      <div class="container-add">
+        <div class="container-row">
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Mã" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                    readonly
+                    pInputText
+                    type="text"
+                    [ngModelOptions]="{ standalone: true }"
+                    maxlength="32"
+                    [style]="{'width':'100%'}"
+                    [(ngModel)]="employee.employeeCode"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Tên" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                    pInputText
+                    type="text"
+                    required
+                    [ngModelOptions]="{ standalone: true }"
+                    maxlength="50"
+                    [style]="{'width':'100%'}"
+                    [(ngModel)]="employee.employeeName"
+                    #nameModel="ngModel"
+                    #nameEl
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Giới tính" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col" style="margin-top: 15px;">
+                    <div class="flex align-items-center">
+                      <p-radioButton
+                        label="Nam"
+                        name="gender"
+                        value="Nam"
+                        [(ngModel)]="employee.employeeGender"
+                        inputId="gender1"
+                      ></p-radioButton>
+                      <p-radioButton
+                        [style]="{'margin-left': '15px'}"
+                        label="Nữ"
+                        name="gender"
+                        value="Nữ"
+                        [(ngModel)]="employee.employeeGender"
+                        inputId="gender2"
+                      ></p-radioButton>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Ngày sinh" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p-calendar
+                    dateFormat="dd/mm/yy"
+                    [style]="{'width':'100%'}"
+                    [(ngModel)]="employee.employeeDateOfBirth"
+                    [showIcon]="true"
+                    [ngModelOptions]="{ standalone: true }"
+                  ></p-calendar>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Số CMND" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p-inputNumber
+                    class="pinputnumber"
+                    required
+                    [style]="{'width': '100%'}"
+                    [useGrouping]="false"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employeeCmnd.soCMND"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  ></p-inputNumber>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Ngày cấp" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p-calendar
+                    dateFormat="dd/mm/yy"
+                    inputStyleClass="{'width': '100%'}"
+                    [style]="{'width':'100%'}"
+                    [(ngModel)]="employeeCmnd.ngayCap"
+                    [showIcon]="true"
+                    [ngModelOptions]="{ standalone: true }"
+                  ></p-calendar>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Nơi cấp" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                    pInputText
+                    type="text"
+                    required
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employeeCmnd.noiCap"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Quốc tịch" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                    pInputText
+                    type="text"
+                    required
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employeeCmnd.quocTich"
+                    #nameModel="ngModel"
+                    #nameEl
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Thuộc đơn vị" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p-dropdown [style]="{'width':'100%'}" [options]="getStructure" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedStructure" optionLabel="name"></p-dropdown>
+                </div>
+              </div>
+            </div>
+              <div class="col">
+                <div class="row">
+                  <div class="col required">
+                    <label for="name">
+                      {{ "Chức danh" | localize }}
+                    </label>
+                    <span style="color: red; margin-left: 5px; font-size: 14pt"
+                      >*</span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <input
+                      pInputText
+                      type="text"
+                      required
+                      [style]="{'width':'100%'}"
+                      [ngModelOptions]="{ standalone: true }"
+                      [(ngModel)]="employee.jobTitle"
+                      #nameModel="ngModel"
+                      #nameEl
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Mã số thuế" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                    pInputText
+                    type="text"
+                    required
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employee.taxIdentification"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  />
+                </div>
+              </div>
+            </div>            
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Số điện thoại" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                    pInputText
+                    pKeyFilter="int"
+                    required
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employee.phoneNumber"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Lương thỏa thuận" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p-inputNumber
+                    required
+                    class="pinputnumber"
+                    [style]="{'width':'100%'}"
+                    mode="currency" currency="VND"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employee.employeeSalary"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  ></p-inputNumber>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Loại hợp đồng" | localize }}
+                  </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                    pInputText
+                    type="text"
+                    required
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employee.typeOfContract"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Hệ số lương" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p-inputNumber
+                    required
+                    class="pinputnumber"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employee.salaryFactor"
+                    [style]="{'width':'100%'}"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  ></p-inputNumber>
+                </div>
+              </div>
+            </div>
+          </div>          
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col required">
+                  <label for="name">
+                    {{ "Số tài khoản" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <!-- <p-inputNumber
+                    required
+                    class="pinputnumber"
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
+                    [useGrouping]="false"
+                    [(ngModel)]="employeeBank.bankId"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  ></p-inputNumber> -->
+                  <input
+                    pInputText
+                    pKeyFilter="int"
+                    type="text"
+                    required
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employeeBank.bankId"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Tên ngân hàng" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                  pInputText
+                  type="text"
+                  required
+                  [style]="{'width':'100%'}"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="employeeBank.bankName"
+                  #nameCode="ngModel"
+                  #nameCodeEl
+                />
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Chi nhánh" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                  pInputText
+                  type="text"
+                  required
+                  [style]="{'width':'100%'}"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="employeeBank.bankAddress"
+                  #nameCode="ngModel"
+                  #nameCodeEl
+                />
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Tỉnh/TP của ngân hàng" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input
+                  pInputText
+                  type="text"
+                  required
+                  [style]="{'width':'100%'}"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="employeeBank.bankCity"
+                  #nameCode="ngModel"
+                  #nameCodeEl
+                />
+                </div>
+              </div>
+            </div>
+          </div>
+          <abp-modal-footer
+            [cancelDisabled]="saving"
+            [saveDisabled]="checkFormValid() || saving"
+            (onCancelClick)="Cancel()"
+          ></abp-modal-footer>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -16,6 +16,7 @@ import { CreateUserDialogComponent } from './create-user/create-user-dialog.comp
 import { EditUserDialogComponent } from './edit-user/edit-user-dialog.component';
 import { ResetPasswordDialogComponent } from './reset-password/reset-password.component';
 import { PermissionCheckerService } from 'abp-ng2-module';
+import { AppComponent } from '@app/app.component';
 
 class PagedUsersRequestDto extends PagedRequestDto {
   keyword: string;
@@ -36,6 +37,7 @@ export class UsersComponent extends PagedListingComponentBase<UserDto> {
     injector: Injector,
     private _userService: UserServiceProxy,
     private _modalService: BsModalService,
+    private appMain: AppComponent,
   ) {
     super(injector);
   }
@@ -107,7 +109,8 @@ export class UsersComponent extends PagedListingComponentBase<UserDto> {
     .then((result) => {
       if (result.value) {
         this._userService.delete(user.id).subscribe(() => {
-          abp.notify.success(this.l('SuccessfullyDeleted'));
+          // abp.notify.success(this.l('SuccessfullyDeleted'));
+          this.appMain.showSuccessMessage("Thành công", "xóa tài khoản thành công")
           this.refresh();
         });
       }

@@ -25,6 +25,12 @@ import { CardModule } from 'primeng/card';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { PaginatorModule } from 'primeng/paginator';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
+import { CalendarModule } from 'primeng/calendar';
+import { TreeTableModule } from 'primeng/treetable';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { DropdownModule } from 'primeng/dropdown';
+import { KeyFilterModule } from 'primeng/keyfilter';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
@@ -71,7 +77,7 @@ import { ExportImportComponent } from './main/export-import/export-import.compon
 import { CreateExportImportComponent } from './main/export-import/create-export-import/create-export-import.component';
 import { EditExportImportComponent } from './main/export-import/edit-export-import/edit-export-import.component';
 import { DetailsExportImportComponent } from './main/export-import/details-export-import/details-export-import.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ImportComponent } from './main/export-import/create-export-import/import/import.component';
 import { ReturnImportComponent } from './main/export-import/create-export-import/return-import/return-import.component';
 import { DetailImportComponent } from './main/export-import/details-export-import/detail-import/detail-import.component';
@@ -79,6 +85,18 @@ import { DetailReturnImportComponent } from './main/export-import/details-export
 import { EditReturnImportComponent } from './main/export-import/edit-export-import/edit-return-import/edit-return-import.component';
 import { EditImportComponent } from './main/export-import/edit-export-import/edit-import/edit-import.component';
 import { SidebarnewComponent } from './layout/sidebarnew/sidebarnew.component';
+import { StructureComponent } from './main/structure/structure.component';
+import { CreateStructureComponent } from './main/structure/create-structure/create-structure.component';
+import { EditStructureComponent } from './main/structure/edit-structure/edit-structure.component';
+import { EmployeeComponent } from './main/employee/employee.component';
+import { CreateEmployeeComponent } from './main/employee/create-employee/create-employee.component';
+import { EditEmployeeComponent } from './main/employee/edit-employee/edit-employee.component';
+import { CustomerComponent } from './main/customer/customer.component';
+import { CreateCustomerComponent } from './main/customer/create-customer/create-customer.component';
+import { EditCustomerComponent } from './main/customer/edit-customer/edit-customer.component';
+import { ExpensesComponent } from './main/expenses/expenses.component';
+import { CreateExpensesComponent } from './main/expenses/create-expenses/create-expenses.component';
+import { DetailExpensesComponent } from './main/expenses/detail-expenses/detail-expenses.component';
 
 @NgModule({
   declarations: [
@@ -132,6 +150,18 @@ import { SidebarnewComponent } from './layout/sidebarnew/sidebarnew.component';
     EditReturnImportComponent,
     EditImportComponent,
     SidebarnewComponent,
+    StructureComponent,
+    CreateStructureComponent,
+    EditStructureComponent,
+    EmployeeComponent,
+    CreateEmployeeComponent,
+    EditEmployeeComponent,
+    CustomerComponent,
+    CreateCustomerComponent,
+    EditCustomerComponent,
+    ExpensesComponent,
+    CreateExpensesComponent,
+    DetailExpensesComponent,
   ],
   imports: [
     CommonModule,
@@ -149,7 +179,6 @@ import { SidebarnewComponent } from './layout/sidebarnew/sidebarnew.component';
     CollapseModule,
     TableModule,
     SidebarModule,
-    RadioButtonModule,
     ButtonModule,
     InputSwitchModule,
     PanelModule,
@@ -164,7 +193,14 @@ import { SidebarnewComponent } from './layout/sidebarnew/sidebarnew.component';
     ScrollPanelModule,
     PaginatorModule,
     CascadeSelectModule,
-    // BrowserAnimationsModule,
+    CalendarModule,
+    RadioButtonModule,
+    BsDatepickerModule.forRoot(),
+    TreeTableModule,
+    InputTextareaModule,
+    InputNumberModule,
+    DropdownModule,
+    KeyFilterModule,
   ],
   providers: [],
   entryComponents: [

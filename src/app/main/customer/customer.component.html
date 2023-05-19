@@ -1,0 +1,149 @@
+<div [@routerTransition]>
+    <section class="content px-2" style="padding-top: 20px">
+      <p-panel [style]="{ 'margin-left': '15px', 'margin-right': '15px' }">
+        <!-- <div class="card"> -->
+        <ng-template pTemplate="header">
+          <!-- <section class="content-header">
+                <div class="container-fluid">
+                  <div class="row"> -->
+          <div class="col-6">
+            <h1>{{ "Khách hàng" | localize }}</h1>
+          </div>
+          <div class="col-6 text-right">
+            <!-- <a href="javascript:;"
+                        class="btn bg-blue"
+                        routerLink="create"
+                        *ngIf="isGranted('Pages.System.Product.Add') == true">
+                        <i class="fa fa-plus-square"></i>
+                        {{ "Thêm" | localize }}
+                      </a> -->
+            <p-button
+              label="Thêm"
+              routerLink="create"
+              *ngIf="isGranted('Pages.System.Product.Add') == true"
+            >
+            </p-button>
+          </div>
+          <!-- </div>
+                </div>
+              </section> -->
+        </ng-template>
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <button
+                    type="button"
+                    class="btn bg-blue"
+                    (click)="searched();getDataPage(1)"
+                  >
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="keyword"
+                  [placeholder]="'SearchWithThreeDot' | localize"
+                  [(ngModel)]="keyword"
+                  (keyup.enter)="searched();getDataPage(1)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <p-scrollPanel [style]="{ width: '100%', height: '520px' }">
+              <p-table
+                [value]="List"
+                dataKey="customerCode"
+                [(selection)]="listToDelete"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                [busy]="isTableLoading"
+                [styleClass]="'p-datatable-sm'"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th pSortableColumn="customerCode">{{ "Mã khách hàng" | localize }}<p-sortIcon field="customerCode"></p-sortIcon></th>
+                    <th pSortableColumn="customerName">{{ "Tên khách hàng" | localize }}<p-sortIcon field="customerName"></p-sortIcon></th>
+                    <th pSortableColumn="customerAddress">{{ "Địa chỉ" | localize }}<p-sortIcon field="customerAddress"></p-sortIcon></th>
+                    <th pSortableColumn="customerPhone">{{ "Số điện thoại" | localize }}<p-sortIcon field="customerPhone"></p-sortIcon></th>
+                    <th pSortableColumn="customerBankAccount">{{ "Số tài khoản" | localize }}<p-sortIcon field="customerBankAccount"></p-sortIcon></th>
+                    <th pSortableColumn="customerBankAccount">{{ "Tên ngân hàng" | localize }}<p-sortIcon field="customerBankAccount"></p-sortIcon></th>
+                    <th style="width: 200px">{{ "Hành động" | localize }}</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-customer>
+                  <tr></tr>
+                  <tr>
+                    <td>
+                      <a [routerLink]="['detail', customer.customerCode]">{{
+                        customer.customerCode
+                      }}</a>
+                    </td>
+                    <td>{{ customer.customerName }}</td>
+                    <td>{{ customer.customerAddress }}</td>
+                    <td>{{ customer.customerPhone }}</td>
+                    <!-- <td *ngIf="storageCode != '0'">{{ product.quantity }}</td> -->
+                    <td>
+                      {{ customer.customerBankId }}
+                    </td>                   
+                    <td>
+                      {{ customer.customerBankName }}
+                    </td>                   
+                    <td>
+                      <p-button
+                        styleClass="p-button-secondary"
+                        icon="pi pi-pencil"
+                        [style]="{ 'margin-right': '10px' }"
+                        *ngIf="isGranted('Pages.System.Customer.Add') == true"
+                        [routerLink]="['edit', customer.customerCode]"
+                      >
+                      </p-button>
+                      <p-button
+                        styleClass="p-button-danger"
+                        icon="pi pi-trash"
+                        (click)="delete(customer)"
+                        *ngIf="isGranted('Pages.System.Customer.Delete') == true"
+                      >
+                      </p-button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </p-scrollPanel>
+          </div>
+        </div>
+          
+        <div class="card-footer table-card-footer bg-light border-top">
+          <div class="row">
+            <div class="col-sm-3 col-12 text-sm-left text-center">
+              <button class="btn btn-secondary" (click)="refresh()">
+                <i class="fas fa-redo-alt"></i>
+              </button>
+            </div>
+            <!-- <div class="col-sm-4 col-12 text-center">
+                  <p class="mb-0 my-2">
+                    {{ "TotalRecordsCount" | localize: totalItems }}
+                  </p>
+                </div> -->
+            <div class="col-sm-5 col-12">
+              <div class="float-sm-right m-auto">
+                <p-paginator
+                  (onPageChange)="getDataPage($event)"
+                  [first]="first"
+                  [rows]="rows"
+                  [totalRecords]="totalItems"
+                  [rowsPerPageOptions]="[10, 15, 20]"
+                ></p-paginator>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- </div> -->
+      </p-panel>
+    </section>
+  </div>
+  

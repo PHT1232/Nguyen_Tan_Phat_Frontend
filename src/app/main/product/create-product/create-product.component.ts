@@ -11,6 +11,7 @@ import { StorageProductDetail, StorageProductDetailList } from '@shared/service-
 import { SubcategoryProduct, SubcategoryProductList } from '@shared/service-proxies/dtos/products/SubcategoryProduct';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
+import { AppComponent } from '@app/app.component';
 
 @Component({
   selector: 'app-create-product',
@@ -45,6 +46,7 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
     injector: Injector,
     private _productService: ProductServiceProxy,
     private _router: Router,
+    private appMain: AppComponent
   ) { 
     super(injector);
   }
@@ -81,7 +83,7 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
     product.storages = this.storageSelect;
     this._productService.create(product).subscribe(
       () => {
-        this.notify.success(this.l('Thêm mới thành công'));
+        this.appMain.showSuccessMessage('Thêm mới thành công', 'Thêm mới sản phẩm thành công')
         this.onSave.emit();
         this._router.navigate(['app/product']);
       },
@@ -137,6 +139,7 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
     if (this.products.productCode === undefined 
       || this.products.productName === undefined 
       || this.products.price === undefined 
+      || this.products.unit === undefined
       // || this.storageSelect.length === 0
       || this.categoryCode === '0' 
       || this.products.unit === ''

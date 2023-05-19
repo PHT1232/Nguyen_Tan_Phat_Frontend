@@ -9,6 +9,7 @@ import { PrimeNGConfig } from 'primeng/api';
 })
 export class AppComponent extends AppComponentBase implements OnInit {
   sidebarExpanded: boolean;
+  sidebarStyle = 'display: block;';
 
   constructor(
     injector: Injector,
@@ -46,5 +47,16 @@ export class AppComponent extends AppComponentBase implements OnInit {
 
   toggleSidebar(): void {
     this._layoutStore.setSidebarExpanded(!this.sidebarExpanded);
+    
+  }
+
+  toggleSidebarDisplay(): void {
+    if (!this.sidebarExpanded) {
+      this.sidebarStyle = 'display: block;'
+      console.log("! sidebar" + this.sidebarStyle);
+    } else {
+      this.sidebarStyle = 'display: none;'
+      console.log(this.sidebarStyle);
+    }
   }
 }

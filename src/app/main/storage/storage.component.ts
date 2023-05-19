@@ -26,6 +26,7 @@ export class StorageComponent extends PagedListingComponentBase<GetAllStorageDto
   first: number = 0;
   rows: number = 6;
   selectedStorages: GetAllStorageDto[] = [];
+  storageCodes: string[] = [];
 
   constructor(
     injector: Injector,
@@ -51,28 +52,30 @@ export class StorageComponent extends PagedListingComponentBase<GetAllStorageDto
     .then((result) => {
       if (result.value) {
         this.selectedStorages.forEach(element => {
-          this._storageService.delete(element.storageCode).pipe(
-            catchError(err => {
-              return throwError(err);
-            }))
-            .subscribe({
-              next: () => {
-                // this.message.add({ severity: 'success', summary: 'Xóa thành công', detail: 'Xóa thành công kho thành công'})
-                this.appMain.showSuccessMessage('Xóa thành công', 'Xóa thành công kho thành công')
-                // abp.notify.success(this.l('Xóa thành công'));
-                this.refresh();
-              },
-              error: (error) => {
-                console.log(error);
-                if (error.error && error.error.message) {
-                  this.notify.error(error.error.message);
-                }
-              },
-              complete() {
-                
-              },
-            })
+          this.storageCodes.push(element.storageCode);
         });
+        this._storageService.deleteMutiple(this.storageCodes).pipe(
+          catchError(err => {
+            return throwError(err);
+          }))
+          .subscribe({
+            next: (res) => {
+              this.message.add({ severity: 'success', summary: 'Xóa thành công', detail: res})
+              // abp.notify.success(this.l('Xóa thành công'));
+              this.refresh();
+              this.selectedStorages = [];
+              this.storageCodes = [];
+            },
+            error: (error) => {
+              console.log(error);
+              if (error.error && error.error.message) {
+                this.notify.error(error.error.message);
+              }
+            },
+            complete() {
+              
+            },
+          })
       }
     });
   }

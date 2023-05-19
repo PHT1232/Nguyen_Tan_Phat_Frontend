@@ -4,6 +4,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { CategoryInput, CategoryServiceProxy, PermissionDto } from '@shared/service-proxies/service-proxies';
 import { FormArray, FormControl } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
+import { AppComponent } from '@app/app.component';
 
 @Component({
   selector: 'app-create-category',
@@ -27,7 +28,8 @@ export class CreateCategoryComponent extends AppComponentBase implements OnInit 
   constructor(
     injector: Injector,
     private _router: Router,
-    private _categoryService: CategoryServiceProxy
+    private _categoryService: CategoryServiceProxy,
+    private appMain: AppComponent
   ) { 
     super(injector);
   }
@@ -49,7 +51,7 @@ export class CreateCategoryComponent extends AppComponentBase implements OnInit 
     
     this._categoryService.create(categoryAdd).subscribe(
       () => {
-        this.notify.success(this.l('Thêm mới thành công'));
+        this.appMain.showSuccessMessage('Thêm mới thành công', 'Thêm mới danh mục thành công');
         this.onSave.emit();
         this._router.navigate(['app/category']);
       },

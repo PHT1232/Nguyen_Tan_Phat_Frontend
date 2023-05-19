@@ -11,6 +11,7 @@ import { StorageProductDetail, StorageProductDetailList } from '@shared/service-
 import { SubcategoryProduct, SubcategoryProductList } from '@shared/service-proxies/dtos/products/SubcategoryProduct';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
+import { AppComponent } from '@app/app.component';
 
 @Component({
   selector: 'app-edit-product',
@@ -47,6 +48,7 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
     private _productService: ProductServiceProxy,
     private router: ActivatedRoute,
     private _router: Router,
+    private appMain: AppComponent
   ) { 
     super(injector);
   }
@@ -114,7 +116,7 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
     product.storages = this.storageSelect;
     this._productService.update(product).subscribe(
       () => {
-        this.notify.success(this.l('Cập nhật thành công'));
+        this.appMain.showSuccessMessage('Cập nhật thành công', 'Cập nhật sản phẩm thành công');
         this.onSave.emit();
         this._router.navigate(['app/product']);
       },

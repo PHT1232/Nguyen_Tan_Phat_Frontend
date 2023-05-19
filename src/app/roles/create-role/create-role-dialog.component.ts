@@ -15,6 +15,7 @@ import {
   PermissionDtoListResultDto
 } from '@shared/service-proxies/service-proxies';
 import { forEach as _forEach, map as _map } from 'lodash-es';
+import { AppComponent } from '@app/app.component';
 
 @Component({
   templateUrl: 'create-role-dialog.component.html'
@@ -141,6 +142,7 @@ export class CreateRoleDialogComponent extends AppComponentBase
   constructor(
     injector: Injector,
     private _roleService: RoleServiceProxy,
+    private appMain: AppComponent,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
@@ -209,7 +211,7 @@ export class CreateRoleDialogComponent extends AppComponentBase
       .create(role)
       .subscribe(
         () => {
-          this.notify.info(this.l('SavedSuccessfully'));
+          this.appMain.showSuccessMessage("Thành công", "Tạo tài khoản thành công");
           this.bsModalRef.hide();
           this.onSave.emit();
         },
