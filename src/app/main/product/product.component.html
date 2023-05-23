@@ -168,6 +168,9 @@
                   <th pSortableColumn="quantity" >
                     {{ "Số lượng tồn kho" | localize }}<p-sortIcon field="quantity"></p-sortIcon>
                   </th>
+                  <th>
+                    {{ "Trạng thái" | localize }}
+                  </th>
                   <th pSortableColumn="price">{{ "Giá" | localize }}<p-sortIcon field="price"></p-sortIcon></th>
                   <th pSortableColumn="username">{{ "Người cập nhật" | localize }}<p-sortIcon field="username"></p-sortIcon></th>
                   <th style="width: 200px">{{ "Hành động" | localize }}</th>
@@ -189,6 +192,7 @@
                   <td>{{ product.unit }}</td>
                   <!-- <td *ngIf="storageCode != '0'">{{ product.quantity }}</td> -->
                   <td>{{ product.quantity }}</td>
+                  <td>{{ product.inventoryStatus }}</td>
                   <td>
                     {{ product.price | currency : "VND" }}
                   </td>

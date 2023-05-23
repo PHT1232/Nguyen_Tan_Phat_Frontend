@@ -6506,6 +6506,79 @@ export class ProductServiceProxy {
     return _observableOf<void>(<any>null);
   }
 }
+
+//#region Upload Service 
+@Injectable()
+export class UploadServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseRetriver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    testUpload(): Observable<string[]> {
+        let _url = this.baseUrl + "/api/Upload/DemoUpload";
+        _url = _url.replace(/[?&]$/, "");
+
+        let _options: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", _url, _options).pipe(_observableMergeMap((_response: any) => {
+            return this.processDemoUpload(_response);
+        })).pipe(_observableCatch((_response: any) => {
+            if (_response instanceof HttpResponseBase) {
+                try {
+                    return this.processDemoUpload(<any>_response);
+                } catch (e) {
+                    return <Observable<string[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string[]>><any>_observableThrow(_response);
+        }));
+    }
+
+    protected processDemoUpload(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseRetriver);
+                if (Array.isArray(resultData200)) {
+                    result200 = [] as any;
+                    for (let item of resultData200)
+                        result200.push(item);
+                }
+                else {
+                    result200 = <any>null;
+                }
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<any>(<any>null);
+    }
+}
+//#endregion
 //#endregion
 //#region Export import service
 @Injectable()

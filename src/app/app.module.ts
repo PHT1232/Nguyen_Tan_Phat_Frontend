@@ -16,6 +16,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { PasswordModule } from 'primeng/password';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
+import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DockModule } from 'primeng/dock';
@@ -97,6 +98,7 @@ import { EditCustomerComponent } from './main/customer/edit-customer/edit-custom
 import { ExpensesComponent } from './main/expenses/expenses.component';
 import { CreateExpensesComponent } from './main/expenses/create-expenses/create-expenses.component';
 import { DetailExpensesComponent } from './main/expenses/detail-expenses/detail-expenses.component';
+import { UploadComponent } from './main/upload/upload.component';
 
 @NgModule({
   declarations: [
@@ -162,6 +164,7 @@ import { DetailExpensesComponent } from './main/expenses/detail-expenses/detail-
     ExpensesComponent,
     CreateExpensesComponent,
     DetailExpensesComponent,
+    UploadComponent,
   ],
   imports: [
     CommonModule,
@@ -201,6 +204,7 @@ import { DetailExpensesComponent } from './main/expenses/detail-expenses/detail-
     InputNumberModule,
     DropdownModule,
     KeyFilterModule,
+    FileUploadModule
   ],
   providers: [],
   entryComponents: [

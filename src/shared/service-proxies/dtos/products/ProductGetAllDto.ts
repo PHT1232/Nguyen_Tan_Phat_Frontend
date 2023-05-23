@@ -7,6 +7,7 @@ export interface IProductGetAllDto {
     price: number;
     unit: string;
     quantity: number;
+    inventoryStatus: string;
     creationTime: moment.Moment;
     lastDateModified: moment.Moment;
     username: string;
@@ -19,6 +20,7 @@ export class ProductGetAllDto implements IProductGetAllDto {
     price: number;
     unit: string;
     quantity: number;
+    inventoryStatus: string;
     creationTime: moment.Moment;
     lastDateModified: moment.Moment;
     username: string;
@@ -40,6 +42,7 @@ export class ProductGetAllDto implements IProductGetAllDto {
             this.price = _data["price"];
             this.unit = _data["unit"];
             this.quantity = _data["quantity"];
+            this.inventoryStatus = _data["inventoryStatus"];
             this.creationTime = _data["creationTime"];
             this.lastDateModified = _data["lastDateModified"];
             this.username = _data["username"];
@@ -61,6 +64,7 @@ export class ProductGetAllDto implements IProductGetAllDto {
         data["price"] = this.price;
         data["unit"] = this.unit;
         data["quantity"] = this.quantity;
+        data["inventoryStatus"] = this.inventoryStatus;
         data["creationTime"] = this.creationTime;
         data["lastDateModified"] = this.lastDateModified;
         data["username"] = this.username;
