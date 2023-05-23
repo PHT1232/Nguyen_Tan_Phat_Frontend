@@ -122,6 +122,28 @@
                 </div>
               </div>
             </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Chiết khấu" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p-inputNumber 
+                    class="pinputnumber"
+                    [(ngModel)]="customer.discount" 
+                    [style]="{'width':'100%'}" 
+                    inputStyleClass="{'width':'100%'}"
+                    inputId="percent" 
+                    prefix="%"   
+                    #nameNumber="ngModel"
+                    #nameNumberEl> </p-inputNumber>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="row" style="padding-bottom: 25px">
             <div class="col">

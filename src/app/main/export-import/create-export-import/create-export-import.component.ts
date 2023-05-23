@@ -11,14 +11,17 @@ import {
   CategoryInput,
   CategoryServiceProxy,
   CustomerDto,
+  CustomerListDto,
+  EmployeeServiceProxy,
   ExportImportInput,
   ExportImportPagedResult,
   ExportImportProductDto,
   ExportImportService,
+  ListOfCustomer,
   PermissionDto,
   ProductServiceProxy,
 } from "@shared/service-proxies/service-proxies";
-import { LookUpTableList } from "@shared/service-proxies/dtos/LookUpTable";
+import { LookUpTable, LookUpTableList } from "@shared/service-proxies/dtos/LookUpTable";
 import { StorageProductDetailList } from "@shared/service-proxies/dtos/products/StorageProductDetail";
 import { FormArray, FormControl, FormGroup } from "@angular/forms";
 import { appModuleAnimation } from "@shared/animations/routerTransition";
@@ -26,6 +29,7 @@ import {
   PagedListingComponentBase,
   PagedRequestDto,
 } from "@shared/paged-listing-component-base";
+import { EmployeeSelectForAccount } from "@shared/service-proxies/dtos/employee/EmployeeSelectForAccount";
 
 class PagedProductRequestDto extends PagedRequestDto {
   storageCode: string;
@@ -50,13 +54,18 @@ export class CreateExportImportComponent
   saving = false;
   isCollapsed = false;
   exportImport = new ExportImportInput();
-  storageCode = "";
+  storageCode = new LookUpTable();
   keyword: string;
-  getStorage: StorageProductDetailList = new StorageProductDetailList();
+  // getStorage: StorageProductDetailList = new StorageProductDetailList();
+  getStorage: LookUpTable[];
   orderType = 1;
   products: ExportImportProductDto[] = [];
   user: LookUpTableList = new LookUpTableList();
-  customer = new CustomerDto();
+  employee: EmployeeSelectForAccount[];
+  employeeSelected = new EmployeeSelectForAccount();
+  customer: CustomerListDto[];
+  customerSelected = new CustomerListDto();
+  customerInput = new CustomerDto();
   request: PagedProductRequestDto;
   pageSize = 5;
   pageNumber = 1;
@@ -75,18 +84,27 @@ export class CreateExportImportComponent
     injector: Injector,
     private _router: Router,
     private _exportImport: ExportImportService,
-    private _productService: ProductServiceProxy
+    private _productService: ProductServiceProxy,
+    public _employeeService: EmployeeServiceProxy,
   ) {
     super(injector);
-    this._productService.getStorageProduct().subscribe((val) => {
-      this.getStorage = val;
+    this._productService.getStorageExpense().subscribe((val) => {
+      this.getStorage = val.items;
       // console.log(val.items[0]);
-      this.storageCode = val.items[val.items.length - 1].storageCode;
+      this.storageCode = val.items[val.items.length - 1];
     });
 
+    this._employeeService.getEmployeeForSelect().subscribe((result) => {
+      this.employee = result.items;
+    });
+
+    this._exportImport.getCustomerSelect().subscribe((result) => {
+      this.customer = result.items;
+    });
+    
     setTimeout(() => {
       this._exportImport
-        .getProduct(this.storageCode, false, this.skipCount, this.pageSize)
+        .getProduct(this.storageCode.code, false, this.skipCount, this.pageSize)
         .subscribe((result: ExportImportPagedResult) => {
           this.products = result.items;
           this.showPaging(result, this.pageNumber);
@@ -106,7 +124,7 @@ export class CreateExportImportComponent
     });
 
     this.exportImport.products = [];
-    this.exportImport.orderCreator = 0;
+    this.exportImport.orderCreator = "";
   }
 
   ngOnInit(): void {}
@@ -114,12 +132,22 @@ export class CreateExportImportComponent
   save(): void {
     let totalPrice = 0;
     this.saving = true;
-    this.exportImport.customer = this.customer;
-    this.exportImport.storageId = this.storageCode;
-    this.exportImport.products.forEach((element) => {
+    // this.exportImport.customer = this.customer;
+    this.exportImport.storageId = this.storageCode.code;
+    // this.exportImport.products.forEach((element) => {
+    //   totalPrice += element.finalPrice;
+    // });
+    
+    this.selectedProducts.forEach(element => {
+      // console.log("quantity: " + element.quantity);
+      // console.log("finalprice: " + element.finalPrice);
+      element.finalPrice = element.quantity * element.price;
       totalPrice += element.finalPrice;
+      this.exportImport.products.push(element);  
     });
-
+    this.exportImport.orderCreator = this.employeeSelected.code;
+    this.exportImport.customer = this.customerInput;
+    this.exportImport.discount = this.customerInput.discount;
     this.exportImport.totalPrice = totalPrice;
     this.exportImport.orderStatus = 1;
     this.exportImport.orderType = 1;
@@ -151,28 +179,31 @@ export class CreateExportImportComponent
 
   checkFormValid(): boolean {
     // this.isTrue = true;
+    console.log(this.employeeSelected.code)
     if (
-      this.exportImport.products.length === 0 ||
+      // this.exportImport.products.length === 0 ||
+      this.selectedProducts.length === 0 ||
       this.exportImport.exportImportCode === "" ||
-      this.exportImport.orderCreator === 0 ||
-      this.customer.customerPhone === "" ||
-      this.customer.customerAdress === "" ||
-      this.customer.customerName === "" ||
-      this.storageCode === "0"
+      this.employeeSelected === null ||
+      this.customerSelected === null ||
+      this.employeeSelected.code === undefined ||
+      this.customerSelected.code === undefined ||
+      this.storageCode === undefined ||
+      this.storageCode.code === undefined
     ) {
       return true;
     }
 
-    for (let i = 0; i < this.quantityCheck.length; i++) {
-      if (this.quantityCheck[i] === false) {
-        this.isTrue = false;
-        return false;
-      }
-    }
+    // for (let i = 0; i < this.quantityCheck.length; i++) {
+    //   if (this.quantityCheck[i] === false) {
+    //     this.isTrue = false;
+    //     return false;
+    //   }
+    // }
 
     // if (this.isTrue) {
     //   this.isTrue = true;
-    return true;
+    // return true;
     // }
   }
 
@@ -183,49 +214,45 @@ export class CreateExportImportComponent
   }
 
   getCustomer() {
-    this._exportImport.getCustomer(this.customer.customerPhone).subscribe(
+    console.log("hello")
+    this._exportImport.getCustomer(this.customerSelected.code).subscribe(
       (val) => {
-        this.customer = val;
+        this.customerInput = val;
       },
       (error) => {
-        this.customer.customerName = "";
-        this.customer.customerAdress = "";
+        this.customerInput.customerName = "";
+        this.customerInput.customerCode = 0;
+        this.customerInput.customerPhone = "";
+        this.customerInput.customerAdress = "";
       }
     );
   }
 
-  check(): boolean {
-    if (this.customer.customerPhone === undefined) {
-      return false;
-    }
-    if (this.customer.customerPhone.trim() === "") {
-      return false;
-    }
-    return true;
-  }
+  // check(): boolean {
+  //   if (this.customer.customerPhone === undefined) {
+  //     return false;
+  //   }
+  //   if (this.customer.customerPhone.trim() === "") {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   changeQuantity(productTemp: ExportImportProductDto) {
-    this.products.forEach((element, index) => {
+    this.selectedProducts.forEach((element, index) => {
       if (element.productId === productTemp.productId) {
         this.initialProductQuantity.forEach((element1) => {
           if (element1.id === element.productId) {
             if (productTemp.quantity >= element1.quantity) {
-              this.products[index].quantity = element1.quantity;
-              this.products[index].finalPrice =
+              this.selectedProducts[index].quantity = element1.quantity;
+              this.selectedProducts[index].finalPrice =
                 element1.quantity * productTemp.price;
             } else {
-              this.products[index].finalPrice =
+              this.selectedProducts[index].finalPrice =
                 productTemp.quantity * productTemp.price;
             }
           }
         });
-      }
-    });
-    this.exportImport.products.forEach((element, index) => {
-      if (element.productId === productTemp.productId) {
-        this.exportImport.products[index].quantity = productTemp.quantity;
-        this.exportImport.products[index].finalPrice =
-          productTemp.quantity * productTemp.price;
       }
     });
   }
@@ -256,7 +283,7 @@ export class CreateExportImportComponent
     this.quantityCheck = [];
     this.skipCount = (page - 1) * this.pageSize;
     this._exportImport
-      .getProduct(this.storageCode, false, this.skipCount, this.pageSize)
+      .getProduct(this.storageCode.code, false, this.skipCount, this.pageSize)
       .subscribe((result: ExportImportPagedResult) => {
         this.products = result.items;
         this.showPaging(result, this.pageNumber);
@@ -266,5 +293,8 @@ export class CreateExportImportComponent
       });
   }
 
-  getProductPage() {}
+  isProductSelected(data) {
+    return this.selectedProducts.indexOf(data) > -1
+  }
+
 }

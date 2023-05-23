@@ -66,6 +66,9 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit{
       this.employee.typeOfContract = employeeOutput.typeOfContract;
       this.employee.phoneNumber = employeeOutput.employeePhone;
       this.employeeBank = employeeOutput.employeeBankAccount;
+      if (this.employeeBank === null) {
+        this.employeeBank = new BankAccount()
+      }
     });
   }
 

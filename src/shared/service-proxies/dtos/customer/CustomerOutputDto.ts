@@ -8,6 +8,7 @@ export interface ICustomerOutputDto {
     customerWebsite: string;
     customerEmail: string;
     customerDescription: string;
+    discount: number;
     bankAccount: BankAccount;
   }
   
@@ -19,6 +20,7 @@ export interface ICustomerOutputDto {
     customerWebsite: string;
     customerEmail: string;
     customerDescription: string;
+    discount: number;
     bankAccount: BankAccount;
   
     constructor(data?: ICustomerOutputDto) {
@@ -39,6 +41,7 @@ export interface ICustomerOutputDto {
         this.customerWebsite = _data["customerWebsite"];
         this.customerEmail = _data["customerEmail"];
         this.customerDescription = _data["customerDescription"];
+        this.discount = _data["discount"];
         this.bankAccount = _data["bankAccount"];
       }
     }
@@ -59,6 +62,7 @@ export interface ICustomerOutputDto {
       data["customerWebsite"] = this.customerWebsite;
       data["customerEmail"] = this.customerEmail;
       data["customerDescription"] = this.customerDescription;
+      data["discount"] = this.discount;
       data["bankAccount"] = this.bankAccount;
       return data;
     }

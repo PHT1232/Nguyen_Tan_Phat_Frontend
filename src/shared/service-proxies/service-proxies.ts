@@ -8319,7 +8319,8 @@ export interface IExportImportOutputDto {
   exportImportCode: string;
   nameOfReceiver: string;
   orderStatus: number;
-  orderCreator: number;
+  orderCreator: string;
+  discount: number;
   orderType: number;
   receiveAddress: string;
   products: ExportImportProductDto[];
@@ -8333,6 +8334,7 @@ export interface IGetAllExportImportDto {
   orderCreator: string;
   orderStatus: number;
   storageName: string;
+  discount: number;
   address: string;
   orderType: number;
   totalPrice: number;
@@ -8353,10 +8355,11 @@ export interface IProductExportImportPagedResult {
 
 export interface IExportImportInputDto {
   exportImportCode: string;
-  orderCreator: number;
+  orderCreator: string;
   customer: CustomerDto;
   products: ExportImportProductDto[];
   storageId: string;
+  discount: number;
   storageInputId: string;
   productLocation: string;
   nameOfExport: string;
@@ -8455,12 +8458,13 @@ export class ListOfCustomer implements IListOfCustomer {
 
 export class ExportImportInput implements IExportImportInputDto {
   exportImportCode: string;
-  orderCreator: number;
+  orderCreator: string;
   orderStatus: number;
   orderType: number;
   customer: CustomerDto;
   products: ExportImportProductDto[];
   storageId: string;
+  discount: number;
   storageInputId: string;
   productLocation: string;
   nameOfExport: string;
@@ -8485,6 +8489,7 @@ export class ExportImportInput implements IExportImportInputDto {
       this.customer = _data["customer"];
       this.products = _data["products"];
       this.storageId = _data["storageId"];
+      this.discount = _data["discount"];
       this.nameOfExport = _data["nameOfExport"];
       this.storageInputId = _data["storageInputId"];
       this.productLocation = _data["productLocation"];
@@ -8509,6 +8514,7 @@ export class ExportImportInput implements IExportImportInputDto {
     data["customer"] = this.customer;
     data["products"] = this.products;
     data["storageId"] = this.storageId;
+    data["discount"] = this.discount;
     data["storageInputId"] = this.storageInputId;
     data["nameOfExport"] = this.nameOfExport;
     data["productLocation"] = this.productLocation;
@@ -8521,13 +8527,14 @@ export class ExportImportInput implements IExportImportInputDto {
 export class ExportImportOutputDto implements IExportImportOutputDto {
   exportImportCode: string;
   nameOfReceiver: string;
-  orderCreator: number;
+  orderCreator: string;
   orderStatus: number;
   orderType: number;
   receiveAddress: string;
   customer: CustomerDto;
   products: ExportImportProductDto[];
   storageId: string;
+  discount: number;
   storageInputId: string;
   nameOfExport: string;
   totalPrice: number;
@@ -8555,6 +8562,7 @@ export class ExportImportOutputDto implements IExportImportOutputDto {
       this.storageId = _data["storageId"];
       this.storageInputId = _data["storageInputId"];
       this.totalPrice = _data["totalPrice"];
+      this.discount = _data["discount"];
     }
   }
 
@@ -8580,6 +8588,7 @@ export class ExportImportOutputDto implements IExportImportOutputDto {
     data["storageId"] = this.storageId;
     data["storageInputId"] = this.storageInputId;
     data["totalPrice"] = this.totalPrice;
+    data["discount"] = this.discount;
     return data;
   }
 
@@ -8701,6 +8710,7 @@ export class GetAllExportImportDto implements IGetAllExportImportDto {
   address: string;
   orderType: number;
   totalPrice: number;
+  discount: number;
   creationTime: Date;
   lastModifiedDate: Date;
   username: string;
@@ -8724,6 +8734,7 @@ export class GetAllExportImportDto implements IGetAllExportImportDto {
       this.storageName = _data["storageName"];
       this.address = _data["address"];
       this.orderType = _data["orderType"];
+      this.discount = _data["discount"];
       this.totalPrice = _data["totalPrice"];
       this.creationTime = _data["creationTime"];
       this.lastModifiedDate = _data["lastModifiedDate"];
@@ -8748,6 +8759,7 @@ export class GetAllExportImportDto implements IGetAllExportImportDto {
     data["storageName"] = this.storageName;
     data["address"] = this.address;
     data["orderType"] = this.orderType;
+    data["discount"] = this.discount;
     data["totalPrice"] = this.totalPrice;
     data["creationTime"] = this.creationTime;
     data["lastModifiedDate"] = this.lastModifiedDate;
@@ -8829,6 +8841,7 @@ export class CustomerDto {
   customerName: string;
   customerPhone: string;
   customerAdress: string;
+  discount: number;
 
   constructor(data?: CustomerDto) {
     if (data) {
@@ -8845,6 +8858,7 @@ export class CustomerDto {
       this.customerName = _data["customerName"];
       this.customerPhone = _data["customerPhone"];
       this.customerAdress = _data["customerAdress"];
+      this.discount = _data["discount"];
     }
   }
 
@@ -8861,6 +8875,7 @@ export class CustomerDto {
     data["customerName"] = this.customerName;
     data["customerPhone"] = this.customerPhone;
     data["customerAdress"] = this.customerAdress;
+    data["discount"] = this.discount;
     return data;
   }
 

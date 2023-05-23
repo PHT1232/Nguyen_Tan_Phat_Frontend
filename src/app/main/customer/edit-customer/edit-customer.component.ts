@@ -39,6 +39,7 @@ export class EditCustomerComponent extends AppComponentBase implements OnInit {
     });
     this._customerService.get(this.id).subscribe(result => {
         this.customer = result;
+        this.customer.discount = result.discount;
         this.customerBank = result.bankAccount;
     });
   }
@@ -54,10 +55,11 @@ export class EditCustomerComponent extends AppComponentBase implements OnInit {
     customerAdd.customerDescription = this.customer.customerDescription;
     customerAdd.customerWebsite = this.customer.customerWebsite;
     customerAdd.bankAccount = this.customerBank;
+    customerAdd.discount = this.customer.discount;
 
-    this._customerService.create(customerAdd).subscribe(
+    this._customerService.update(customerAdd).subscribe(
       () => {
-        this.appMain.showSuccessMessage('Thêm mới thành công', 'Thêm mới khách hàng thành công')
+        this.appMain.showSuccessMessage('Cập nhật thành công', 'Cập nhật khách hàng thành công')
         this.onSave.emit();
         this._router.navigate(['app/customer']);
       },

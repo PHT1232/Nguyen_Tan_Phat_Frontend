@@ -25,15 +25,14 @@
                   <div class="row">
                     <div class="col">
                       <input
+                        pInputText
                         type="text"
-                        class="form-control"
-                        name="exportCode"
-                        id="exportCode"
                         required
+                        [style]="{'width':'100%'}"
+                        [ngModelOptions]="{ standalone: true }"
                         [(ngModel)]="exportImport.exportImportCode"
                         #nameCode="ngModel"
                         #nameCodeEl
-                        maxlength="32"
                       />
                       <abp-validation-summary
                         [control]="nameCode"
@@ -41,14 +40,11 @@
                       ></abp-validation-summary>
                     </div>
                     <div class="col">
-                      <a
-                        href="javascript:;"
-                        class="btn bg-blue"
-                        (click)="getRandomCode()"
+                      <p-button
+                      label="Random"
+                      (click)="getRandomCode()"
                       >
-                        <i class="fa fa-plus-square"></i>
-                        {{ "Random" | localize }}
-                      </a>
+                      </p-button>
                     </div>
                   </div>
                 </div>
@@ -66,7 +62,7 @@
                   </div>
                   <div class="row">
                     <div class="col">
-                      <select
+                      <!-- <select
                         required
                         #selectModel="ngModel"
                         #selectEl
@@ -78,13 +74,52 @@
                         <option value="0" selected>Người lập phiếu</option>
                         <option *ngFor="let usd of user.items;let i = index" value="{{usd.id}}">
                           {{usd.name}}</option>
-                      </select>
-                      <!-- <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary> -->
+                      </select> -->
+                      <p-dropdown [style]="{'width':'100%'}" 
+                        [options]="employee" 
+                        [(ngModel)]="employeeSelected" 
+                        [ngModelOptions]="{standalone: true}" 
+                        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Nhân viên">
+                      </p-dropdown>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="row" style="padding-bottom: 25px">
+                <div class="col">
+                  <div class="row">
+                    <div class="col required">
+                      <label for="name">
+                        {{ "Khách hàng" | localize }}
+                      </label>
+                      <span
+                        style="color: red; margin-left: 5px; font-size: 14pt"
+                        >*</span
+                      >
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <!-- <input
+                        type="text"
+                        class="form-control"
+                        name="customerName"
+                        id="customerName"
+                        [(ngModel)]="customerInput.customerName"
+                        required
+                      /> -->
+
+                      <p-dropdown [style]="{'width':'100%'}" 
+                        [options]="customer" 
+                        [(ngModel)]="customerSelected" 
+                        (onChange)="getCustomer()"
+                        [ngModelOptions]="{standalone: true}" 
+                        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Khách hàng">
+                      </p-dropdown>
+                      <!-- <abp-validation-summary [control]="nameCode" [controlEl]="nameCodeEl"></abp-validation-summary> -->
+                    </div>
+                  </div>
+                </div>
                 <div class="col">
                   <div class="row">
                     <div class="col required">
@@ -99,7 +134,7 @@
                   </div>
                   <div class="row">
                     <div class="col">
-                      <input
+                      <!-- <input
                         type="text"
                         class="form-control"
                         name="phoneNumber"
@@ -107,19 +142,16 @@
                         [(ngModel)]="customer.customerPhone"
                         required
                         maxlength="32"
+                      /> -->
+                      <input
+                        pInputText
+                        pKeyFilter="int"
+                        required
+                        [style]="{'width':'100%'}"
+                        [ngModelOptions]="{ standalone: true }"
+                        [(ngModel)]="customerInput.customerPhone"
                       />
                       <!-- <abp-validation-summary [control]="nameCode" [controlEl]="nameCodeEl"></abp-validation-summary> -->
-                    </div>
-                    <div class="col">
-                      <a
-                        href="javascript:;"
-                        class="btn bg-blue"
-                        (click)="getCustomer()"
-                        *ngIf="check()"
-                      >
-                        <i class="fa fa-plus-square"></i>
-                        {{ "Tìm kiếm" | localize }}
-                      </a>
                     </div>
                   </div>
                 </div>
@@ -127,7 +159,7 @@
                   <div class="row">
                     <div class="col required">
                       <label for="name">
-                        {{ "Tên khách" | localize }}
+                        {{ "Chiết khấu" | localize }}
                       </label>
                       <span
                         style="color: red; margin-left: 5px; font-size: 14pt"
@@ -137,14 +169,16 @@
                   </div>
                   <div class="row">
                     <div class="col">
-                      <input
-                        type="text"
-                        class="form-control"
-                        name="customerName"
-                        id="customerName"
-                        [(ngModel)]="customer.customerName"
-                        required
-                      />
+                      <p-inputNumber 
+                        class="pinputnumber"
+                        [(ngModel)]="customerInput.discount" 
+                        [style]="{'width':'100%'}" 
+                        inputStyleClass="{'width':'100%'}"
+                        inputId="percent" 
+                        prefix="%"   
+                        [ngModelOptions]="{standalone: true}" 
+                        #nameNumber="ngModel"
+                        #nameNumberEl> </p-inputNumber>
                       <!-- <abp-validation-summary [control]="nameCode" [controlEl]="nameCodeEl"></abp-validation-summary> -->
                     </div>
                   </div>
@@ -165,19 +199,32 @@
                   </div>
                   <div class="row">
                     <div class="col">
-                      <input
+                      <!-- <input
                         type="text"
                         class="form-control"
                         name="address"
-                        [(ngModel)]="customer.customerAdress"
+                        [(ngModel)]="customerInput.customerAdress"
                         id="address"
                         required
                         maxlength="32"
+                      /> -->
+                      <input
+                        pInputText
+                        type="text"
+                        required
+                        [style]="{'width':'100%'}"
+                        [ngModelOptions]="{ standalone: true }"
+                        [(ngModel)]="customerInput.customerAdress"
+                        #nameCode="ngModel"
+                        #nameCodeEl
                       />
                       <!-- <abp-validation-summary [control]="nameCode" [controlEl]="nameCodeEl"></abp-validation-summary> -->
                     </div>
                   </div>
                 </div>
+              </div>              
+              <div class="row" style="padding-bottom: 25px">
+                
               </div>
               <div class="row" style="padding-bottom: 25px">
                 <div class="col">
@@ -192,10 +239,17 @@
                       >
                     </div>
                     <div class="col">
-                      <select class="form-control" [(ngModel)]="storageCode" (change)="getDataPage(1)" [ngModelOptions]="{standalone: true}" aria-label="Default select example">
+                      <!-- <select class="form-control" [(ngModel)]="storageCode" (change)="getDataPage(1)" [ngModelOptions]="{standalone: true}" aria-label="Default select example">
                         <option value="0" *ngIf="getStorage.items" selected>Kho</option>
                         <option *ngFor="let storage of getStorage.items;let i = index" value="{{storage.storageCode}}" [selected]="true">{{storage.storageName}}</option>
-                      </select>
+                      </select> -->
+                      <p-dropdown [style]="{'width':'100%'}" 
+                        [options]="getStorage" 
+                        [(ngModel)]="storageCode" 
+                        [ngModelOptions]="{standalone: true}" 
+                        (onChange)="getDataPage(1)"
+                        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Kho">
+                        </p-dropdown>
                     </div>
                   </div>
                   <div class="row">
@@ -237,7 +291,7 @@
                             <th></th>
                           </tr>
                         </ng-template>
-                        <ng-template pTemplate="body" let-product let-i="index">
+                        <ng-template pTemplate="body" let-product>
                           <tr>
                             <td>
                               <p-tableCheckbox [value]="product"></p-tableCheckbox>
@@ -257,7 +311,7 @@
                                 (change)="changeQuantity(product)"
                               /> -->
                               <input
-                                [disabled]="selectedProducts[i] === undefined"
+                                [disabled]="!isProductSelected(product)"
                                 min="1"
                                 type="number"
                                 class="form-control"
@@ -265,11 +319,12 @@
                                 style="width: 80px"
                                 [(ngModel)]="product.quantity"
                                 [ngModelOptions]="{standalone: true}"
+                                (change)="changeQuantity(product)"
                               />
                             </td>
                             <td>{{ product.unit }}</td>
                             <td>{{ product.price | currency : "VND" }}</td>
-                            <td [innerHTML]="product.finalPrice | currency: 'VND'"></td>
+                            <td [innerHTML]="product.price * product.quantity | currency: 'VND'"></td>
                             <!-- <td style="width: 35px">
                               <input
                                 type="checkbox"

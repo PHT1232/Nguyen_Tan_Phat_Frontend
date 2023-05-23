@@ -46,7 +46,7 @@
                 <div class="col-md-6">
                   <div class="form-group row mb-0">
                     <div class="col pt-2">
-                      <select
+                      <!-- <select
                         class="form-control"
                         [(ngModel)]="storageCode"
                         [ngModelOptions]="{ standalone: true }"
@@ -63,12 +63,20 @@
                         >
                           {{ storage.storageName }}
                         </option>
-                      </select>
+                      </select> -->
+                      <p-dropdown [style]="{'width':'100%'}" 
+                        [options]="getStorage" 
+                        [(ngModel)]="storageCode" 
+                        [ngModelOptions]="{standalone: true}" 
+                        (onChange)="getDataPage(1)"
+                        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Kho">
+                        </p-dropdown>
                     </div>
                     <div class="col pt-2">
                       <input type="text"
                             placeholder="Ngày/tháng/năm"
                             class="form-control"
+                            style="height: 49px;"
                             bsDaterangepicker
                             [bsConfig]="{ isAnimated: true }"
                             [(ngModel)]="bsInlineRangeValue"
@@ -127,10 +135,6 @@
                   {{ "Ngày tạo" | localize
                   }}<p-sortIcon field="creationTime"></p-sortIcon>
                 </th>
-                <th pSortableColumn="lastModifiedDate">
-                  {{ "Ngày cập nhật" | localize
-                  }}<p-sortIcon field="lastModifiedDate"></p-sortIcon>
-                </th>
                 <th pSortableColumn="username">
                   {{ "Người tạo đơn" | localize
                   }}<p-sortIcon field="username"></p-sortIcon>
@@ -166,54 +170,39 @@
                 <td>
                   {{ exportImport.creationTime | date : "dd/MM/yyyy" }}
                 </td>
-                <td>
-                  {{ exportImport.lastModifiedDate | date : "dd/MM/yyyy" }}
-                </td>
                 <td>{{ exportImport.username }}</td>
                 <td *ngIf="orderStatus == 1">
                   <table>
                     <tr>
                       <td>
-                        <button
-                          type="button"
-                          class="btn btn-sm bg-secondary"
-                          *ngIf="
-                            isGranted('Pages.System.ExportImport.Add') == true
-                          "
+                        <p-button
+                          styleClass="p-button-secondary"
+                          icon="pi pi-pencil"
+                          [style]="{ 'margin-right': '10px' }"
+                          *ngIf="isGranted('Pages.System.ExportImport.Update') == true"
                           [routerLink]="['edit', exportImport.exportImportCode]"
-                          style="width: 70px"
                         >
-                          <i class="fas fa-pencil-alt"></i>
-                          {{ "Sửa" | localize }}
-                        </button>
+                        </p-button>
                       </td>
                       <td>
-                        <button
-                          type="button"
-                          class="btn btn-sm bg-success"
-                          *ngIf="
-                            isGranted('Pages.System.ExportImport.View') == true
-                          "
+                        <p-button
+                          styleClass="p-button-success"
+                          icon="pi pi-check"
+                          [style]="{ 'margin-right': '10px' }"
+                          *ngIf="isGranted('Pages.System.ExportImport.View') == true"
                           (click)="finishOrder(exportImport)"
-                          style="width: 103px"
                         >
-                          <i class="far fa-check-circle"></i>
-                          {{ "Hoàn thành" | localize }}
-                        </button>
+                        </p-button>
                       </td>
                       <td>
-                        <button
-                          type="button"
-                          class="btn btn-sm bg-danger"
+                        <p-button
+                          styleClass="p-button-danger"
+                          icon="pi pi-times"
+                          [style]="{ 'margin-right': '10px' }"
+                          *ngIf="isGranted('Pages.System.ExportImport.View') == true"
                           (click)="delete(exportImport)"
-                          *ngIf="
-                            isGranted('Pages.System.ExportImport.View') == true
-                          "
-                          style="width: 70px"
                         >
-                          <i class="fas fa-trash"></i>
-                          {{ "Hủy" | localize }}
-                        </button>
+                        </p-button>
                       </td>
                     </tr>
                   </table>

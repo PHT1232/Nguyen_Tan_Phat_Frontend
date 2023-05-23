@@ -19,6 +19,7 @@ import { catchError, finalize } from "rxjs/operators";
 import { AppComponent } from "@app/app.component";
 import * as moment from "moment";
 import { Console } from "console";
+import { LookUpTable } from "@shared/service-proxies/dtos/LookUpTable";
 
 class PagedExportImportRequestDto extends PagedRequestDto {
   keyword: string;
@@ -36,12 +37,13 @@ class PagedExportImportRequestDto extends PagedRequestDto {
 export class ExportImportComponent extends PagedListingComponentBase<GetAllExportImportDto> {
   exportImports: GetAllExportImportDto[];
   keyword = "";
-  storageCode = "0";
+  storageCode = new LookUpTable();
   orderStatus = 1;
   nameOfReciever = "";
   bsInlineRangeValue: Date[];
   exportImportList: GetAllExportImportDto[] = [];
-  getStorage: StorageProductDetailList = new StorageProductDetailList();
+  // getStorage: StorageProductDetailList = new StorageProductDetailList();
+  getStorage: LookUpTable[];
   totalCount: number;
   isLoading = false;
   first: number = 0;
@@ -54,8 +56,8 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
     private appMain: AppComponent
   ) {
     super(injector);
-    this._productService.getStorageProduct().subscribe((val) => {
-      this.getStorage = val;
+    this._productService.getStorageExpense().subscribe((val) => {
+      this.getStorage = val.items;
       // this.storageCode = val[val.items.length].storageCode;
     });
   }
@@ -70,7 +72,7 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
     request.keyword = this.keyword;
     request.orderStatus = this.orderStatus;
     setTimeout(() => {
-      request.storageCode = this.storageCode;
+      request.storageCode = this.storageCode.code;
       if (this.bsInlineRangeValue !== undefined) {
         request.dateTime = [];
         this.bsInlineRangeValue.forEach(element => {
@@ -80,7 +82,6 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
         });
       }
       
-
       this._exportImportService
         .getAll(
           request.keyword,

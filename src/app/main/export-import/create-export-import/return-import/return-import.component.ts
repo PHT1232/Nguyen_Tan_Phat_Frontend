@@ -91,7 +91,7 @@ export class ReturnImportComponent extends AppComponentBase implements OnInit {
     });
 
     this.exportImport.products = [];
-    this.exportImport.orderCreator = 0;
+    this.exportImport.orderCreator = "";
   }
 
   ngOnInit(): void {
@@ -137,7 +137,7 @@ export class ReturnImportComponent extends AppComponentBase implements OnInit {
 
     if (this.exportImport.products.length === 0
       || this.exportImport.exportImportCode === ''
-      || this.exportImport.orderCreator === 0
+      || this.exportImport.orderCreator === null
       || this.storageCodeInput === '0'
       ) {
       return true;

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Injector, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponent } from '@app/app.component';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
 import { BankAccount } from '@shared/service-proxies/dtos/BankAccount';
 import { CustomerInputDto } from '@shared/service-proxies/dtos/customer/CustomerInputDto';
@@ -9,7 +10,8 @@ import { CustomerServiceProxy, PermissionDto } from '@shared/service-proxies/ser
 @Component({
   selector: 'app-create-customer',
   templateUrl: './create-customer.component.html',
-  styleUrls: ['./create-customer.component.css']
+  styleUrls: ['./create-customer.component.css'],
+  animations: [appModuleAnimation()]
 })
 export class CreateCustomerComponent extends AppComponentBase implements OnInit {
   saving = false;
@@ -44,6 +46,7 @@ export class CreateCustomerComponent extends AppComponentBase implements OnInit 
     customerAdd.customerPhone = this.customer.customerPhone;
     customerAdd.customerDescription = this.customer.customerDescription;
     customerAdd.customerWebsite = this.customer.customerWebsite;
+    customerAdd.discount = this.customer.discount;
     customerAdd.bankAccount = this.customerBank;
 
     this._customerService.create(customerAdd).subscribe(

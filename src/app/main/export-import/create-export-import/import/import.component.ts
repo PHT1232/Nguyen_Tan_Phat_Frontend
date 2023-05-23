@@ -90,7 +90,7 @@ export class ImportComponent extends AppComponentBase implements OnInit {
     });
 
     this.exportImport.products = [];
-    this.exportImport.orderCreator = 0;
+    this.exportImport.orderCreator = "";
   }
 
   ngOnInit(): void {
@@ -141,7 +141,7 @@ export class ImportComponent extends AppComponentBase implements OnInit {
 
     if (this.exportImport.products.length === 0
       || this.exportImport.exportImportCode === ''
-      || this.exportImport.orderCreator === 0
+      || this.exportImport.orderCreator === null
       || this.storageCode === '0'
       || this.storageCodeInput === '0'
       || this.storageCodeInput === this.storageCode) {

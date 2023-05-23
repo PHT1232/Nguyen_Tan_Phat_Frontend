@@ -70,8 +70,9 @@
                     <th pSortableColumn="customerName">{{ "Tên khách hàng" | localize }}<p-sortIcon field="customerName"></p-sortIcon></th>
                     <th pSortableColumn="customerAddress">{{ "Địa chỉ" | localize }}<p-sortIcon field="customerAddress"></p-sortIcon></th>
                     <th pSortableColumn="customerPhone">{{ "Số điện thoại" | localize }}<p-sortIcon field="customerPhone"></p-sortIcon></th>
-                    <th pSortableColumn="customerBankAccount">{{ "Số tài khoản" | localize }}<p-sortIcon field="customerBankAccount"></p-sortIcon></th>
-                    <th pSortableColumn="customerBankAccount">{{ "Tên ngân hàng" | localize }}<p-sortIcon field="customerBankAccount"></p-sortIcon></th>
+                    <th pSortableColumn="discount">{{ "Chiết khấu" | localize }}<p-sortIcon field="discount"></p-sortIcon></th>
+                    <th pSortableColumn="customerBankId">{{ "Số tài khoản" | localize }}<p-sortIcon field="customerBankId"></p-sortIcon></th>
+                    <th pSortableColumn="customerBankName">{{ "Tên ngân hàng" | localize }}<p-sortIcon field="customerBankName"></p-sortIcon></th>
                     <th style="width: 200px">{{ "Hành động" | localize }}</th>
                   </tr>
                 </ng-template>
@@ -86,6 +87,7 @@
                     <td>{{ customer.customerName }}</td>
                     <td>{{ customer.customerAddress }}</td>
                     <td>{{ customer.customerPhone }}</td>
+                    <td>{{ customer.discount + "%" }}</td>
                     <!-- <td *ngIf="storageCode != '0'">{{ product.quantity }}</td> -->
                     <td>
                       {{ customer.customerBankId }}

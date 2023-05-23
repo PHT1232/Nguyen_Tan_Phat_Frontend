@@ -57,6 +57,7 @@ export class DetailsExportImportComponent extends AppComponentBase implements On
   totalItems: number;
   initialProductQuantity: InitialProductQuantity[] = [];
   id: string;
+  isTableLoading = false;
 
   @Output() onsave = new EventEmitter<any>();
 
@@ -87,6 +88,7 @@ export class DetailsExportImportComponent extends AppComponentBase implements On
         this.customer = result.customer;
         this.products = result.products;
         this.exportImport.storageId = result.storageId;
+        this.exportImport.discount = result.discount;
         this.exportImport.storageInputId = result.storageInputId;
         this.exportImport.nameOfExport = result.nameOfExport;
         this.exportImport.totalPrice = result.totalPrice;

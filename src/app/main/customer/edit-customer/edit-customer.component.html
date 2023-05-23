@@ -21,6 +21,7 @@
                   <input
                     pInputText
                     type="text"
+                    readonly
                     required
                     [ngModelOptions]="{ standalone: true }"
                     maxlength="32"
@@ -122,6 +123,29 @@
                     #nameModel="ngModel"
                     #nameEl
                   />
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Chiết khấu" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p-inputNumber 
+                    class="pinputnumber"
+                    [(ngModel)]="customer.discount" 
+                    [style]="{'width':'100%'}" 
+                    inputStyleClass="{'width':'100%'}"
+                    inputId="percent" 
+                    [ngModelOptions]="{standalone: true}"
+                    prefix="%"   
+                    #nameNumber="ngModel"
+                    #nameNumberEl> </p-inputNumber>
                 </div>
               </div>
             </div>
