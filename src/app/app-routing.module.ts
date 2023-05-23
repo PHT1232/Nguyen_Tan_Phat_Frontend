@@ -36,6 +36,7 @@ import { EditCustomerComponent } from './main/customer/edit-customer/edit-custom
 import { ExpensesComponent } from './main/expenses/expenses.component';
 import { CreateExpensesComponent } from './main/expenses/create-expenses/create-expenses.component';
 import { DetailExpensesComponent } from './main/expenses/detail-expenses/detail-expenses.component';
+import { UploadComponent } from './main/upload/upload.component';
 
 @NgModule({
     imports: [
@@ -81,7 +82,8 @@ import { DetailExpensesComponent } from './main/expenses/detail-expenses/detail-
                     { path: 'expense', component: ExpensesComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] },
                     { path: 'expense/create', component: CreateExpensesComponent, data: { permission: 'Pages.System.Revenue.Add'} , canActivate: [AppRouteGuard] },
                     { path: 'expense/edit/:id', component: EditCustomerComponent, data: { permission: 'Pages.System.Revenue.Update'} , canActivate: [AppRouteGuard] },
-                    { path: 'expense/detail/:id', component: DetailExpensesComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] }
+                    { path: 'expense/detail/:id', component: DetailExpensesComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] },
+                    { path: 'upload', component: UploadComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] }
                 ]
             }
         ])

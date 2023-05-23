@@ -32,6 +32,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
 import { KeyFilterModule } from 'primeng/keyfilter';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
@@ -204,7 +205,8 @@ import { UploadComponent } from './main/upload/upload.component';
     InputNumberModule,
     DropdownModule,
     KeyFilterModule,
-    FileUploadModule
+    FileUploadModule,
+    NgxDropzoneModule
   ],
   providers: [],
   entryComponents: [
