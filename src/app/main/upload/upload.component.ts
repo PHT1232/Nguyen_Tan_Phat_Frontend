@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AppComponent } from '@app/app.component';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/app-component-base';
-import { UploadServiceProxy } from '@shared/service-proxies/service-proxies';
+import { FileDownloadService, UploadServiceProxy } from '@shared/service-proxies/service-proxies';
 
 const URL = AppConsts.remoteServiceBaseUrl + '/api/Upload/DemoUpload';
 @Component({
@@ -14,12 +14,13 @@ const URL = AppConsts.remoteServiceBaseUrl + '/api/Upload/DemoUpload';
 })
 export class UploadComponent extends AppComponentBase implements OnInit {
 
-
+  linkFile = "";
 
   constructor(
     injector: Injector,
     private _router: Router,
     private http: HttpClient,
+    private _fileService: FileDownloadService,
     private _uploadService: UploadServiceProxy,
     private appMain: AppComponent
   ) { 
@@ -50,5 +51,17 @@ export class UploadComponent extends AppComponentBase implements OnInit {
       console.log(res);
     })
     // this._uploadService.testUpload()
+  }
+
+  DownloadFile() {
+    this._uploadService.getDownloadExcel("\\PHIEU XUAT KHO.xlsx").subscribe((res) =>
+    {
+        this._fileService.downloadTempFile(res);
+        console.log(res);
+    });
+  }
+
+  ExportExcel() {
+    this._fileService.exportToExcel();
   }
 }
