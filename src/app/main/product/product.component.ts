@@ -189,4 +189,15 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
       this.pageSize = this.totalItems;
     }
   }
+
+  getSeverity(status: string) {
+    switch (status) {
+        case 'Còn hàng':
+            return 'success';
+        case 'Ít hàng':
+            return 'warning';
+        case 'Hết hàng':
+            return 'danger';
+    }
+  }
 }

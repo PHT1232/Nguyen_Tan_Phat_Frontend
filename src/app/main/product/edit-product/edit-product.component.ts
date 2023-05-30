@@ -12,6 +12,10 @@ import { SubcategoryProduct, SubcategoryProductList } from '@shared/service-prox
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponent } from '@app/app.component';
+import { AppConsts } from '@shared/AppConsts';
+import { HttpClient } from '@angular/common/http';
+
+var URL = AppConsts.remoteServiceBaseUrl + '/api/Upload/ProductUpload';
 
 @Component({
   selector: 'app-edit-product',
@@ -39,6 +43,7 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
   location: string;
   isTrue = true;
   isExist = false;
+  files: File[] = [];
   errorMessage = 'Không được trùng kho';
 
   @Output() onSave = new EventEmitter<any>();
@@ -46,6 +51,7 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
   constructor(
     injector: Injector,
     private _productService: ProductServiceProxy,
+    private http: HttpClient,
     private router: ActivatedRoute,
     private _router: Router,
     private appMain: AppComponent
@@ -76,6 +82,9 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
         this.products.price = result.price;
         this.products.unit = result.unit;
         this.categoryCode = result.categoryId;
+
+        const path = AppConsts.remoteServiceBaseUrl + '\\Upload\\Product\\' + result.productImage;
+
         this._productService.getSubcategoryProduct(result.categoryId).subscribe(val => {
           this.getSubcategorycode = val;
         });
@@ -93,7 +102,14 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
             location: new FormControl(''),
           }));
         });
+        
+        // this.http.get(path,
+        //   { responseType: 'blob' }).subscribe((res) => {
+        //     const fileDto = new File([res], result.productImage);
+        //     this.files.push(fileDto);
+        //   });
       });
+      
       this.isCategoryCodeExist = true;
   }
 
@@ -102,28 +118,43 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
 
     const product = new ProductInputDto();
     product.productCode = this.products.productCode;
-    product.productName = this.products.productName;
-    product.productDescription = this.products.productDescription;
-    product.productDetail = this.products.productDetail;
-    product.categoryId = this.categoryCode;
-    product.unit = this.products.unit;
-    product.price = this.products.price;  
-    if (this.products.subCategoryId === '0')
-      product.subCategoryId = null;
-    else
-      product.subCategoryId = this.products.subCategoryId;
-    
-    product.storages = this.storageSelect;
-    this._productService.update(product).subscribe(
-      () => {
-        this.appMain.showSuccessMessage('Cập nhật thành công', 'Cập nhật sản phẩm thành công');
-        this.onSave.emit();
-        this._router.navigate(['app/product']);
-      },
-      () => {
-        this.saving = false;
+    const formData = new FormData();
+    for (const file of this.files) {
+      formData.append('file', file);
+      URL += "?id=" + this.products.productCode;
+    }
+
+    this.http.post(URL, formData).subscribe((res) => {
+      product.productName = this.products.productName;
+      var tenFile;
+        for (const file of this.files) {
+          // const a = res['result'][res['result']
+          //   .findIndex(e => e.includes(file.name))].split('/');
+          tenFile = file.name;
       }
-    )
+      product.productDescription = this.products.productDescription;
+      product.productImage = product.productCode + "/" + tenFile;
+      product.productDetail = this.products.productDetail;
+      product.categoryId = this.categoryCode;
+      product.unit = this.products.unit;
+      product.price = this.products.price;  
+      if (this.products.subCategoryId === '0')
+        product.subCategoryId = null;
+      else
+        product.subCategoryId = this.products.subCategoryId;
+      
+      product.storages = this.storageSelect;
+      this._productService.update(product).subscribe(
+        () => {
+          this.appMain.showSuccessMessage('Cập nhật thành công', 'Cập nhật sản phẩm thành công');
+          this.onSave.emit();
+          this._router.navigate(['app/product']);
+        },
+        () => {
+          this.saving = false;
+        }
+      )
+    });
   }
 
   getSubcategory() {
@@ -169,7 +200,6 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
   }
 
   checkFormValid(): boolean {
-    
     if (this.products.productCode === undefined 
       || this.products.productName === undefined 
       || this.products.price === undefined 
@@ -210,5 +240,15 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
         this.isExist = false;
       }
     }
+  }
+
+  onSelect(event) {
+    console.log(event);
+    this.files.push(...event.addedFiles);
+  }
+
+  onRemove(event) {
+    console.log(event);
+    this.files.splice(this.files.indexOf(event), 1);
   }
 }

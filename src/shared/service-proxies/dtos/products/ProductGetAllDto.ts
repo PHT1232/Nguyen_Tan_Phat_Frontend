@@ -3,6 +3,7 @@ import * as moment from 'moment';
 export interface IProductGetAllDto {
     productCode: string;
     productName: string;
+    productImage: string;
     categoryName: string;
     price: number;
     unit: string;
@@ -16,6 +17,7 @@ export interface IProductGetAllDto {
 export class ProductGetAllDto implements IProductGetAllDto {
     productCode: string;
     productName: string;
+    productImage: string;
     categoryName: string;
     price: number;
     unit: string;
@@ -38,6 +40,7 @@ export class ProductGetAllDto implements IProductGetAllDto {
         if (_data) {
             this.productCode = _data["productCode"];
             this.productName = _data["productName"];
+            this.productImage = _data["productImage"];
             this.categoryName = _data["categoryName"];
             this.price = _data["price"];
             this.unit = _data["unit"];
@@ -60,6 +63,7 @@ export class ProductGetAllDto implements IProductGetAllDto {
         data = typeof data === 'object' ? data : {};
         data["productCode"] = this.productCode;
         data["productName"] = this.productName;
+        data["productImage"] = this.productImage;
         data["categoryName"] = this.categoryName;
         data["price"] = this.price;
         data["unit"] = this.unit;

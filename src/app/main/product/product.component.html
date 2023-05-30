@@ -163,6 +163,7 @@
                   </th>
                   <th pSortableColumn="productCode">{{ "Mã sản phẩm" | localize }}<p-sortIcon field="productCode"></p-sortIcon></th>
                   <th pSortableColumn="productName">{{ "Tên sản phẩm" | localize }}<p-sortIcon field="productName"></p-sortIcon></th>
+                  <th>{{ "Hình ảnh sản phẩm" | localize }}</th>
                   <th pSortableColumn="categoryName">{{ "Danh mục" | localize }}<p-sortIcon field="categoryName"></p-sortIcon></th>
                   <th pSortableColumn="unit">{{ "Đơn vị tính" | localize }}<p-sortIcon field="unit"></p-sortIcon></th>
                   <th pSortableColumn="quantity" >
@@ -188,11 +189,14 @@
                     }}</a>
                   </td>
                   <td>{{ product.productName }}</td>
+                  <td><img [src]="'https://localhost:44311/File/GetImage?fileName=' + product.productImage" [alt]="product.name" width="100" class="shadow-4" /></td>
                   <td>{{ product.categoryName }}</td>
                   <td>{{ product.unit }}</td>
                   <!-- <td *ngIf="storageCode != '0'">{{ product.quantity }}</td> -->
                   <td>{{ product.quantity }}</td>
-                  <td>{{ product.inventoryStatus }}</td>
+                  <td>
+                    <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)"></p-tag>
+                  </td>
                   <td>
                     {{ product.price | currency : "VND" }}
                   </td>

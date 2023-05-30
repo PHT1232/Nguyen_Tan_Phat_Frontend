@@ -25,7 +25,8 @@ var URL = AppConsts.remoteServiceBaseUrl + '/api/Upload/ProductUpload';
 })
 export class CreateProductComponent extends AppComponentBase implements OnInit {
   saving = false;
-  categoryCode = '0';
+  categoryCode: CategoryProduct = new CategoryProduct();
+  subcategoryCode: SubcategoryProduct = new SubcategoryProduct();
   productList: ProductGetAllDto[] = [];
   getStorage: StorageProductDetailList = new StorageProductDetailList();
   getCategory: CategoryProductList = new CategoryProductList();
@@ -82,18 +83,24 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
       URL += "?id=" + this.products.productCode;
     }
     this.http.post(URL, formData).subscribe((res) => {
-      this.filePath = res['result'][0];
-      product.productImage = this.filePath;
+        // this.filePath = res['result'][0];
+        var tenFile;
+        for (const file of this.files) {
+          // const a = res['result'][res['result']
+          //   .findIndex(e => e.includes(file.name))].split('/');
+          tenFile = file.name;
+        }
+        product.productImage = product.productCode + "/" + tenFile;
         product.productName = this.products.productName;
         product.productDescription = this.products.productDescription;
         product.productDetail = this.products.productDetail;
-        product.categoryId = this.categoryCode;
+        product.categoryId = this.categoryCode.code;
         product.unit = this.products.unit;
         product.price = this.products.price;  
-        if (this.products.subCategoryId === '0') {
+        if (this.subcategoryCode.code === 0) {
           product.subCategoryId = null;
         } else {
-          product.subCategoryId = this.products.subCategoryId;
+          product.subCategoryId = this.subcategoryCode.code.toString();
         }
         
         product.storages = this.storageSelect;
@@ -113,8 +120,8 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
 
 
   getSubcategory() {
-    if (this.categoryCode !== '0') {
-      this._productService.getSubcategoryProduct(this.categoryCode).subscribe(val => {
+    if (this.categoryCode.code !== '0') {
+      this._productService.getSubcategoryProduct(this.categoryCode.code).subscribe(val => {
         if (val.items.length === 0) {
           this.products.subCategoryId = '0';
           this.isCategoryCodeExist = false;
@@ -155,25 +162,25 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
   }
 
   checkFormValid(): boolean {
-    // if (this.products.productCode === undefined 
-    //   || this.products.productName === undefined 
-    //   || this.products.price === undefined 
-    //   || this.products.unit === undefined
-    //   || this.files.length === 0
-    //   // || this.storageSelect.length === 0
-    //   || this.categoryCode === '0' 
-    //   || this.products.unit === ''
-    //   || this.products.productCode === ''
-    //   || this.isExist 
-    //   || this.products.productName === '') {
-    //     console.log("1 check form valid");
-    //     return true;
-    // }
+    if (this.products.productCode === undefined 
+      || this.products.productName === undefined 
+      || this.products.price === undefined 
+      || this.products.unit === undefined
+      || this.files.length === 0
+      // || this.storageSelect.length === 0
+      || this.categoryCode.code === undefined 
+      || this.products.unit === ''
+      || this.products.productCode === ''
+      || this.isExist 
+      || this.products.productName === '') {
+        console.log("1 check form valid");
+        return true;
+    }
 
-    // if (this.getSubcategorycode.items.length > 0 && this.products.subCategoryId === '0') {
-    //   console.log("2 check form valid");
-    //   return true;
-    // }
+    if (this.getSubcategorycode.items.length > 0 && this.subcategoryCode.code === undefined) {
+      console.log("2 check form valid");
+      return true;
+    }
 
     // this.storageSelect.forEach(element => {
     //   if (element.storageCode === undefined || element.quantity === undefined || element.productLocation === undefined) {
@@ -189,12 +196,11 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
     //   }
     // });
 
-    return false
-    // if (this.isTrue) {
-    //   this.isTrue = false
-    //   console.log("4 check form valid");
-    //   return true;
-    // }
+    if (this.isTrue) {
+      this.isTrue = false
+      console.log("4 check form valid");
+      return true;
+    }
   }
 
   checkIfAlreadyExist(storageCode: string, index: number) {

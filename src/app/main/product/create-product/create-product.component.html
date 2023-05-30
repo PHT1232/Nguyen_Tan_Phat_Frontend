@@ -79,7 +79,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <select
+                  <!-- <select
                     required="categoryCode === '0'"
                     #selectModel="ngModel"
                     #selectEl
@@ -96,7 +96,18 @@
                     >
                       {{ category.CategoryName }}
                     </option>
-                  </select>
+                  </select> -->
+
+                  
+                  <p-dropdown [style]="{'width':'100%'}" 
+                  [options]="getCategory.items" 
+                  [(ngModel)]="categoryCode" 
+                  [ngModelOptions]="{standalone: true}" 
+                  (onChange)="getSubcategory()"
+                  optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Danh mục"
+                  #selectModel="ngModel"
+                  #selectEl>
+                  </p-dropdown>
                   <abp-validation-summary
                     [control]="selectModel"
                     [controlEl]="selectEl"
@@ -114,7 +125,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <select
+                  <!-- <select
                     required
                     #selectSubModel="ngModel"
                     #selectSubEl
@@ -134,7 +145,18 @@
                     >
                       {{ subcategory.subcategoryName }}
                     </option>
-                  </select>
+                  </select> -->
+
+                  
+                  <p-dropdown [style]="{'width':'100%'}" 
+                  [disabled]="isCategoryCodeExist != true"
+                  [options]="getSubcategorycode.items" 
+                  [(ngModel)]="subcategoryCode" 
+                  [ngModelOptions]="{standalone: true}" 
+                  optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Danh mục nhỏ"
+                  #selectModel="ngModel"
+                  #selectEl>
+                  </p-dropdown>
                 </div>
               </div>
             </div>
