@@ -6,7 +6,7 @@ import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/app-component-base';
 import { FileDownloadService, UploadServiceProxy } from '@shared/service-proxies/service-proxies';
 
-const URL = AppConsts.remoteServiceBaseUrl + '/api/Upload/DemoUpload';
+const URL = AppConsts.remoteServiceBaseUrl + '/api/Upload/Upload?fileFolderPath=Product';
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
@@ -61,7 +61,4 @@ export class UploadComponent extends AppComponentBase implements OnInit {
     });
   }
 
-  ExportExcel() {
-    this._fileService.exportToExcel();
-  }
 }

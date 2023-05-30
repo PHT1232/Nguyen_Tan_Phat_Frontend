@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponentBase } from '@shared/app-component-base';
-import { CategoryInput, CategoryServiceProxy, PermissionDto, ProductServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CategoryInput, CategoryServiceProxy, PermissionDto, ProductServiceProxy, UploadServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CategoryProduct, CategoryProductList } from '@shared/service-proxies/dtos/products/CategoryProduct';
 import { ProductGetAllDto } from '@shared/service-proxies/dtos/products/ProductGetAllDto';
 import { ProductInputDto } from '@shared/service-proxies/dtos/products/ProductInputDto';
@@ -12,6 +12,10 @@ import { SubcategoryProduct, SubcategoryProductList } from '@shared/service-prox
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponent } from '@app/app.component';
+import { AppConsts } from '@shared/AppConsts';
+import { HttpClient } from '@angular/common/http';
+
+var URL = AppConsts.remoteServiceBaseUrl + '/api/Upload/ProductUpload';
 
 @Component({
   selector: 'app-create-product',
@@ -39,12 +43,15 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
   isTrue = true;
   isExist = false;
   errorMessage = 'Không được trùng kho';
+  files: File[] = [];
+  filePath = ""
 
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
     injector: Injector,
     private _productService: ProductServiceProxy,
+    private http: HttpClient,
     private _router: Router,
     private appMain: AppComponent
   ) { 
@@ -69,29 +76,41 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
 
     const product = new ProductInputDto();
     product.productCode = this.products.productCode;
-    product.productName = this.products.productName;
-    product.productDescription = this.products.productDescription;
-    product.productDetail = this.products.productDetail;
-    product.categoryId = this.categoryCode;
-    product.unit = this.products.unit;
-    product.price = this.products.price;  
-    if (this.products.subCategoryId === '0')
-      product.subCategoryId = null;
-    else
-      product.subCategoryId = this.products.subCategoryId;
-      
-    product.storages = this.storageSelect;
-    this._productService.create(product).subscribe(
-      () => {
-        this.appMain.showSuccessMessage('Thêm mới thành công', 'Thêm mới sản phẩm thành công')
-        this.onSave.emit();
-        this._router.navigate(['app/product']);
-      },
-      () => {
-        this.saving = false;
-      }
-    )
+    const formData = new FormData();
+    for (const file of this.files) {
+      formData.append('file', file);
+      URL += "?id=" + this.products.productCode;
+    }
+    this.http.post(URL, formData).subscribe((res) => {
+      this.filePath = res['result'][0];
+      product.productImage = this.filePath;
+        product.productName = this.products.productName;
+        product.productDescription = this.products.productDescription;
+        product.productDetail = this.products.productDetail;
+        product.categoryId = this.categoryCode;
+        product.unit = this.products.unit;
+        product.price = this.products.price;  
+        if (this.products.subCategoryId === '0') {
+          product.subCategoryId = null;
+        } else {
+          product.subCategoryId = this.products.subCategoryId;
+        }
+        
+        product.storages = this.storageSelect;
+
+         this._productService.create(product).subscribe(
+          () => {
+            this.appMain.showSuccessMessage('Thêm mới thành công', 'Thêm mới sản phẩm thành công')
+            this.onSave.emit();
+            this._router.navigate(['app/product']);
+          },
+          () => {
+            this.saving = false;
+          }
+        )
+    });
   }
+
 
   getSubcategory() {
     if (this.categoryCode !== '0') {
@@ -136,24 +155,25 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
   }
 
   checkFormValid(): boolean {
-    if (this.products.productCode === undefined 
-      || this.products.productName === undefined 
-      || this.products.price === undefined 
-      || this.products.unit === undefined
-      // || this.storageSelect.length === 0
-      || this.categoryCode === '0' 
-      || this.products.unit === ''
-      || this.products.productCode === ''
-      || this.isExist 
-      || this.products.productName === '') {
-        console.log("1 check form valid");
-        return true;
-    }
+    // if (this.products.productCode === undefined 
+    //   || this.products.productName === undefined 
+    //   || this.products.price === undefined 
+    //   || this.products.unit === undefined
+    //   || this.files.length === 0
+    //   // || this.storageSelect.length === 0
+    //   || this.categoryCode === '0' 
+    //   || this.products.unit === ''
+    //   || this.products.productCode === ''
+    //   || this.isExist 
+    //   || this.products.productName === '') {
+    //     console.log("1 check form valid");
+    //     return true;
+    // }
 
-    if (this.getSubcategorycode.items.length > 0 && this.products.subCategoryId === '0') {
-      console.log("2 check form valid");
-      return true;
-    }
+    // if (this.getSubcategorycode.items.length > 0 && this.products.subCategoryId === '0') {
+    //   console.log("2 check form valid");
+    //   return true;
+    // }
 
     // this.storageSelect.forEach(element => {
     //   if (element.storageCode === undefined || element.quantity === undefined || element.productLocation === undefined) {
@@ -169,11 +189,12 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
     //   }
     // });
 
-    if (this.isTrue) {
-      this.isTrue = false
-      console.log("4 check form valid");
-      return true;
-    }
+    return false
+    // if (this.isTrue) {
+    //   this.isTrue = false
+    //   console.log("4 check form valid");
+    //   return true;
+    // }
   }
 
   checkIfAlreadyExist(storageCode: string, index: number) {
@@ -189,5 +210,15 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
         this.isExist = false;
       }
     }
+  }
+
+  onSelect(event) {
+    console.log(event);
+    this.files.push(...event.addedFiles);
+  }
+
+  onRemove(event) {
+    console.log(event);
+    this.files.splice(this.files.indexOf(event), 1);
   }
 }

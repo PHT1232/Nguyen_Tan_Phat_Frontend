@@ -6525,10 +6525,11 @@ export class FileDownloadService {
     location.href = url;
   }
 
-  exportToExcel() {
-    const url = this.baseUrl + '/File/ExcelExport';
+  exportToExcel(id: string): Observable<boolean> {
+    const url = this.baseUrl + '/File/ExcelExport?id=' + id;
     // TODO: This causes reloading of same page in Firefox
     location.href = url;
+    return _observableOf(true);
   }
 }
 //#endregion

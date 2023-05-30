@@ -228,6 +228,25 @@
                   (click)="Cancel()"
                 >
                 </p-button>
+                <p-button
+                          [loading]="loading"
+                          styleClass="p-button-outlined p-button-help"
+                          icon="pi pi-download"
+                          label="Phiếu xuất kho"
+                          *ngIf="isGranted('Pages.System.ExportImport.View') == true"
+                          (click)="ExportExcel(exportImport.exportImportCode)"
+                        >
+                </p-button>
+                <p-button
+                          [loading]="loading"
+                          styleClass="p-button-outlined p-button-secondary"
+                          icon="pi pi-download"
+                          label="Phiếu xuất hàng"
+                          [style]="{ 'margin-right': '10px' }"
+                          *ngIf="isGranted('Pages.System.ExportImport.View') == true"
+                          (click)="ExportExcel(exportImport.exportImportCode)"
+                        >
+                </p-button>
                 </div>
               </div>
             </div>

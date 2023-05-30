@@ -7,6 +7,7 @@ export interface IProductInputDto {
     productDetail: string;
     price: number;
     categoryId: string;
+    productImage: string;
     subCategoryId: string;
     unit: string;
     storages: StorageProductDetail[];
@@ -19,6 +20,7 @@ export class ProductInputDto implements IProductInputDto{
     productDetail: string;
     price: number;
     categoryId: string;
+    productImage: string;
     subCategoryId: string;
     unit: string;
     storages: StorageProductDetail[];
@@ -40,6 +42,7 @@ export class ProductInputDto implements IProductInputDto{
             this.productDetail = _data["productDetail"];
             this.price = _data["price"];
             this.categoryId = _data["categoryId"];
+            this.productImage = _data["productImage"];
             this.subCategoryId = _data["subCategoryId"];
             this.unit = _data["unit"];
             this.storages = _data["storages"];
@@ -61,6 +64,7 @@ export class ProductInputDto implements IProductInputDto{
         data["productDetail"] = this.productDetail;
         data["price"] = this.price;
         data["categoryId"] = this.categoryId;
+        data["productImage"] = this.productImage;
         data["subCategoryId"] = this.subCategoryId;
         data["unit"] = this.unit;
         data["storages"] = this.storages;

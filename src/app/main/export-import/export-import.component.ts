@@ -8,6 +8,7 @@ import {
   ExportImportInput,
   ExportImportPagedResult,
   ExportImportService,
+  FileDownloadService,
   GetAllExportImportDto,
   GetAllExportImportPagedResult,
   ProductServiceProxy,
@@ -48,11 +49,13 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
   isLoading = false;
   first: number = 0;
   rows: number = 6;
+  loading: boolean = false;
 
   constructor(
     injector: Injector,
     private _productService: ProductServiceProxy,
     private _exportImportService: ExportImportService,
+    private _fileService: FileDownloadService,
     private appMain: AppComponent
   ) {
     super(injector);
@@ -163,5 +166,12 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
 
   checkDate() {
     console.log(this.bsInlineRangeValue.toLocaleString());
+  }
+
+  ExportExcel(id: string) {
+    this.loading = true;
+    this._fileService.exportToExcel(id).subscribe((res) => {
+      this.loading = false;
+    });
   }
 }

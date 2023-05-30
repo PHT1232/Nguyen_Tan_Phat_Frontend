@@ -258,6 +258,27 @@
               </div>
             </div>
           </div>
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Hình ảnh sản phẩm" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <ngx-dropzone (change)="onSelect($event)" accept="image/jpeg,image/jpg,image/png" [multiple]="false">
+                    <ngx-dropzone-label>Ảnh sản phẩm</ngx-dropzone-label>
+                    <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+                      <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                    </ngx-dropzone-preview>
+                  </ngx-dropzone>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- <div class="row" style="padding-bottom: 25px;">
                 <div class="col">
                   <div class="row">

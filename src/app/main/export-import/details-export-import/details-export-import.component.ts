@@ -10,6 +10,7 @@ import {
   ExportImportPagedResult, 
   ExportImportProductDto, 
   ExportImportService, 
+  FileDownloadService, 
   PermissionDto, 
   ProductServiceProxy, 
 } from '@shared/service-proxies/service-proxies';
@@ -58,12 +59,14 @@ export class DetailsExportImportComponent extends AppComponentBase implements On
   initialProductQuantity: InitialProductQuantity[] = [];
   id: string;
   isTableLoading = false;
-
+  loading: boolean = false
+  
   @Output() onsave = new EventEmitter<any>();
 
   constructor(
     injector: Injector,
     private _router: Router,
+    private _fileService: FileDownloadService,
     private _exportImport: ExportImportService,
     private router: ActivatedRoute,
     private _productService: ProductServiceProxy
@@ -116,7 +119,10 @@ export class DetailsExportImportComponent extends AppComponentBase implements On
     this._router.navigate(['app/exportimport']);
   }
 
-  getProductPage() {
-
+  ExportExcel(id: string) {
+    this.loading = true;
+    this._fileService.exportToExcel(id).subscribe((res) => {
+      this.loading = false;
+    });
   }
 }

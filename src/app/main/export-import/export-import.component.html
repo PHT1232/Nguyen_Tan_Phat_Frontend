@@ -171,10 +171,10 @@
                   {{ exportImport.creationTime | date : "dd/MM/yyyy" }}
                 </td>
                 <td>{{ exportImport.username }}</td>
-                <td *ngIf="orderStatus == 1">
+                <td>
                   <table>
                     <tr>
-                      <td>
+                      <td *ngIf="orderStatus == 1">
                         <p-button
                           styleClass="p-button-secondary"
                           icon="pi pi-pencil"
@@ -184,7 +184,7 @@
                         >
                         </p-button>
                       </td>
-                      <td>
+                      <td *ngIf="orderStatus == 1">
                         <p-button
                           styleClass="p-button-success"
                           icon="pi pi-check"
@@ -194,13 +194,24 @@
                         >
                         </p-button>
                       </td>
-                      <td>
+                      <td *ngIf="orderStatus == 1">
                         <p-button
                           styleClass="p-button-danger"
                           icon="pi pi-times"
                           [style]="{ 'margin-right': '10px' }"
                           *ngIf="isGranted('Pages.System.ExportImport.View') == true"
                           (click)="delete(exportImport)"
+                        >
+                        </p-button>
+                      </td>
+                      <td>
+                        <p-button
+                          [loading]="loading"
+                          styleClass="p-button-help"
+                          icon="pi pi-download"
+                          [style]="{ 'margin-right': '10px' }"
+                          *ngIf="isGranted('Pages.System.ExportImport.View') == true"
+                          (click)="ExportExcel(exportImport.exportImportCode)"
                         >
                         </p-button>
                       </td>
