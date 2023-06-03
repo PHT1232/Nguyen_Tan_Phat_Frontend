@@ -37,7 +37,7 @@
                   <!-- <div class="card mb-0 mt-2"> -->
                     <div class="form-group row mb-0">
                       <div class="col pt-2">
-                        <select
+                        <!-- <select
                           class="form-control"
                           [(ngModel)]="storageCode"
                           (change)="getDataPage(1)"
@@ -55,11 +55,18 @@
                           >
                             {{ storage.storageName }}
                           </option>
-                        </select>
+                        </select> -->
+                        <p-dropdown [style]="{'width':'100%'}" 
+                        [options]="getStorage" 
+                        [(ngModel)]="storageCode" 
+                        [ngModelOptions]="{standalone: true}" 
+                        (onChange)="getDataPage(1)"
+                        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Kho">
+                        </p-dropdown>
                         <!-- <p-cascadeSelect [ngModelOptions]="{standalone: true}" [(ngModel)]="storageCode" [options]="getStorage.items" optionLabel="cname" optionGroupLabel="name" [style]="{ minWidth: '14rem' }" placeholder="Kho"></p-cascadeSelect> -->
                       </div>
                       <div class="col pt-2">
-                        <select
+                        <!-- <select
                           class="form-control"
                           (change)="getSubcategory(); getDataPage(1)"
                           [(ngModel)]="categoryCode"
@@ -77,11 +84,19 @@
                           >
                             {{ category.CategoryName }}
                           </option>
-                        </select>
+                        </select> -->
+                        <p-dropdown [style]="{'width':'100%'}"
+                        [disabled]="this.keyword === undefined" 
+                        [options]="getCategory.items" 
+                        [(ngModel)]="categoryCode" 
+                        [ngModelOptions]="{standalone: true}"
+                        (change)="getSubcategory(); getDataPage(1)"
+                        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Danh mục"
+                        ></p-dropdown>
                         <!-- <p-cascadeSelect [ngModelOptions]="{standalone: true}" [(ngModel)]="categoryCode" [options]="getCategory.items" optionLabel="cname" optionGroupLabel="name" [style]="{ minWidth: '14rem' }" placeholder="Danh mục"></p-cascadeSelect> -->
                       </div>
                       <div class="col pt-2">
-                        <select
+                        <!-- <select
                           class="form-control"
                           (change)="getDataPage(1)"
                           [(ngModel)]="subcategoryCode"
@@ -101,7 +116,17 @@
                           >
                             {{ subcategory.subcategoryName }}
                           </option>
-                        </select>
+                        </select> -->
+
+                        <p-dropdown [style]="{'width':'100%'}" 
+                        [disabled]="getSubcategorycode.items === undefined"
+                        [options]="getSubcategorycode.items" 
+                        [(ngModel)]="subcategoryCode" 
+                        (change)="getDataPage(1)"
+                        [ngModelOptions]="{standalone: true}" 
+                        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Danh mục nhỏ"
+                        >
+                        </p-dropdown>
                       </div>
                     </div>
                   <!-- </div> -->
@@ -190,6 +215,8 @@
                   </td>
                   <td>{{ product.productName }}</td>
                   <td><img [src]="'https://localhost:44311/File/GetImage?fileName=' + product.productImage" [alt]="product.name" width="100" class="shadow-4" /></td>
+                  <!-- <td><img [src]="product.imageToShow" [alt]="product.name" width="100" class="shadow-4" /></td> -->
+                  <!-- <td><img [src]="imageShow" [alt]="product.name" width="100" class="shadow-4" /></td> -->
                   <td>{{ product.categoryName }}</td>
                   <td>{{ product.unit }}</td>
                   <!-- <td *ngIf="storageCode != '0'">{{ product.quantity }}</td> -->

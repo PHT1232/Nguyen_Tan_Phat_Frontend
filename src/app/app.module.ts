@@ -101,6 +101,7 @@ import { ExpensesComponent } from './main/expenses/expenses.component';
 import { CreateExpensesComponent } from './main/expenses/create-expenses/create-expenses.component';
 import { DetailExpensesComponent } from './main/expenses/detail-expenses/detail-expenses.component';
 import { UploadComponent } from './main/upload/upload.component';
+import { RetailComponent } from './main/retail/retail.component';
 
 @NgModule({
   declarations: [
@@ -167,6 +168,7 @@ import { UploadComponent } from './main/upload/upload.component';
     CreateExpensesComponent,
     DetailExpensesComponent,
     UploadComponent,
+    RetailComponent,
   ],
   imports: [
     CommonModule,
@@ -208,7 +210,8 @@ import { UploadComponent } from './main/upload/upload.component';
     KeyFilterModule,
     FileUploadModule,
     NgxDropzoneModule,
-    TagModule
+    TagModule,
+    TreeTableModule
   ],
   providers: [],
   entryComponents: [

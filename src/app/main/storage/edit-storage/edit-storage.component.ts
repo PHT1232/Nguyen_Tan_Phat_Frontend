@@ -7,11 +7,12 @@ import {
 } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { AppComponentBase } from '@shared/app-component-base';
-import { PermissionDto, StorageForUpdate, StorageInput, StorageServiceProxy } from '@shared/service-proxies/service-proxies';
+import { PermissionDto, StorageForUpdate, StorageInput, StorageServiceProxy, StructureServiceProxy } from '@shared/service-proxies/service-proxies';
 import { forEach as _forEach, map as _map } from 'lodash-es';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponent } from '@app/app.component';
+import { StructureSelectDto } from '@shared/service-proxies/dtos/Structure/StructureSelectDto';
 
 @Component({
   selector: 'app-edit-storage',
@@ -26,6 +27,8 @@ export class EditStorageComponent extends AppComponentBase implements OnInit {
   permissions: PermissionDto[] = [];
   checkedPermissionMap: { [key: string]: boolean } = {};
   defaultPermissionCheckedStatus = true;
+  getStructure: StructureSelectDto[] = [];
+  selectedStructure = new StructureSelectDto();
 
   @Output() onSave = new EventEmitter<any>();
 
@@ -34,10 +37,14 @@ export class EditStorageComponent extends AppComponentBase implements OnInit {
     private _router: Router,
     private router: ActivatedRoute,
     private _storageService: StorageServiceProxy,
+    private _structureService: StructureServiceProxy,
     private appMain: AppComponent
   ) 
   { 
     super(injector);
+    this._structureService.getStructureSelect().subscribe(val => {
+      this.getStructure = val.items;
+    })
   }
 
   ngOnInit(): void {
@@ -48,6 +55,8 @@ export class EditStorageComponent extends AppComponentBase implements OnInit {
     .subscribe((result: StorageForUpdate) => {
       this.storage.storageCode = result.storageCode;
       this.storage.storageName = result.storageName;
+      this.storage.structureId = result.structureId;
+      // this.selectedStructure = new StructureSelectDto({ code: result., name: result.storageName});
       this.storage.address = result.address;
       this.storage.description = result.description;
     });
@@ -58,6 +67,7 @@ export class EditStorageComponent extends AppComponentBase implements OnInit {
     
     const storageAdd = new StorageInput();
     storageAdd.init(this.storage);
+    storageAdd.structureId = this.selectedStructure.code;
     
     this._storageService.update(storageAdd).subscribe(
       () => {

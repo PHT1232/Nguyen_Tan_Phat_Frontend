@@ -18,6 +18,7 @@ export class ProductGetAllDto implements IProductGetAllDto {
     productCode: string;
     productName: string;
     productImage: string;
+    imageToShow: any;
     categoryName: string;
     price: number;
     unit: string;

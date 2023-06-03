@@ -18,13 +18,12 @@
               <div class="row">
                 <div class="col">
                   <input
+                    pInputText
                     readonly
                     type="text"
-                    class="form-control"
-                    name="productCode"
-                    id="productCode"
                     required
-                    maxlength="32"
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="products.productCode"
                     #nameCode="ngModel"
                     #nameCodeEl
@@ -51,11 +50,10 @@
                 <div class="col">
                   <input
                     type="text"
-                    class="form-control"
-                    name="productName"
-                    id="productName"
+                    pInputText
                     required
-                    maxlength="50"
+                    [ngModelOptions]="{ standalone: true }"
+                    [style]="{'width':'100%'}"
                     [(ngModel)]="products.productName"
                     #nameModel="ngModel"
                     #nameEl
@@ -82,7 +80,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <select
+                  <!-- <select
                     required="categoryCode === '0'"
                     #selectModel="ngModel"
                     #selectEl
@@ -103,7 +101,15 @@
                   <abp-validation-summary
                     [control]="selectModel"
                     [controlEl]="selectEl"
-                  ></abp-validation-summary>
+                  ></abp-validation-summary> -->
+                  <p-dropdown [style]="{'width':'100%'}" 
+                  [options]="getCategory.items" 
+                  [(ngModel)]="categoryCode" 
+                  [ngModelOptions]="{standalone: true}" 
+                  (onChange)="getSubcategory()"
+                  optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Danh mục"
+                  >
+                  </p-dropdown>
                 </div>
               </div>
             </div>
@@ -117,7 +123,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <select
+                  <!-- <select
                     required
                     #selectSubModel="ngModel"
                     #selectSubEl
@@ -137,7 +143,16 @@
                     >
                       {{ subcategory.subcategoryName }}
                     </option>
-                  </select>
+                  </select> -->
+                  <p-dropdown [style]="{'width':'100%'}" 
+                  [disabled]="isCategoryCodeExist != true"
+                  [options]="getSubcategorycode.items" 
+                  [(ngModel)]="subcategoryCode" 
+                  [ngModelOptions]="{standalone: true}" 
+                  optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Danh mục nhỏ"
+                  #selectModel="ngModel"
+                  #selectEl>
+                  </p-dropdown>
                 </div>
               </div>
             </div>
@@ -156,16 +171,16 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <input
-                    class="form-control"
-                    name="price"
-                    id="price"
-                    [(ngModel)]="this.products.price"
-                    type="number"
+                  <p-inputNumber
+                    required
+                    class="pinputnumber"
+                    [style]="{'width':'100%'}"
+                    mode="currency" currency="VND"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="products.price"
                     #priceModel="ngModel"
                     #priceEl
-                    required
-                  />
+                  ></p-inputNumber>
                   <abp-validation-summary
                     [control]="priceModel"
                     [controlEl]="priceEl"
@@ -187,11 +202,12 @@
               <div class="row">
                 <div class="col">
                   <input
-                    class="form-control"
-                    name="unit"
-                    id="unit"
-                    [(ngModel)]="this.products.unit"
                     type="text"
+                    pInputText
+                    required
+                    [ngModelOptions]="{ standalone: true }"
+                    [style]="{'width':'100%'}"
+                    [(ngModel)]="this.products.unit"
                     #unitModel="ngModel"
                     #unitEl
                     required
@@ -257,6 +273,9 @@
                   <label for="name">
                     {{ "Hình ảnh sản phẩm" | localize }}
                   </label>
+                  <span style="color: red; margin-left: 5px; font-size: 14pt"
+                    >*</span
+                  >
                 </div>
               </div>
               <div class="row">

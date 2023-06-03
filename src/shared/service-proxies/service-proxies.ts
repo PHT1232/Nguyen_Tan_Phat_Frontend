@@ -8366,6 +8366,7 @@ export interface IStorageOutPutDto {
 export interface IStorageInput {
   storageCode: string;
   storageName: string;
+  structureId: string;
   address: string;
   description: string;
 }
@@ -8373,6 +8374,7 @@ export interface IStorageInput {
 export interface IStorageForUpdate {
   storageCode: string;
   storageName: string;
+  structureId: string;
   address: string;
   description: string;
 }
@@ -8380,14 +8382,24 @@ export interface IStorageForUpdate {
 export interface IStorageGetAllDto {
   storageCode: string;
   storageName: string;
+  unit: string;
   address: string;
+  productQuantity: number;
   creationTime: moment.Moment;
   lastDateModified: moment.Moment;
   username: string;
 }
 
+export interface IListStorageGetAllDto {
+  storageCode: string;
+  storageName: string;
+  productQuantity: number;
+  address: string;
+  children: GetAllStorageDto[] | undefined;
+}
+
 export interface IStorageGetAllPagedResultDto {
-  items: GetAllStorageDto[] | undefined;
+  items: ListStorageGetAllDto[] | undefined;
   totalCount: number;
 }
 
@@ -9291,6 +9303,7 @@ export class GetAllCategoryPagedResultDto
 export class StorageInput implements IStorageInput {
   storageCode: string;
   storageName: string;
+  structureId: string;
   address: string;
   description: string;
 
@@ -9307,6 +9320,7 @@ export class StorageInput implements IStorageInput {
     if (_data) {
       this.storageCode = _data["storageCode"];
       this.storageName = _data["storageName"];
+      this.structureId = _data["structureId"];
       this.address = _data["address"];
       this.description = _data["description"];
     }
@@ -9323,17 +9337,71 @@ export class StorageInput implements IStorageInput {
     data = typeof data === "object" ? data : {};
     data["storageCode"] = this.storageCode;
     data["storageName"] = this.storageName;
+    data["structureId"] = this.structureId;
     data["address"] = this.address;
     data["description"] = this.description;
     return data;
   }
 }
 
+export class ListStorageGetAllDto implements IListStorageGetAllDto {
+  storageCode: string;
+  storageName: string;
+  productQuantity: number;
+  address: string;
+  children: GetAllStorageDto[] | undefined;
+  
+  constructor(data?: IListStorageGetAllDto) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
+    }
+  }
+
+  init(_data: any) {
+    if (_data) {
+      this.storageCode = _data["storageCode"];
+      this.storageName = _data["storageName"];
+      this.productQuantity = _data["productQuantity"];
+      this.address = _data["address"];
+      this.children = _data["children"];
+    }
+  }
+
+  static fromJS(data: any): ListStorageGetAllDto {
+    data = typeof data === "object" ? data : {};
+    let result = new ListStorageGetAllDto();
+    result.init(data);
+    return result;
+  }
+
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["storageCode"] = this.storageCode;
+    data["storageName"] = this.storageName;
+    data["productQuantity"] = this.productQuantity;
+    data["address"] = this.address;
+    data["children"] = this.children;
+    return data;
+  }
+
+  clone(): ListStorageGetAllDto {
+    const json = this.toJSON();
+    let result = new ListStorageGetAllDto();
+    result.init(json);
+    return result;
+  }
+}
+
 export class GetAllStorageDto implements IStorageGetAllDto {
   storageCode: string;
   storageName: string;
+  unit: string;
   address: string;
   creationTime: moment.Moment;
+  productQuantity: number;
   lastDateModified: moment.Moment;
   username: string;
 
@@ -9350,8 +9418,10 @@ export class GetAllStorageDto implements IStorageGetAllDto {
     if (_data) {
       this.storageCode = _data["storageCode"];
       this.storageName = _data["storageName"];
+      this.unit = _data["unit"];
       this.address = _data["address"];
       this.creationTime = _data["creationTime"];
+      this.productQuantity = _data["productQuantity"];
       this.lastDateModified = _data["lastDateModified"];
       this.username = _data["username"];
     }
@@ -9368,8 +9438,10 @@ export class GetAllStorageDto implements IStorageGetAllDto {
     data = typeof data === "object" ? data : {};
     data["storageCode"] = this.storageCode;
     data["storageName"] = this.storageName;
+    data["unit"] = this.unit;
     data["address"] = this.address;
     data["creationTime"] = this.creationTime;
+    data["productQuantity"] = this.productQuantity;
     data["lastDateModified"] = this.lastDateModified;
     data["username"] = this.username;
     return data;
@@ -9386,7 +9458,7 @@ export class GetAllStorageDto implements IStorageGetAllDto {
 export class GetAllStoragePagedResultDto
   implements IStorageGetAllPagedResultDto
 {
-  items: GetAllStorageDto[] | undefined;
+  items: ListStorageGetAllDto[] | undefined;
   totalCount: number;
 
   constructor(data?: IStorageGetAllPagedResultDto) {
@@ -9403,7 +9475,7 @@ export class GetAllStoragePagedResultDto
       if (Array.isArray(_data["items"])) {
         this.items = [] as any;
         for (let item of _data["items"])
-          this.items.push(GetAllStorageDto.fromJS(item));
+          this.items.push(ListStorageGetAllDto.fromJS(item));
       }
       this.totalCount = _data["totalCount"];
     }
@@ -9437,6 +9509,7 @@ export class GetAllStoragePagedResultDto
 export class StorageForUpdate implements IStorageForUpdate {
   storageCode: string;
   storageName: string;
+  structureId: string;
   address: string;
   description: string;
 
@@ -9453,6 +9526,7 @@ export class StorageForUpdate implements IStorageForUpdate {
     if (_data) {
       this.storageCode = _data["storageCode"];
       this.storageName = _data["storageName"];
+      this.structureId = _data["structureId"];
       this.address = _data["address"];
       this.description = _data["description"];
     }
@@ -9469,6 +9543,7 @@ export class StorageForUpdate implements IStorageForUpdate {
     data = typeof data === "object" ? data : {};
     data["storageCode"] = this.storageCode;
     data["storageName"] = this.storageName;
+    data["structureId"] = this.structureId;
     data["address"] = this.address;
     data["description"] = this.description;
     return data;

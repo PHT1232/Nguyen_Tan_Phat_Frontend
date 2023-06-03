@@ -26,7 +26,7 @@
           <div class="row">
             <div class="col-md-6">
               <!-- &emsp; -->
-              <p-button 
+              <!-- <p-button 
             label="Xóa"
             [disabled]="selectedStorages.length === 0"
             (onClick)="checkOnDelete()"
@@ -34,7 +34,7 @@
             icon="pi pi-trash"
             *ngIf="isGranted('Pages.System.Storage.Delete') == true">
 
-            </p-button>
+            </p-button> -->
             </div>
             <div class="col-md-6">
               <div class="input-group">
@@ -58,7 +58,7 @@
         <div class="card-body">
           <div class="table-responsive">
             <p-scrollPanel [style]="{ width: '100%', height: '540px' }">
-            <p-table [value]="storages" dataKey="storageCode" [(selection)]="selectedStorages" [tableStyle]="{ 'min-width': '50rem' }"
+            <!-- <p-treeTable [columns]="cols" [value]="data" dataKey="storageCode" [(selection)]="selectedStorages" [tableStyle]="{ 'min-width': '50rem' }"
               [busy]="isTableLoading" [styleClass]="'p-datatable-sm'">
               <ng-template pTemplate="header">
                 <tr>
@@ -67,31 +67,30 @@
                   </th>
                   <th pSortableColumn="storageCode">{{ "Mã kho" | localize }}<p-sortIcon field="storageCode"></p-sortIcon></th>
                   <th pSortableColumn="storageName">{{ "Tên kho" | localize }}<p-sortIcon field="storageName"></p-sortIcon></th>
+                  <th pSortableColumn="unit">{{ "Chi nhánh" | localize }}<p-sortIcon field="unit"></p-sortIcon></th>
                   <th pSortableColumn="address">{{ "Địa chỉ" | localize }}<p-sortIcon field="address"></p-sortIcon></th>
                   <th pSortableColumn="creationTime">{{ "Ngày tạo" | localize }}<p-sortIcon field="creationTime"></p-sortIcon></th>
                   <th pSortableColumn="username">{{ "Người cập nhật" | localize }}<p-sortIcon field="username"></p-sortIcon></th>
                   <th style="width: 200px;">{{ "Hành động" | localize }}</th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-storage>
+              <ng-template pTemplate="body"
+              let-storage
+              >
                 <tr>
                   <td>
+                    <p-treeTableToggler [rowNode]="storage"></p-treeTableToggler>
                     <p-tableCheckbox [value]="storage"></p-tableCheckbox>
                 </td>
                 <td><a [routerLink]="['detail', storage.storageCode]">{{ storage.storageCode }}</a></td>
                 <td>{{ storage.storageName }}</td>
+                <td>{{ storage.unit }}</td>
                 <td>{{ storage.address }}</td>
                 <td>
                   {{storage.creationTime | date: 'dd/MM/yyyy'}}
                 </td>
                 <td>{{ storage.username }}</td>
                 <td>
-                    <!-- <p-button styleClass="p-button-secondary"
-                      icon="fas fa-pencil-alt"
-                      [style]="{'margin-right': '10px'}"
-                      *ngIf="isGranted('Pages.System.Storage.Update') == true"
-                      [routerLink]="['edit', storage.storageCode]">
-                    </p-button> -->
                     <p-button styleClass="p-button-secondary"
                       icon="pi pi-pencil"
                       [style]="{'margin-right': '10px'}"
@@ -107,7 +106,67 @@
                   </td>
                 </tr>
               </ng-template>
-            </p-table>
+            </p-treeTable> -->
+            <p-treeTable [columns]="cols" 
+             [value]="data" dataKey="storageCode" [(selection)]="selectedStorages" [tableStyle]="{ 'min-width': '50rem' }"
+             [busy]="isTableLoading" [styleClass]="'p-datatable-sm'">
+              <ng-template pTemplate="header" let-columns>
+                  <tr>
+                      <th [ttSortableColumn]="columns[0].field">{{ "Mã kho" | localize }}
+                        <p-treeTableSortIcon [field]="columns[0].field"></p-treeTableSortIcon>
+                      </th>
+                      <th [ttSortableColumn]="columns[1].field">{{ "Tên kho" | localize }}
+                        <p-treeTableSortIcon [field]="columns[1].field"></p-treeTableSortIcon>
+                      </th>
+                      <th [ttSortableColumn]="columns[2].field">{{ "Chi nhánh" | localize }}
+                        <p-treeTableSortIcon [field]="columns[2].field"></p-treeTableSortIcon>
+                      </th>
+                      <th [ttSortableColumn]="columns[3].field">{{ "Địa chỉ" | localize }}
+                        <p-treeTableSortIcon [field]="columns[3].field"></p-treeTableSortIcon>
+                      </th>
+                      <th [ttSortableColumn]="columns[4].field">{{ "Số lượng sản phẩm" | localize }}
+                        <p-treeTableSortIcon [field]="columns[4].field"></p-treeTableSortIcon>
+                      </th>
+                      <th [ttSortableColumn]="columns[5].field">{{ "Ngày tạo" | localize }}
+                        <p-treeTableSortIcon [field]="columns[5].field"></p-treeTableSortIcon>
+                      </th>
+                      <th [ttSortableColumn]="columns[6].field">{{ "Người cập nhật" | localize }}
+                        <p-treeTableSortIcon [field]="columns[6].field"></p-treeTableSortIcon>
+                      </th>
+                      <th>{{ "Hành động" | localize }}</th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body"
+                          let-rowNode let-rowData="rowData"
+                                        let-columns="columns">
+                  <tr>
+                      <td>
+                          <p-treeTableToggler 
+                              [rowNode]="rowNode"> 
+                            </p-treeTableToggler>
+                            <a [routerLink]="['detail', rowData.storageCode]">{{ rowData.storageCode }}</a>
+                      </td>
+                      <td>{{ rowData.storageName }}</td>
+                      <td>{{ rowData.unit }}</td>
+                      <td>{{ rowData.address }}</td>
+                      <td>{{ rowData.productQuantity }}</td>
+                      <td>{{ rowData.creationTime | date: 'dd/MM/yyyy' }}</td>
+                      <td>{{ rowData.username }}</td>
+                      <td><p-button styleClass="p-button-secondary"
+                        icon="pi pi-pencil"
+                        [style]="{'margin-right': '10px'}"
+                        *ngIf="isGranted('Pages.System.Storage.Update') == true"
+                        [routerLink]="['edit', rowData.storageCode]">
+                      </p-button>
+                      <p-button styleClass="p-button-danger"
+                        icon="pi pi-trash"
+                        (click)="delete(rowData)"
+                        *ngIf="isGranted('Pages.System.Storage.Delete') == true"
+                        >
+                      </p-button></td>
+                  </tr>
+              </ng-template>
+          </p-treeTable>
           </p-scrollPanel>
           </div>
         </div>

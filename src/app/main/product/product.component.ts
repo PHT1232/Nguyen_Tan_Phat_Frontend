@@ -10,10 +10,13 @@ import { ProductStorageDto } from '@shared/service-proxies/dtos/products/Product
 import { StorageProductDetail, StorageProductDetailList } from '@shared/service-proxies/dtos/products/StorageProductDetail';
 import { ProductGetAllPagedResultDto } from '@shared/service-proxies/dtos/products/ProductGetAllPagedResultDto';
 import { SubcategoryProduct, SubcategoryProductList } from '@shared/service-proxies/dtos/products/SubcategoryProduct';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, delay, finalize } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 import { AppComponent } from '@app/app.component';
+import { firstValueFrom } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { LookUpTable } from '@shared/service-proxies/dtos/LookUpTable';
 
 class PagedProductRequestDto extends PagedRequestDto {
   keyword: string;
@@ -30,48 +33,73 @@ class PagedProductRequestDto extends PagedRequestDto {
 })
 export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto> {
   keyword = '';
-  storageCode = '1';
-  categoryCode = '0';
-  subcategoryCode = 0;
+  storageCode = new LookUpTable();
+  categoryCode: CategoryProduct = new CategoryProduct();
+  subcategoryCode: SubcategoryProduct = new SubcategoryProduct();
   productList: ProductGetAllDto[] = [];
-  getStorage: StorageProductDetailList = new StorageProductDetailList();
+  getStorage: LookUpTable[];
   getCategory: CategoryProductList = new CategoryProductList();
   getSubcategorycode: SubcategoryProductList = new SubcategoryProductList();
   totalCount: number;
   first: number = 0;
   rows: number = 6;
   selectedProducts: ProductGetAllDto[] = [];
+  imageShow:  any;
 
   constructor(
     injector: Injector,
     private _productService: ProductServiceProxy,
+    private http: HttpClient,
     private appMain: AppComponent
   ) { 
     super(injector);
-      this._productService.getStorageProduct().subscribe(val => {
-        this.getStorage = val;
-      });
+    this._productService.getStorageExpense().subscribe((val) => {
+      this.getStorage = val.items;
+      // this.storageCode = val[val.items.length].storageCode;
+    });
   
       this._productService.getCategoryProduct().subscribe(val => {
           this.getCategory = val;
       });
-    
-    // console.log(this.getStorage.items[0].storageCode)
-    if (this.getStorage.items === undefined) {
-      this.storageCode = '0';
-      // this.getStorage.items = [];
-      // this.getStorage.items[0] = new StorageProductDetail();
-    }
   }
+
+    createImageFromBlob(image: Blob): any {
+      let reader = new FileReader();
+      reader.addEventListener("load", () => {
+        return reader.result;
+      }, false);
+  
+      if (image) {
+        reader.readAsDataURL(image);
+      }
+    }
+
+    getImage(imageUrl: string): Observable<Blob> {
+      return this.http.get(imageUrl, {responseType: 'blob'});
+    }
 
   list(request: PagedProductRequestDto, pageNumber: number, finishedCallback: Function): void {
     request.keyword = this.keyword;
-    request.storageCode = this.storageCode;
-    request.categoryCode = this.categoryCode;
 
+    if (this.storageCode === undefined || this.storageCode === null) {
+      request.storageCode = "";
+    } else {
+      request.storageCode = this.storageCode.code;
+    }
+
+    if (this.categoryCode === undefined || this.categoryCode === null) {
+      request.categoryCode = "";
+    } else {
+      request.categoryCode = this.categoryCode.code;
+    }
+    
     setTimeout(() => { 
-      request.subcategoryCode = this.subcategoryCode; 
-      
+      if (this.subcategoryCode === undefined || this.subcategoryCode === null) {
+        request.subcategoryCode = undefined; 
+      } else {
+        request.subcategoryCode = this.subcategoryCode.code; 
+      }
+
       console.log(request.keyword);
       console.log(request.storageCode);
       console.log(request.categoryCode);
@@ -84,11 +112,20 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
           finishedCallback();
         })
       )
-      .subscribe((result: ProductGetAllPagedResultDto) => {
+      .subscribe(async (result: ProductGetAllPagedResultDto) => {
         this.productList = result.items;
         this.showPaging(result, pageNumber);
+        // for (var i = 0; i < this.productList.length; i++) {
+        //   var url = 'https://localhost:44311/File/GetImage?fileName=' + this.productList[i].productImage;
+        //    await setTimeout(() => {
+        //     this.getImage(url).subscribe(data => {
+        //       // this.productList[i].imageToShow = this.createImageFromBlob(data);
+        //       this.imageShow = this.createImageFromBlob(data);
+        //     });
+        //    }, 500); 
+        // }
       });
-    },500);
+    },200);
   }
   delete(entity: ProductGetAllDto): void {
     this.swal.fire({
@@ -173,18 +210,20 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
   }
 
   getSubcategory() {
-    if (this.categoryCode !== '0') {
-      this._productService.getSubcategoryProduct(this.categoryCode).subscribe(val => {
+    if (this.categoryCode !== undefined) {
+      this._productService.getSubcategoryProduct(this.categoryCode.code).subscribe(val => {
           this.getSubcategorycode = val
-          this.subcategoryCode = 0;
+          this.subcategoryCode.code = 0;
       });
     } 
   }
 
   searched() {
     if (this.keyword !== undefined) {
-      this.storageCode = '-1';
-      this.categoryCode = '-1';
+      if (this.storageCode === undefined) {
+        console.log("zero")
+      }
+      this.categoryCode = undefined;
       this.rows = this.totalItems;
       this.pageSize = this.totalItems;
     }
