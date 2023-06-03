@@ -46,6 +46,7 @@ export class CreateCustomerComponent extends AppComponentBase implements OnInit 
     customerAdd.customerPhone = this.customer.customerPhone;
     customerAdd.customerDescription = this.customer.customerDescription;
     customerAdd.customerWebsite = this.customer.customerWebsite;
+    console.log(this.customer.discount);
     customerAdd.discount = this.customer.discount;
     customerAdd.bankAccount = this.customerBank;
 

@@ -8540,6 +8540,7 @@ export interface IExportImportProductDto {
 export interface IExportImportOutputDto {
   exportImportCode: string;
   nameOfReceiver: string;
+  employeeDelivery: string;
   orderStatus: number;
   orderCreator: string;
   discount: number;
@@ -8578,6 +8579,7 @@ export interface IProductExportImportPagedResult {
 export interface IExportImportInputDto {
   exportImportCode: string;
   orderCreator: string;
+  employeeDelivery: string;
   customer: CustomerDto;
   products: ExportImportProductDto[];
   storageId: string;
@@ -8681,6 +8683,7 @@ export class ListOfCustomer implements IListOfCustomer {
 export class ExportImportInput implements IExportImportInputDto {
   exportImportCode: string;
   orderCreator: string;
+  employeeDelivery: string;
   orderStatus: number;
   orderType: number;
   customer: CustomerDto;
@@ -8706,6 +8709,7 @@ export class ExportImportInput implements IExportImportInputDto {
     if (_data) {
       this.exportImportCode = _data["exportImportCode"];
       this.orderCreator = _data["orderCreator"];
+      this.employeeDelivery = _data["employeeDelivery"];
       this.orderStatus = _data["orderStatus"];
       this.orderType = _data["orderType"];
       this.customer = _data["customer"];
@@ -8731,6 +8735,7 @@ export class ExportImportInput implements IExportImportInputDto {
     data = typeof data === "object" ? data : {};
     data["exportImportCode"] = this.exportImportCode;
     data["orderCreator"] = this.orderCreator;
+    data["employeeDelivery"] = this.employeeDelivery;
     data["orderStatus"] = this.orderStatus;
     data["orderType"] = this.orderType;
     data["customer"] = this.customer;
@@ -8749,6 +8754,7 @@ export class ExportImportInput implements IExportImportInputDto {
 export class ExportImportOutputDto implements IExportImportOutputDto {
   exportImportCode: string;
   nameOfReceiver: string;
+  employeeDelivery: string;
   orderCreator: string;
   orderStatus: number;
   orderType: number;
@@ -8775,6 +8781,7 @@ export class ExportImportOutputDto implements IExportImportOutputDto {
       this.exportImportCode = _data["exportImportCode"];
       this.nameOfReceiver = _data["nameOfReceiver"];
       this.orderCreator = _data["orderCreator"];
+      this.employeeDelivery = _data["employeeDelivery"];
       this.orderStatus = _data["orderStatus"];
       this.orderType = _data["orderType"];
       this.receiveAddress = _data["receiveAddress"];
@@ -8800,6 +8807,7 @@ export class ExportImportOutputDto implements IExportImportOutputDto {
     data["exportImportCode"] = this.exportImportCode;
     data["nameOfReceiver"] = this.nameOfReceiver;
     data["orderCreator"] = this.orderCreator;
+    data["employeeDelivery"] = this.employeeDelivery;
     data["orderStatus"] = this.orderStatus;
     data["orderType"] = this.orderType;
     data["receiveAddress"] = this.receiveAddress;

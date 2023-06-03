@@ -84,6 +84,42 @@
                     </div>
                   </div>
                 </div>
+                <div class="col">
+                  <div class="row">
+                    <div class="col">
+                      <label for="name">
+                        {{ "Nhân viên giao hàng" | localize }}
+                      </label>
+                      <span
+                        style="color: red; margin-left: 5px; font-size: 14pt"
+                        >*</span
+                      >
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <!-- <select
+                        required
+                        #selectModel="ngModel"
+                        #selectEl
+                        class="form-control"
+                        [(ngModel)]="exportImport.orderCreator"
+                        [ngModelOptions]="{ standalone: true }"
+                        aria-label="Default select example"
+                      >
+                        <option value="0" selected>Người lập phiếu</option>
+                        <option *ngFor="let usd of user.items;let i = index" value="{{usd.id}}">
+                          {{usd.name}}</option>
+                      </select> -->
+                      <p-dropdown [style]="{'width':'100%'}" 
+                        [options]="employee" 
+                        [(ngModel)]="employeeDeliverySelected" 
+                        [ngModelOptions]="{standalone: true}" 
+                        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Nhân viên">
+                      </p-dropdown>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="row" style="padding-bottom: 25px">
                 <div class="col">

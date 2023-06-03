@@ -85,6 +85,7 @@ export class DetailsExportImportComponent extends AppComponentBase implements On
       this._exportImport.get(this.id).subscribe((result: ExportImportOutputDto) => {
         this.exportImport.exportImportCode = result.exportImportCode;
         this.exportImport.orderCreator = result.orderCreator;
+        this.exportImport.employeeDelivery = result.employeeDelivery;
         this.exportImport.orderStatus = result.orderStatus;
         this.exportImport.orderType = result.orderType;
         this.exportImport.receiveAddress = result.receiveAddress;

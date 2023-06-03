@@ -63,6 +63,7 @@ export class CreateExportImportComponent
   user: LookUpTableList = new LookUpTableList();
   employee: EmployeeSelectForAccount[];
   employeeSelected = new EmployeeSelectForAccount();
+  employeeDeliverySelected = new EmployeeSelectForAccount();
   customer: CustomerListDto[];
   customerSelected = new CustomerListDto();
   customerInput = new CustomerDto();
@@ -145,6 +146,7 @@ export class CreateExportImportComponent
       totalPrice += element.finalPrice;
       this.exportImport.products.push(element);  
     });
+    this.exportImport.employeeDelivery = this.employeeDeliverySelected.code;
     this.exportImport.orderCreator = this.employeeSelected.code;
     this.exportImport.customer = this.customerInput;
     this.exportImport.discount = this.customerInput.discount;

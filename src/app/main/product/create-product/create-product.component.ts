@@ -15,8 +15,6 @@ import { AppComponent } from '@app/app.component';
 import { AppConsts } from '@shared/AppConsts';
 import { HttpClient } from '@angular/common/http';
 
-var URL = AppConsts.remoteServiceBaseUrl + '/api/Upload/ProductUpload';
-
 @Component({
   selector: 'app-create-product',
   templateUrl: './create-product.component.html',
@@ -74,7 +72,7 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
 
   save(): void {
     this.saving = true;
-
+    var URL = AppConsts.remoteServiceBaseUrl + '/api/Upload/ProductUpload';
     const product = new ProductInputDto();
     product.productCode = this.products.productCode;
     const formData = new FormData();
