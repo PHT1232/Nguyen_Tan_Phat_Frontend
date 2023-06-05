@@ -241,7 +241,7 @@
                 >
                 </p-button>
                 <p-button
-                          [loading]="loading"
+                          [disabled]="loading"
                           styleClass="p-button-outlined p-button-help"
                           icon="pi pi-download"
                           label="Phiếu xuất kho"
@@ -250,7 +250,7 @@
                         >
                 </p-button>
                 <p-button
-                          [loading]="loading"
+                          [disabled]="loading"
                           styleClass="p-button-outlined p-button-secondary"
                           icon="pi pi-download"
                           label="Phiếu xuất hàng"
@@ -259,6 +259,7 @@
                           (click)="ExportExcel(exportImport.exportImportCode)"
                         >
                 </p-button>
+                <p-button  [disabled]="loading" label="Tạo link" (onClick)="createLink(exportImport.exportImportCode)"></p-button>
                 </div>
               </div>
             </div>

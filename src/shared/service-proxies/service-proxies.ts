@@ -6534,6 +6534,26 @@ export class FileDownloadService {
 }
 //#endregion
 
+//#region VnPayService
+@Injectable()
+export class VnPayService {
+  private http: HttpClient;
+  private baseUrl: string;
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+  constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+      this.http = http;
+      this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+  }
+
+  createPaymentUrl(id: string) {
+    const url = this.baseUrl + '/api/Upload/CreatePaymentUrl?id=' + id;
+    this.http.get<string>(url).subscribe(res => {
+      location.href = res['result'].toString();
+    });
+  }
+}
+
 //#region Upload Service 
 @Injectable()
 export class UploadServiceProxy {

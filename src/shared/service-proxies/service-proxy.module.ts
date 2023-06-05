@@ -23,6 +23,7 @@ import * as ApiServiceProxies from './service-proxies';
         ApiServiceProxies.ExpensesService,
         ApiServiceProxies.UploadServiceProxy,
         ApiServiceProxies.FileDownloadService,
+        ApiServiceProxies.VnPayService,
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
     ]
 })

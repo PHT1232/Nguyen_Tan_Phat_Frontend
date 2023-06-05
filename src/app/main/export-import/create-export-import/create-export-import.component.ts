@@ -146,6 +146,7 @@ export class CreateExportImportComponent
       totalPrice += element.finalPrice;
       this.exportImport.products.push(element);  
     });
+    console.log(this.selectedProducts.length);
     this.exportImport.employeeDelivery = this.employeeDeliverySelected.code;
     this.exportImport.orderCreator = this.employeeSelected.code;
     this.exportImport.customer = this.customerInput;

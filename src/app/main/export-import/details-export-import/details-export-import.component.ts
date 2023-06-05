@@ -12,7 +12,8 @@ import {
   ExportImportService, 
   FileDownloadService, 
   PermissionDto, 
-  ProductServiceProxy, 
+  ProductServiceProxy,
+  VnPayService, 
 } from '@shared/service-proxies/service-proxies';
 import { LookUpTableList } from '@shared/service-proxies/dtos/LookUpTable';
 import { StorageProductDetailList } from '@shared/service-proxies/dtos/products/StorageProductDetail';
@@ -69,12 +70,13 @@ export class DetailsExportImportComponent extends AppComponentBase implements On
     private _fileService: FileDownloadService,
     private _exportImport: ExportImportService,
     private router: ActivatedRoute,
+    private vnpayService: VnPayService,
     private _productService: ProductServiceProxy
   ) {
     super(injector);
     this._productService.getStorageProduct().subscribe(val => {
       this.getStorage = val;
-      this.storageCode = val[val.items.length - 1].storageCode;
+      // this.storageCode = val[val.items.length - 1].storageCode;
     });
 
     this.router.params.subscribe(params => {
@@ -125,5 +127,9 @@ export class DetailsExportImportComponent extends AppComponentBase implements On
     this._fileService.exportToExcel(id).subscribe((res) => {
       this.loading = false;
     });
+  }
+
+  createLink(id: string) {
+    this.vnpayService.createPaymentUrl(id)
   }
 }
