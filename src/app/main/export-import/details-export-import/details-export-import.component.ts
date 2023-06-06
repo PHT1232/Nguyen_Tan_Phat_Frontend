@@ -93,9 +93,7 @@ export class DetailsExportImportComponent extends AppComponentBase implements On
         this.exportImport.receiveAddress = result.receiveAddress;
         this.customer = result.customer;
         this.products = result.products;
-        this.exportImport.storageId = result.storageId;
         this.exportImport.discount = result.discount;
-        this.exportImport.storageInputId = result.storageInputId;
         this.exportImport.nameOfExport = result.nameOfExport;
         this.exportImport.totalPrice = result.totalPrice;
       });

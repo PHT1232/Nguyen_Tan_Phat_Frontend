@@ -56,7 +56,7 @@
                             {{ customer.customerPhone }}
                         </span>
                       </div>
-                      <div class="col required" *ngIf="exportImport.storageId !== null && customer.customerPhone === null && exportImport.nameOfExport === null">
+                      <!-- <div class="col required" *ngIf="exportImport.storageId !== null && customer.customerPhone === null && exportImport.nameOfExport === null">
                         <label  for="name">
                           {{ "Kho xuất:" | localize }}
                         </label>
@@ -66,7 +66,7 @@
                                 <option *ngFor="let storage of getStorage;let i = index" value="{{storage.storageCode}}" [selected]="true">{{storage.storageName}}</option>
                             </select>
                         </span>
-                      </div>
+                      </div> -->
                       <div *ngIf="exportImport.nameOfExport !== null && customer.customerPhone === null" class="col required">
                         <label for="name">
                           {{ "Nơi nhập:" | localize }}
@@ -87,14 +87,14 @@
                                 {{ customer.customerName }}
                             </span>
                           </div>
-                          <div class="col required" *ngIf="exportImport.storageInputId !== null && customer.customerPhone === null">
+                          <!-- <div class="col required" *ngIf="exportImport.storageInputId !== null && customer.customerPhone === null">
                             <label  for="name">
                               {{ "Kho Nhập:" | localize }}
                             </label>
                             <span style="margin-left: 20px;">
                                 {{ exportImport.storageId }}
                             </span>
-                          </div>
+                          </div> -->
                     </div>
                   </div>
                 </div>
@@ -140,7 +140,7 @@
                       {{ "Kho nhập:" | localize }}
                       </label>
                       <span style="margin-left: 20px;">
-                          {{ exportImport.storageId }}
+                          <!-- {{ exportImport.storageId }} -->
                       </span>
                   </div>
                 </div>

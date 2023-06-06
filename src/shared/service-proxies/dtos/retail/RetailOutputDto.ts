@@ -1,38 +1,38 @@
 import { RetailCustomerDto } from './RetailCustomerDto';
 import { RetailProductDto } from './RetailProductDto';
 
-export interface IRetailInputDto {
-  customer: RetailCustomerDto;
-  products: RetailProductDto[];
-  retailCode: string;
-  orderCreator: string;
-  deliveryEmployee: string;
-  orderStatus: number;
-  structureId: string;
-  description: string;
-  paymentMethod: number;
-  isHomeDelivery: boolean;
-  isDelivered: boolean;
-  totalPrice: number;
-  discount: number;
+export interface IRetailOutputDto {
+    retailCode: string;
+    orderCreator: string;
+    deliveryEmployee: string;
+    orderStatus: number;
+    structureId: string;
+    description: string;
+    paymentMethod: number;
+    isHomeDelivery: boolean;
+    isDelivered: boolean;
+    totalPrice: number;
+    discount: number;
+    customer: RetailCustomerDto;
+    products: RetailProductDto[];
 }
 
-export class RetailInputDto implements IRetailInputDto {
-  customer: RetailCustomerDto;
-  products: RetailProductDto[];
-  retailCode: string;
-  orderCreator: string;
-  deliveryEmployee: string;
-  orderStatus: number;
-  structureId: string;
-  description: string;
-  paymentMethod: number;
-  isHomeDelivery: boolean;
-  isDelivered: boolean;
-  totalPrice: number;
-  discount: number;
+export class RetailOutputDto implements IRetailOutputDto {
+    retailCode: string;
+    orderCreator: string;
+    deliveryEmployee: string;
+    orderStatus: number;
+    structureId: string;
+    description: string;
+    paymentMethod: number;
+    isHomeDelivery: boolean;
+    isDelivered: boolean;
+    totalPrice: number;
+    discount: number;
+    customer: RetailCustomerDto;
+    products: RetailProductDto[];
 
-  constructor(data?: IRetailInputDto) {
+  constructor(data?: IRetailOutputDto) {
     if (data) {
       for (var property in data) {
         if (data.hasOwnProperty(property))
@@ -59,9 +59,9 @@ export class RetailInputDto implements IRetailInputDto {
     }
   }
 
-  static fromJS(data: any): RetailInputDto {
+  static fromJS(data: any): RetailOutputDto {
     data = typeof data === "object" ? data : {};
-    let result = new RetailInputDto();
+    let result = new RetailOutputDto();
     result.init(data);
     return result;
   }
@@ -84,9 +84,9 @@ export class RetailInputDto implements IRetailInputDto {
     return data;
   }
 
-  clone(): RetailInputDto {
+  clone(): RetailOutputDto {
     const json = this.toJSON();
-    let result = new RetailInputDto();
+    let result = new RetailOutputDto();
     result.init(json);
     return result;
   }

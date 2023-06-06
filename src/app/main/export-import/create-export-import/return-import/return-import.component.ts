@@ -100,8 +100,6 @@ export class ReturnImportComponent extends AppComponentBase implements OnInit {
   save2(): void {
     let totalPrice = 0; 
     this.saving = true;
-    this.exportImport.storageId = this.storageCode;
-    this.exportImport.storageInputId = this.storageCodeInput;
     this.exportImport.products.forEach(element => {
       totalPrice += element.finalPrice;
     });

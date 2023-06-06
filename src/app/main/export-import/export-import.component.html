@@ -122,7 +122,6 @@
                   {{ "Địa chỉ nhận" | localize
                   }}<p-sortIcon field="address"></p-sortIcon>
                 </th>
-                <th>{{ "Kho xuất" | localize }}</th>
                 <th pSortableColumn="orderType">
                   {{ "Loại đơn" | localize
                   }}<p-sortIcon field="orderType"></p-sortIcon>
@@ -153,9 +152,6 @@
                 </td>
                 <td>{{ exportImport.nameOfReceiver }}</td>
                 <td>{{ exportImport.address }}</td>
-                <td *ngIf="exportImport.nameOfExport == null">
-                  {{ exportImport.storageName }}
-                </td>
                 <td *ngIf="exportImport.nameOfExport != null">
                   {{ exportImport.nameOfExport }}
                 </td>

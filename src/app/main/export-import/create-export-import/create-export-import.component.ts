@@ -20,6 +20,7 @@ import {
   ListOfCustomer,
   PermissionDto,
   ProductServiceProxy,
+  StructureServiceProxy,
 } from "@shared/service-proxies/service-proxies";
 import { LookUpTable, LookUpTableList } from "@shared/service-proxies/dtos/LookUpTable";
 import { StorageProductDetailList } from "@shared/service-proxies/dtos/products/StorageProductDetail";
@@ -30,6 +31,7 @@ import {
   PagedRequestDto,
 } from "@shared/paged-listing-component-base";
 import { EmployeeSelectForAccount } from "@shared/service-proxies/dtos/employee/EmployeeSelectForAccount";
+import { StructureSelectDto } from "@shared/service-proxies/dtos/Structure/StructureSelectDto";
 
 class PagedProductRequestDto extends PagedRequestDto {
   storageCode: string;
@@ -78,6 +80,8 @@ export class CreateExportImportComponent
   initialProductQuantity: InitialProductQuantity[] = [];
   selectedProducts: ExportImportProductDto[] = [];
   isTableLoading = false;
+  getStructure: StructureSelectDto[] = [];
+  selectedStructure = new StructureSelectDto();
 
   @Output() onsave = new EventEmitter<any>();
 
@@ -86,6 +90,7 @@ export class CreateExportImportComponent
     private _router: Router,
     private _exportImport: ExportImportService,
     private _productService: ProductServiceProxy,
+    private _structureService: StructureServiceProxy,
     public _employeeService: EmployeeServiceProxy,
   ) {
     super(injector);
@@ -103,6 +108,11 @@ export class CreateExportImportComponent
       this.customer = result.items;
     });
     
+    this._structureService.getStructureSelect().subscribe(val => {
+      this.getStructure = val.items;
+      this.getStructure.push(new StructureSelectDto({code: "0", name: "CÔNG TY CỔ PHẦN UNTEN"}))
+    })
+
     setTimeout(() => {
       this._exportImport
         .getProduct(this.storageCode.code, false, this.skipCount, this.pageSize)
@@ -134,7 +144,7 @@ export class CreateExportImportComponent
     let totalPrice = 0;
     this.saving = true;
     // this.exportImport.customer = this.customer;
-    this.exportImport.storageId = this.storageCode.code;
+    this.exportImport.structureId = this.selectedStructure.code;
     // this.exportImport.products.forEach((element) => {
     //   totalPrice += element.finalPrice;
     // });
@@ -260,26 +270,26 @@ export class CreateExportImportComponent
     });
   }
 
-  AddItem(productTemp: ExportImportProductDto, index: number) {
-    if (this.quantityCheck[index] === false) {
-      var indexToSlice = 0;
-      this.exportImport.products.forEach((element, index) => {
-        if (element.productId === productTemp.productId) {
-          indexToSlice = index;
-        }
-      });
-      if (this.exportImport.products.length === 1) {
-        this.exportImport.products = [];
-      } else {
-        // delete this.exportImport.products[indexToSlice];
-        this.exportImport.products.slice(indexToSlice);
-      }
-      this.quantityCheck[index] = true;
-    } else {
-      this.exportImport.products.push(productTemp);
-      this.quantityCheck[index] = false;
-    }
-  }
+  // AddItem(productTemp: ExportImportProductDto, index: number) {
+  //   if (this.quantityCheck[index] === false) {
+  //     var indexToSlice = 0;
+  //     this.exportImport.products.forEach((element, index) => {
+  //       if (element.productId === productTemp.productId) {
+  //         indexToSlice = index;
+  //       }
+  //     });
+  //     if (this.exportImport.products.length === 1) {
+  //       this.exportImport.products = [];
+  //     } else {
+  //       // delete this.exportImport.products[indexToSlice];
+  //       this.exportImport.products.slice(indexToSlice);
+  //     }
+  //     this.quantityCheck[index] = true;
+  //   } else {
+  //     this.exportImport.products.push(productTemp);
+  //     this.quantityCheck[index] = false;
+  //   }
+  // }
 
   getDataPage(page: number) {
     this.exportImport.products = [];
