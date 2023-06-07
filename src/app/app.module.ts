@@ -33,6 +33,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { TagModule } from 'primeng/tag';
+import { DialogModule } from 'primeng/dialog';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -211,7 +212,8 @@ import { RetailComponent } from './main/retail/retail.component';
     FileUploadModule,
     NgxDropzoneModule,
     TagModule,
-    TreeTableModule
+    TreeTableModule,
+    DialogModule
   ],
   providers: [],
   entryComponents: [

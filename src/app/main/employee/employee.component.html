@@ -18,9 +18,17 @@
                         {{ "Thêm" | localize }}
                       </a> -->
             <p-button
+              label="Tính lương"
+              style="margin-right: 20px"
+              [disabled]="listToDelete.length === 0"
+              routerLink="create"
+              *ngIf="isGranted('Pages.System.Employee.Add') == true"
+            >
+            </p-button>
+            <p-button
               label="Thêm"
               routerLink="create"
-              *ngIf="isGranted('Pages.System.Product.Add') == true"
+              *ngIf="isGranted('Pages.System.Employee.Add') == true"
             >
             </p-button>
           </div>

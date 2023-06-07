@@ -6536,6 +6536,13 @@ export class FileDownloadService {
     // TODO: This causes reloading of same page in Firefox
     location.href = url;
     return _observableOf(true);
+  }  
+  
+  exportToExcelDelivery(id: string): Observable<boolean> {
+    const url = this.baseUrl + '/File/ExcelExportForXuatHang?id=' + id;
+    // TODO: This causes reloading of same page in Firefox
+    location.href = url;
+    return _observableOf(true);
   }
 }
 //#endregion
@@ -6997,6 +7004,90 @@ export class ExportImportService {
       );
     }
     return _observableOf<ExportImportInput>(<any>null);
+  }
+
+  getStorage(id: string): Observable<LookUpTableList> {
+    let url_ = this.baseUrl + "/api/services/app/ExportImport/GetStorage?";
+    if (id === null) throw new Error("The parameter 'id' cannot be null.");
+    else if (id !== undefined)
+      url_ += "id=" + encodeURIComponent("" + id) + "&";
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "text/plain",
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetStorageExpenses(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetStorageExpenses(<any>response_);
+            } catch (e) {
+              return <Observable<LookUpTableList>>(
+                (<any>_observableThrow(e))
+              );
+            }
+          } else
+            return <Observable<LookUpTableList>>(
+              (<any>_observableThrow(response_))
+            );
+        })
+      );
+  }
+
+  protected processGetStorageExpenses(
+    response: HttpResponseBase
+  ): Observable<LookUpTableList> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+        ? (<any>response).error
+        : undefined;
+
+    let _headers: any = {};
+    if (response.headers) {
+      for (let key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          let resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          result200 = LookUpTableList.fromJS(resultData200);
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<LookUpTableList>(<any>null);
   }
 
   get(id: string | undefined): Observable<ExportImportOutputDto> {
@@ -8626,87 +8717,6 @@ export class RetailService {
       );
     }
     return _observableOf<RetailInputDto>(<any>null);
-  }
-
-  getStorage(id: string): Observable<LookUpTableList> {
-    let url_ = this.baseUrl + "/api/services/app/Product/GetStorageExpense";
-    url_ = url_.replace(/[?&]$/, "");
-
-    let options_: any = {
-      observe: "response",
-      responseType: "blob",
-      headers: new HttpHeaders({
-        Accept: "text/plain",
-      }),
-    };
-
-    return this.http
-      .request("get", url_, options_)
-      .pipe(
-        _observableMergeMap((response_: any) => {
-          return this.processGetStorageExpenses(response_);
-        })
-      )
-      .pipe(
-        _observableCatch((response_: any) => {
-          if (response_ instanceof HttpResponseBase) {
-            try {
-              return this.processGetStorageExpenses(<any>response_);
-            } catch (e) {
-              return <Observable<LookUpTableList>>(
-                (<any>_observableThrow(e))
-              );
-            }
-          } else
-            return <Observable<LookUpTableList>>(
-              (<any>_observableThrow(response_))
-            );
-        })
-      );
-  }
-
-  protected processGetStorageExpenses(
-    response: HttpResponseBase
-  ): Observable<LookUpTableList> {
-    const status = response.status;
-    const responseBlob =
-      response instanceof HttpResponse
-        ? response.body
-        : (<any>response).error instanceof Blob
-        ? (<any>response).error
-        : undefined;
-
-    let _headers: any = {};
-    if (response.headers) {
-      for (let key of response.headers.keys()) {
-        _headers[key] = response.headers.get(key);
-      }
-    }
-    if (status === 200) {
-      return blobToText(responseBlob).pipe(
-        _observableMergeMap((_responseText) => {
-          let result200: any = null;
-          let resultData200 =
-            _responseText === ""
-              ? null
-              : JSON.parse(_responseText, this.jsonParseReviver);
-          result200 = LookUpTableList.fromJS(resultData200);
-          return _observableOf(result200);
-        })
-      );
-    } else if (status !== 200 && status !== 204) {
-      return blobToText(responseBlob).pipe(
-        _observableMergeMap((_responseText) => {
-          return throwException(
-            "An unexpected server error occurred.",
-            status,
-            _responseText,
-            _headers
-          );
-        })
-      );
-    }
-    return _observableOf<LookUpTableList>(<any>null);
   }
 
   get(id: string | undefined): Observable<RetailOutputDto> {

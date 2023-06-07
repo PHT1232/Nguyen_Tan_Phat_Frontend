@@ -99,10 +99,10 @@
           </tab>
           <tab
             (selectTab)="orderStatus = 2; getDataPage(1)"
-            [heading]="'Đã hoàn thành'"
+            [heading]="'Đã hoàn thành chưa thanh toán'"
           >
           </tab>
-          <tab (selectTab)="orderStatus = 3; getDataPage(1)" [heading]="'Đã hủy'">
+          <tab (selectTab)="orderStatus = 3; getDataPage(1)" [heading]="'Đã hoàn thành và thanh toán'">
           </tab>
         </tabset>
         <div class="card-body">

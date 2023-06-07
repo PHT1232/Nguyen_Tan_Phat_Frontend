@@ -303,13 +303,24 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <input
+                  <!-- <input
                     pInputText
                     pKeyFilter="int"
                     required
                     [style]="{'width':'100%'}"
                     [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="employee.phoneNumber"
+                  /> -->
+                  <input
+                    pInputText
+                    pKeyFilter="int"
+                    type="text"
+                    required
+                    [style]="{'width':'100%'}"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employee.phoneNumber"
+                    #nameCode="ngModel"
+                    #nameCodeEl
                   />
                 </div>
               </div>
@@ -380,7 +391,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <p-inputNumber
+                  <!-- <p-inputNumber
                     required
                     class="pinputnumber"
                     [ngModelOptions]="{ standalone: true }"
@@ -388,7 +399,16 @@
                     [style]="{'width':'100%'}"
                     #nameCode="ngModel"
                     #nameCodeEl
-                  ></p-inputNumber>
+                  ></p-inputNumber> -->
+                  <input
+                    pInputText
+                    class="pinputnumber"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employee.salaryFactor"
+                    [style]="{'width':'100%'}"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  />
                 </div>
               </div>
             </div>
