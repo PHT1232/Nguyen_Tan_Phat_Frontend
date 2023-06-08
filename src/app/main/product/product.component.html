@@ -17,6 +17,14 @@
                       <i class="fa fa-plus-square"></i>
                       {{ "Thêm" | localize }}
                     </a> -->
+                    <p-button
+                    label="Tạo báo giá"
+                    style="margin-right: 20px"
+                    (onClick)="ExportExcel()"
+                    *ngIf="isGranted('Pages.System.Employee.Add') == true"
+                  >
+                  </p-button>
+
           <p-button
             label="Thêm"
             routerLink="create"
@@ -36,7 +44,7 @@
                 <div class="col-md-6">
                   <!-- <div class="card mb-0 mt-2"> -->
                     <div class="form-group row mb-0">
-                      <div class="col pt-2">
+                      <div class="col">
                         <!-- <select
                           class="form-control"
                           [(ngModel)]="storageCode"
@@ -65,7 +73,7 @@
                         </p-dropdown>
                         <!-- <p-cascadeSelect [ngModelOptions]="{standalone: true}" [(ngModel)]="storageCode" [options]="getStorage.items" optionLabel="cname" optionGroupLabel="name" [style]="{ minWidth: '14rem' }" placeholder="Kho"></p-cascadeSelect> -->
                       </div>
-                      <div class="col pt-2">
+                      <div class="col">
                         <!-- <select
                           class="form-control"
                           (change)="getSubcategory(); getDataPage(1)"
@@ -95,7 +103,7 @@
                         ></p-dropdown>
                         <!-- <p-cascadeSelect [ngModelOptions]="{standalone: true}" [(ngModel)]="categoryCode" [options]="getCategory.items" optionLabel="cname" optionGroupLabel="name" [style]="{ minWidth: '14rem' }" placeholder="Danh mục"></p-cascadeSelect> -->
                       </div>
-                      <div class="col pt-2">
+                      <div class="col">
                         <!-- <select
                           class="form-control"
                           (change)="getDataPage(1)"

@@ -95,7 +95,7 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
         product.categoryId = this.categoryCode.code;
         product.unit = this.products.unit;
         product.price = this.products.price;  
-        if (this.subcategoryCode.code === 0) {
+        if (this.subcategoryCode.code === undefined) {
           product.subCategoryId = null;
         } else {
           product.subCategoryId = this.subcategoryCode.code.toString();
@@ -175,10 +175,10 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
         return true;
     }
 
-    if (this.getSubcategorycode.items.length > 0 && this.subcategoryCode.code === undefined) {
-      console.log("2 check form valid");
-      return true;
-    }
+    // if (this.getSubcategorycode.items.length > 0 && this.subcategoryCode.code === undefined) {
+    //   console.log("2 check form valid");
+    //   return true;
+    // }
 
     // this.storageSelect.forEach(element => {
     //   if (element.storageCode === undefined || element.quantity === undefined || element.productLocation === undefined) {
@@ -194,11 +194,11 @@ export class CreateProductComponent extends AppComponentBase implements OnInit {
     //   }
     // });
 
-    if (this.isTrue) {
-      this.isTrue = false
-      console.log("4 check form valid");
-      return true;
-    }
+    // if (this.isTrue) {
+    //   this.isTrue = false
+    //   console.log("4 check form valid");
+    //   return true;
+    // }
   }
 
   checkIfAlreadyExist(storageCode: string, index: number) {

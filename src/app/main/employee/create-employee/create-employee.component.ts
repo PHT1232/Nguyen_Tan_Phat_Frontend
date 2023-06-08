@@ -57,6 +57,7 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
     employeeAdd.employeeCMND = this.employeeCmnd;
     employeeAdd.jobTitle = this.employee.jobTitle;
     employeeAdd.workUnit = this.selectedStructure.code;
+    employeeAdd.employeeAllowance = this.employee.employeeAllowance;
     employeeAdd.taxIdentification = this.employee.taxIdentification;
     employeeAdd.employeeSalary = this.employee.employeeSalary;
     employeeAdd.salaryFactor = this.employee.salaryFactor;

@@ -203,6 +203,7 @@
                       [busy]="isTableLoading">
                         <ng-template pTemplate="header">
                           <tr>
+                            <th>{{ "Mã Kho" | localize }}</th>
                             <th>{{ "Mã sản phẩm" | localize }}</th>
                             <th>{{ "Tên sản phẩm" | localize }}</th>
                             <th>{{ "Số lượng" | localize }}</th>
@@ -213,6 +214,7 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-product let-i="index">
                           <tr>
+                            <td>{{ product.storageId }}</td>
                             <td>{{ product.productId }}</td>
                             <td>{{ product.productName }}</td>
                             <td>
@@ -256,10 +258,10 @@
                           label="Phiếu xuất hàng"
                           [style]="{ 'margin-right': '10px' }"
                           *ngIf="isGranted('Pages.System.ExportImport.View') == true"
-                          (click)="ExportExcel(exportImport.exportImportCode)"
+                          (click)="ExportExcelXuat(exportImport.exportImportCode)"
                         >
                 </p-button>
-                <p-button  [disabled]="loading" label="Tạo link" (onClick)="createLink(exportImport.exportImportCode)"></p-button>
+                <!-- <p-button  [disabled]="loading" label="Tạo link" (onClick)="createLink(exportImport.exportImportCode)"></p-button> -->
                 </div>
               </div>
             </div>

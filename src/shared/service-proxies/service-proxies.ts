@@ -71,6 +71,7 @@ import { RetailGetAllDto } from "./dtos/retail/RetailGetAllDto";
 import { RetailGetAllPagedResultDto } from "./dtos/retail/RetailGetAllPagedResultDto";
 import { RetailOutputDto } from "./dtos/retail/RetailOutputDto";
 import { RetailProductDto } from "./dtos/retail/RetailProductDto";
+import { BaoGiaObject } from "./dtos/BaoGiaObject";
 
 export const API_BASE_URL = new InjectionToken<string>("API_BASE_URL");
 
@@ -5264,6 +5265,7 @@ export class EmployeeServiceProxy {
 
   getAll(
     keyword: string | undefined,
+    unitCode: string | undefined,
     skipCount: number | undefined,
     maxResultCount: number | undefined
   ): Observable<EmployeeGetAllPagedResultDto> {
@@ -5272,6 +5274,10 @@ export class EmployeeServiceProxy {
       throw new Error("The parameter 'keyword' cannot be null.");
     else if (keyword !== undefined)
       _url += "?Keyword=" + encodeURIComponent("" + keyword) + "&";
+    if (unitCode === null)
+      throw new Error("The parameter 'unitCode' cannot be null.");
+    else if (unitCode !== undefined)
+      _url += "UnitCode=" + encodeURIComponent("" + unitCode) + "&";
     if (skipCount === null)
       throw new Error("The parameter 'skipCount' cannot be null.");
     else if (skipCount !== undefined)
@@ -6544,6 +6550,89 @@ export class FileDownloadService {
     location.href = url;
     return _observableOf(true);
   }
+
+  exportToExcelBaoGia(body: any | undefined): Observable<boolean> {
+    var url = this.baseUrl + '/File/ExcelExportForBaoGia?fileBytes=' + body;
+    // TODO: This causes reloading of same page in Firefox
+    location.href = url;
+    return _observableOf(true);
+  }
+
+  getByte(body: BaoGiaObject | undefined): Observable<any> {
+    let _url = this.baseUrl + "/api/services/app/ExportImport/GetByteForExcelExport?";
+    body.products.forEach(element => {
+      _url += "products=" + encodeURIComponent("" + element) + "&";
+    });
+    _url = _url.replace(/[?&]$/, "");
+
+    const _content = JSON.stringify(body);
+
+    let _options: any = {
+      body: _content,
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        "Content-Type": "application/json-patch+json",
+      }),
+    };
+
+    return this.http
+      .request("get", _url, _options)
+      .pipe(
+        _observableMergeMap((_response: any) => {
+          return this.processAdd(_response);
+        })
+      )
+      .pipe(
+        _observableCatch((_response: any) => {
+          if (_response instanceof HttpResponseBase) {
+            try {
+              return this.processAdd(<any>_response);
+            } catch (e) {
+              return <Observable<any>>(<any>_observableThrow(_response));
+            }
+          } else return <Observable<any>>(<any>_observableThrow(_response));
+        })
+      );
+  }
+
+  protected processAdd(response: HttpResponseBase): Observable<any> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+        ? (<any>response).error
+        : undefined;
+
+    let _headers: any = {};
+    if (response.headers) {
+      for (let key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return _observableOf<any>(<any>null);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            Headers
+          );
+        })
+      );
+    }
+    return _observableOf<any>(<any>null);
+  }
+
 }
 //#endregion
 

@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
-import { CategoryInput, CategoryServiceProxy, PermissionDto, ProductServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CategoryInput, CategoryServiceProxy, ExportImportProductDto, FileDownloadService, PermissionDto, ProductServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CategoryProduct, CategoryProductList } from '@shared/service-proxies/dtos/products/CategoryProduct';
 import { ProductGetAllDto } from '@shared/service-proxies/dtos/products/ProductGetAllDto';
 import { ProductInputDto } from '@shared/service-proxies/dtos/products/ProductInputDto';
@@ -17,6 +17,7 @@ import { AppComponent } from '@app/app.component';
 import { firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { LookUpTable } from '@shared/service-proxies/dtos/LookUpTable';
+import { BaoGiaObject } from '@shared/service-proxies/dtos/BaoGiaObject';
 
 class PagedProductRequestDto extends PagedRequestDto {
   keyword: string;
@@ -49,6 +50,7 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
   constructor(
     injector: Injector,
     private _productService: ProductServiceProxy,
+    private _fileService: FileDownloadService,
     private http: HttpClient,
     private appMain: AppComponent
   ) { 
@@ -238,5 +240,20 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
         case 'Hết hàng':
             return 'danger';
     }
+  }
+
+  ExportExcel() {
+    var baogia = new BaoGiaObject();
+    baogia.customerName = "phat";
+    baogia.customerAddress = "phat 2";
+    baogia.date = "phat 4";
+    var product = "S300GK12"
+    baogia.products = [];
+    baogia.products.push(product);
+    baogia.products.push("S300G-1G/M");
+    baogia.products.push("S300GK20A");
+    this._fileService.getByte(baogia).subscribe((res) => {
+      this._fileService.exportToExcelBaoGia(res)
+    });
   }
 }
