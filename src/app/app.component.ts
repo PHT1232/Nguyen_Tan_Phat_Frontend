@@ -13,6 +13,7 @@ export class AppComponent extends AppComponentBase implements OnInit {
 
   constructor(
     injector: Injector,
+    private config: PrimeNGConfig,
     private renderer: Renderer2,
     private _layoutStore: LayoutStoreService,
     private primengconfig: PrimeNGConfig
@@ -22,6 +23,15 @@ export class AppComponent extends AppComponentBase implements OnInit {
 
   ngOnInit(): void {
     this.renderer.addClass(document.body, 'sidebar-mini');
+
+    this.config.setTranslation( {
+      monthNames: ["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"],
+      monthNamesShort: ["1", "2", "3", "4", "5", "6","7", "8", "9", "10", "11", "12"],
+      dayNames: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"],
+      dayNamesShort:	["Chủ nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"],
+      dayNamesMin:	["CN","T.2","T.3","T.4","T.5","T.6","T.7"]
+      }
+    )
 
     SignalRAspNetCoreHelper.initSignalR();
 

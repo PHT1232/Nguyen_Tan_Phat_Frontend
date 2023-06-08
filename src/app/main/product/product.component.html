@@ -180,12 +180,13 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <p-scrollPanel [style]="{ width: '100%', height: '520px' }">
-            <p-table
+          <!-- <p-scrollPanel [style]="{ width: '100%', height: '520px' }"> -->
+            <!-- <p-table
               [value]="productList"
               [(selection)]="selectedProducts"
               dataKey="productCode"
               [tableStyle]="{ 'min-width': '50rem' }"
+              [scrollable]="true" scrollHeight="300px"
               [busy]="isTableLoading"
               [styleClass]="'p-datatable-sm'"
             >
@@ -223,11 +224,8 @@
                   </td>
                   <td>{{ product.productName }}</td>
                   <td><img [src]="'https://localhost:44311/File/GetImage?fileName=' + product.productImage" [alt]="product.name" width="100" class="shadow-4" /></td>
-                  <!-- <td><img [src]="product.imageToShow" [alt]="product.name" width="100" class="shadow-4" /></td> -->
-                  <!-- <td><img [src]="imageShow" [alt]="product.name" width="100" class="shadow-4" /></td> -->
                   <td>{{ product.categoryName }}</td>
                   <td>{{ product.unit }}</td>
-                  <!-- <td *ngIf="storageCode != '0'">{{ product.quantity }}</td> -->
                   <td>{{ product.quantity }}</td>
                   <td>
                     <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)"></p-tag>
@@ -255,8 +253,125 @@
                   </td>
                 </tr>
               </ng-template>
-            </p-table>
-          </p-scrollPanel>
+            </p-table>             -->
+          <!-- </p-scrollPanel> -->
+
+          <p-table
+              [value]="datas"
+              [(selection)]="selectedProducts"
+              dataKey="productCode"
+              [tableStyle]="{ 'min-width': '50rem' }"
+              [scrollable]="true" scrollHeight="500px"
+              [busy]="isTableLoading"
+              rowGroupMode="subheader" groupRowsBy="productCode"
+              [styleClass]="'p-datatable-sm'"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>
+                  </th>
+                  <th style="width: 4rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                  </th>
+                  <th pSortableColumn="productCode">{{ "Mã sản phẩm" | localize }}<p-sortIcon field="productCode"></p-sortIcon></th>
+                  <th pSortableColumn="productName">{{ "Tên sản phẩm" | localize }}<p-sortIcon field="productName"></p-sortIcon></th>
+                  <th>{{ "Hình ảnh sản phẩm" | localize }}</th>
+                  <th pSortableColumn="categoryName">{{ "Danh mục" | localize }}<p-sortIcon field="categoryName"></p-sortIcon></th>
+                  <th pSortableColumn="storageCode">{{ "Mã kho" | localize }}<p-sortIcon field="storageCode"></p-sortIcon></th>
+                  <th pSortableColumn="unit">{{ "Đơn vị tính" | localize }}<p-sortIcon field="unit"></p-sortIcon></th>
+                  <th pSortableColumn="quantity" >
+                    {{ "Số lượng tồn kho" | localize }}<p-sortIcon field="quantity"></p-sortIcon>
+                  </th>
+                  <th>
+                    {{ "Trạng thái" | localize }}
+                  </th>
+                  <th pSortableColumn="price">{{ "Giá" | localize }}<p-sortIcon field="price"></p-sortIcon></th>
+                  <th pSortableColumn="username">{{ "Người cập nhật" | localize }}<p-sortIcon field="username"></p-sortIcon></th>
+                  <th style="width: 200px">{{ "Hành động" | localize }}</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-data let-rowIndex="rowIndex" let-expanded="expanded">
+                <tr></tr>
+                <tr>
+                  <td>
+                    <button type="button" pButton pRipple [pRowToggler]="data" class="p-button-text p-button-rounded p-button-plain mr-2" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                  </td>
+                  <td>
+                    <p-tableCheckbox [value]="data"></p-tableCheckbox>
+                  </td>
+                  <td>
+                    <a [routerLink]="['detail', data.productCode]">{{
+                      data.productCode
+                    }}</a>
+                  </td>
+                  <td>{{ data.productName }}</td>
+                  <td><img [src]="'https://localhost:44311/File/GetImage?fileName=' + data.productImage" [alt]="data.name" width="100" class="shadow-4" /></td>
+                  <td>{{ data.categoryName }}</td>
+                  <td></td>
+                  <td>{{ data.unit }}</td>
+                  <td>{{ data.quantity }}</td>
+                  <td>
+                    <p-tag [value]="data.inventoryStatus" [severity]="getSeverity(data.inventoryStatus)"></p-tag>
+                  </td>
+                  <td>
+                    {{ data.price | currency : "VND" }}
+                  </td>
+                  <td>{{ data.username }}</td>
+                  <td>
+                    <p-button
+                      styleClass="p-button-secondary"
+                      icon="pi pi-pencil"
+                      [style]="{ 'margin-right': '10px' }"
+                      *ngIf="isGranted('Pages.System.Product.Add') == true"
+                      [routerLink]="['edit', data.productCode]"
+                    >
+                    </p-button>
+                    <p-button
+                      styleClass="p-button-danger"
+                      icon="pi pi-trash"
+                      (click)="delete(data)"
+                      *ngIf="isGranted('Pages.System.Product.Delete') == true"
+                    >
+                    </p-button>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="rowexpansion" let-data>
+                <tr>
+                  <td colspan="11">
+                    <p-table [value]="data.products">
+                      <ng-template pTemplate="body" let-product>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="3">
+                              <a [routerLink]="['detail', product.productCode]">{{
+                                product.productCode
+                              }}</a>
+                            </td>
+                            <td>{{ product.productName }}</td>
+                            <td>{{ product.categoryName }}</td>
+                            <td>{{ product.storageCode }}</td>
+                            <td>{{ product.unit }}</td>
+                            <td>{{ product.quantity }}</td>
+                            <td>
+                              <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)"></p-tag>
+                            </td>
+                            <td>
+                              {{ product.price | currency : "VND" }}
+                            </td>
+                            <td>{{ product.username }}</td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </td>
+                </tr>
+
+            </ng-template>
+            </p-table>   
         </div>
       </div>
         

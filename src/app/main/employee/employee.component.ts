@@ -5,7 +5,7 @@ import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listin
 import { StructureSelectDto } from '@shared/service-proxies/dtos/Structure/StructureSelectDto';
 import { EmployeeGetAllDto } from '@shared/service-proxies/dtos/employee/EmployeeGetallDto';
 import { EmployeeGetAllPagedResultDto } from '@shared/service-proxies/dtos/employee/EmployeeGetallPagedResultDto';
-import { EmployeeServiceProxy, StructureServiceProxy } from '@shared/service-proxies/service-proxies';
+import { EmployeeServiceProxy, FileDownloadService, StructureServiceProxy } from '@shared/service-proxies/service-proxies';
 import { catchError, finalize, throwError } from 'rxjs';
 
 class PagedEmployeeRequestDto extends PagedRequestDto {
@@ -30,14 +30,16 @@ export class EmployeeComponent extends PagedListingComponentBase<EmployeeGetAllD
   getStructure: StructureSelectDto[] = [];
   selectedStructure = new StructureSelectDto();
   selectedStructureForDataPage = new StructureSelectDto();
-  rows: number = 6;
+  rows: number = 10;
   visible = false;
+  loading = false;
   // selectedProducts: ProductGetAllDto[] = [];
 
   constructor(
     injector: Injector,
     private _employeeService: EmployeeServiceProxy,
     private _structureService: StructureServiceProxy,
+    private _fileService: FileDownloadService,
     private appMain: AppComponent
   ) { 
     super(injector);
@@ -49,9 +51,10 @@ export class EmployeeComponent extends PagedListingComponentBase<EmployeeGetAllD
   list(request: PagedEmployeeRequestDto, pageNumber: number, finishedCallback: Function): void {
     request.keyword = this.keyword;
     setTimeout(() => { 
+      // request.maxResultCount = this.rows;
       request.unitCode = this.selectedStructureForDataPage.code;
-      console.log(request.keyword);
-      console.log(request.unitCode);
+      console.log(request.skipCount);
+      console.log(request.maxResultCount);
       
       this._employeeService
       .getAll(request.keyword, request.unitCode, request.skipCount, request.maxResultCount)
@@ -162,8 +165,16 @@ export class EmployeeComponent extends PagedListingComponentBase<EmployeeGetAllD
   }
 
   closeModal() {
-    console.log(this.date.toString())
+    this.visible = false;
+  }
+
+  confirmModal() {
+    this.loading = true;
+    console.log(this.date.toLocaleString())
     console.log(this.selectedStructureForDataPage)
     this.visible = false;
+    this._fileService.exportToExcelSalary(this.selectedStructure.code, this.date.toLocaleString()).subscribe(res => {
+      this.loading = false;
+    });
   }
 }

@@ -34,7 +34,7 @@
                 name="keyword"
                 [placeholder]="'SearchWithThreeDot' | localize"
                 [(ngModel)]="keyword"
-                (keydown)="getDataPage(1)"
+                (keyup.enter)="getDataPage(1)"
               />
             </div>
           </div>
@@ -238,7 +238,7 @@
                 [first]="first"
                 [rows]="rows"
                 [totalRecords]="totalItems"
-                [rowsPerPageOptions]="[6, 10, 15]"
+                [rowsPerPageOptions]="[10, 15, 20]"
               ></p-paginator>
             </div>
           </div>

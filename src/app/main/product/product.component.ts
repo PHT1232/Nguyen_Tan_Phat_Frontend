@@ -1,9 +1,9 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
 import { CategoryInput, CategoryServiceProxy, ExportImportProductDto, FileDownloadService, PermissionDto, ProductServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CategoryProduct, CategoryProductList } from '@shared/service-proxies/dtos/products/CategoryProduct';
-import { ProductGetAllDto } from '@shared/service-proxies/dtos/products/ProductGetAllDto';
+import { ListProductGetAll, ProductGetAllDto } from '@shared/service-proxies/dtos/products/ProductGetAllDto';
 import { ProductInputDto } from '@shared/service-proxies/dtos/products/ProductInputDto';
 import { ProductOutputDto } from '@shared/service-proxies/dtos/products/ProductOutputDto';
 import { ProductStorageDto } from '@shared/service-proxies/dtos/products/ProductStorageDto';
@@ -12,12 +12,13 @@ import { ProductGetAllPagedResultDto } from '@shared/service-proxies/dtos/produc
 import { SubcategoryProduct, SubcategoryProductList } from '@shared/service-proxies/dtos/products/SubcategoryProduct';
 import { Observable, throwError } from 'rxjs';
 import { catchError, delay, finalize } from 'rxjs/operators';
-import { MessageService } from 'primeng/api';
+import { MessageService, TreeNode } from 'primeng/api';
 import { AppComponent } from '@app/app.component';
 import { firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { LookUpTable } from '@shared/service-proxies/dtos/LookUpTable';
 import { BaoGiaObject } from '@shared/service-proxies/dtos/BaoGiaObject';
+import { TreeTable } from 'primeng/treetable';
 
 class PagedProductRequestDto extends PagedRequestDto {
   keyword: string;
@@ -33,6 +34,7 @@ class PagedProductRequestDto extends PagedRequestDto {
   animations: [appModuleAnimation()]
 })
 export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto> {
+  @ViewChild('treeTable') table: TreeTable;
   keyword = '';
   storageCode = new LookUpTable();
   categoryCode: CategoryProduct = new CategoryProduct();
@@ -46,6 +48,8 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
   rows: number = 6;
   selectedProducts: ProductGetAllDto[] = [];
   imageShow:  any;
+  datas: ListProductGetAll[] = [];
+  cols: any[];
 
   constructor(
     injector: Injector,
@@ -63,6 +67,19 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
       this._productService.getCategoryProduct().subscribe(val => {
           this.getCategory = val;
       });
+
+      this.cols = [
+        { field: "productCode", header: "Mã sản phẩm" },
+        { field: "productName", header: "Tên sản phẩm" },
+        { field: "productImage", header: "Hình ảnh sản phẩm" },
+        { field: "categoryName", header: "Danh mục" },
+        { field: "storageCode", header: "Mã kho" },
+        { field: "unit", header: "Đơn vị tính" },
+        { field: "quantity", header: "Số lượng tồn kho" },
+        { field: "inventoryStatus", header: "Trạng thái" },
+        { field: "price", header: "Giá" },
+        { field: "username", header: "Người cập nhật" }
+      ];
   }
 
     createImageFromBlob(image: Blob): any {
@@ -102,11 +119,6 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
         request.subcategoryCode = this.subcategoryCode.code; 
       }
 
-      console.log(request.keyword);
-      console.log(request.storageCode);
-      console.log(request.categoryCode);
-      console.log(request.subcategoryCode);
-      
       this._productService
       .getAll(request.keyword, request.storageCode, request.categoryCode, request.subcategoryCode, request.skipCount, request.maxResultCount)
       .pipe(
@@ -114,9 +126,11 @@ export class ProductComponent extends PagedListingComponentBase<ProductGetAllDto
           finishedCallback();
         })
       )
-      .subscribe(async (result: ProductGetAllPagedResultDto) => {
-        this.productList = result.items;
+      .subscribe((result: ProductGetAllPagedResultDto) => {
+        // debugger;
+        this.datas = result.items;
         this.showPaging(result, pageNumber);
+        // this.productList = result.items;
         // for (var i = 0; i < this.productList.length; i++) {
         //   var url = 'https://localhost:44311/File/GetImage?fileName=' + this.productList[i].productImage;
         //    await setTimeout(() => {

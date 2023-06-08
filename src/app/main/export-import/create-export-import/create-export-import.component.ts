@@ -72,11 +72,13 @@ export class CreateExportImportComponent
   customerSelected = new CustomerListDto();
   selectedProducts: ExportImportProductDto[] = [];
   selectedProductsForInput: ExportImportProductDto[] = [];
+  selectedDefaultProduct: ExportImportProductDto[] = [];
   customerInput = new CustomerDto();
   request: PagedProductRequestDto;
-  pageSize = 5;
+  pageSize = 10;
   pageNumber = 1;
   totalPages = 1;
+  int = 0;
   skipCount = (1 - 1) * this.pageSize;
   isTrue = true;
   quantityCheck: boolean[] = [];
@@ -99,9 +101,9 @@ export class CreateExportImportComponent
   ) {
     super(injector);
 
-    this._employeeService.getEmployeeForSelect().subscribe((result) => {
-      this.employee = result.items;
-    });
+    // this._employeeService.getEmployeeForSelect().subscribe((result) => {
+    //   this.employee = result.items;
+    // });
 
     this._exportImport.getCustomerSelect().subscribe((result) => {
       this.customer = result.items;
@@ -109,25 +111,24 @@ export class CreateExportImportComponent
     
     this._structureService.getStructureSelect().subscribe(val => {
       this.getStructure = val.items;
-      this.getStructure.push(new StructureSelectDto({code: "0", name: "CÔNG TY CỔ PHẦN UNTEN"}))
     })
 
-    setTimeout(() => {
-      this._exportImport
-        .getProduct(this.storageCode.code, false, this.skipCount, this.pageSize)
-        .subscribe((result: ExportImportPagedResult) => {
-          this.products = result.items;
-          this.showPaging(result, this.pageNumber);
-          for (let i = 0; i < this.products.length; i++) {
-            this.quantityCheck[i] = true;
-            let productQuantity = new InitialProductQuantity();
-            productQuantity.id = this.products[i].productId;
-            productQuantity.quantity = this.products[i].quantity;
-            this.initialProductQuantity.push(productQuantity);
-          }
-          // this.isTableLoading = false;
-        });
-    }, 300);
+    // setTimeout(() => {
+    //   this._exportImport
+    //     .getProduct(this.storageCode.code, false, this.skipCount, this.pageSize)
+    //     .subscribe((result: ExportImportPagedResult) => {
+    //       this.products = result.items;
+    //       this.showPaging(result, this.pageNumber);
+    //       for (let i = 0; i < this.products.length; i++) {
+    //         this.quantityCheck[i] = true;
+    //         let productQuantity = new InitialProductQuantity();
+    //         productQuantity.id = this.products[i].productId;
+    //         productQuantity.quantity = this.products[i].quantity;
+    //         this.initialProductQuantity.push(productQuantity);
+    //       }
+    //       // this.isTableLoading = false;
+    //     });
+    // }, 300);
 
     this._exportImport.getUser().subscribe((val) => {
       this.user = val;
@@ -146,8 +147,8 @@ export class CreateExportImportComponent
     this.exportImport.structureId = this.selectedStructure.code;
     // this.exportImport.products.forEach((element) => {
     //   totalPrice += element.finalPrice;
-    // });
     
+    // });
     this.productsList.forEach(element => {
       // console.log("quantity: " + element.quantity);
       // console.log("finalprice: " + element.finalPrice);
@@ -205,9 +206,7 @@ export class CreateExportImportComponent
       this.employeeSelected === null ||
       this.customerSelected === null ||
       this.employeeSelected.code === undefined ||
-      this.customerSelected.code === undefined ||
-      this.storageCode === undefined ||
-      this.storageCode.code === undefined
+      this.customerSelected.code === undefined
     ) {
       return true;
     }
@@ -300,9 +299,23 @@ export class CreateExportImportComponent
     this.quantityCheck = [];
     this.skipCount = (page - 1) * this.pageSize;
     this._exportImport
-      .getProduct(this.storageCode.code, false, this.skipCount, this.pageSize)
+      .getProduct(this.keyword, this.storageCode.code, false, this.skipCount, this.pageSize)
       .subscribe((result: ExportImportPagedResult) => {
-        this.products = result.items;
+        // this.products = result.items;
+        this.products = [];
+        if (this.selectedProductsForInput.length !== 0) {
+          result.items.forEach(element => {
+            this.selectedProductsForInput.forEach(elementProduct => {
+              if (element.productId === elementProduct.productId) {
+                element.quantity = elementProduct.quantity;
+              }
+            });
+            this.products.push(element);
+          });
+        } else {
+          this.products = result.items;
+        }
+        
         this.showPaging(result, this.pageNumber);
         for (let i = 0; i < this.products.length; i++) {
           this.quantityCheck[i] = true;
@@ -315,15 +328,29 @@ export class CreateExportImportComponent
   }
 
   isProductSelectedInput(data) {
-    return this.selectedProductsForInput.indexOf(data) > -1
+    if (this.selectedProductsForInput.length === 0) {
+      return false;
+    }
+
+    var hasThing = false;
+    this.selectedProductsForInput.forEach(element => {
+      if (element.productId === data.productId) {
+        hasThing = true;
+        return;
+      }
+    });
+    return hasThing;
   }
 
-  getStorageClick(id: string) {
+  getStorageAndEmployeeClick(id: string) {
     this._exportImport.getStorage(id).subscribe((val) => {
       this.getStorage = val.items;
       // console.log(val.items[0]);
       this.storageCode = val.items[val.items.length - 1];
     });
+    this._employeeService.getEmployeeForSelectWithStructureId(id).subscribe((val) => {
+      this.employee = val.items;
+    })
   }
 
   showDialog() {
@@ -332,7 +359,8 @@ export class CreateExportImportComponent
 
   closeModal() {
     this.selectedProductsForInput = [];
-    // this.selectedProducts = [];
+    this.products = [];
+    this.storageCode = undefined
     this.visible = false;
   }
 
@@ -356,5 +384,45 @@ export class CreateExportImportComponent
 
   deleteAllProduct() {
     delete this.productsList;
+  }
+
+  onTableScroll(event) {
+    const scrollHeight = event.originalEvent.target.scrollHeight;
+    const scrollTop = event.originalEvent.target.scrollTop;
+    console.log("scroll hegight " +scrollHeight)
+    console.log("scroll top " +scrollTop)
+    if (scrollHeight === scrollTop) {
+      // Load more data here
+      this.onLazyLoad(event);
+    }
+  }
+
+  onLazyLoad(event) {
+    this.isTableLoading = true;
+    // Load data here based on the event properties such as event.first and event.rows
+    // Update the cars array with the new data
+    this._exportImport
+      .getProduct(this.keyword, this.storageCode.code, false, 0, event.rows)
+      .subscribe((result: ExportImportPagedResult) => {
+        // this.products = result.items;
+        this.products = [];
+        if (this.selectedProductsForInput.length !== 0) {
+          result.items.forEach(element => {
+            this.selectedProductsForInput.forEach(elementProduct => {
+              if (element.productId === elementProduct.productId) {
+                element.quantity = elementProduct.quantity;
+              }
+            });
+            this.products.push(element);
+          });
+        } else {
+          this.products = result.items;
+        }
+        
+        this.showPaging(result, this.pageNumber);
+        for (let i = 0; i < this.products.length; i++) {
+          this.quantityCheck[i] = true;
+        }
+      });
   }
 }

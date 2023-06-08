@@ -20,6 +20,7 @@
             <p-button
               label="Tính lương"
               style="margin-right: 20px"
+              [loading]="loading"
               (click)="showDialog()"
               *ngIf="isGranted('Pages.System.Employee.Add') == true"
             >
@@ -85,11 +86,12 @@
         </div>
         <div class="card-body">
           <div class="table-responsive">
-            <p-scrollPanel [style]="{ width: '100%', height: '520px' }">
+            <!-- <p-scrollPanel [style]="{ width: '100%', height: '520px' }"> -->
               <p-table
                 [value]="List"
                 dataKey="employeeCode"
                 [(selection)]="listToDelete"
+                [scrollable]="true" scrollHeight="520px"
                 [tableStyle]="{ 'min-width': '50rem' }"
                 [busy]="isTableLoading"
                 [styleClass]="'p-datatable-sm'"
@@ -157,7 +159,7 @@
                   </tr>
                 </ng-template>
               </p-table>
-            </p-scrollPanel>
+            <!-- </p-scrollPanel> -->
           </div>
         </div>
           
@@ -211,7 +213,7 @@
     </div>
       <ng-template pTemplate="footer">
       <div class="modal-footer justify-content-center">
-        <p-button icon="pi pi-check" (click)="visible = false; closeModal()" label="Ok" [style]="{'margin-top':'20px' }" styleClass="p-button-success"></p-button>
+        <p-button icon="pi pi-check" (click)="visible = false; confirmModal()" label="Ok" [style]="{'margin-top':'20px' }" styleClass="p-button-success"></p-button>
       </div>
     </ng-template>
 </p-dialog>

@@ -70,20 +70,20 @@ export class ReturnImportComponent extends AppComponentBase implements OnInit {
       // this.storageCode = val[val.length - 1].storageCode;
     });
 
-    setTimeout(() => {
-      this._exportImport.getProduct(this.storageCode, true, this.skipCount, this.pageSize)
-      .subscribe((result: ExportImportPagedResult) => {
-        this.products1 = result.items;
-        this.showPaging(result, this.pageNumber);
-        for (let i = 0; i < this.products1.length; i++) {
-          this.quantityCheck[i] = true;
-          let productQuantity = new InitialProductQuantity();
-          productQuantity.id = this.products1[i].productId;
-          productQuantity.quantity = this.products1[i].quantity;
-          this.initialProductQuantity.push(productQuantity);
-        }
-      });
-    }, 300);
+    // setTimeout(() => {
+    //   this._exportImport.getProduct(this.keyword, this.storageCode, true, this.skipCount, this.pageSize)
+    //   .subscribe((result: ExportImportPagedResult) => {
+    //     this.products1 = result.items;
+    //     this.showPaging(result, this.pageNumber);
+    //     for (let i = 0; i < this.products1.length; i++) {
+    //       this.quantityCheck[i] = true;
+    //       let productQuantity = new InitialProductQuantity();
+    //       productQuantity.id = this.products1[i].productId;
+    //       productQuantity.quantity = this.products1[i].quantity;
+    //       this.initialProductQuantity.push(productQuantity);
+    //     }
+    //   });
+    // }, 300);
    
     this._exportImport.getUser()
     .subscribe(val => {
@@ -209,7 +209,7 @@ export class ReturnImportComponent extends AppComponentBase implements OnInit {
     this.exportImport.products = [];
     this.quantityCheck = [];
     this.skipCount = (page - 1) * this.pageSize;
-    this._exportImport.getProduct(this.storageCode, true, this.skipCount, this.pageSize)
+    this._exportImport.getProduct(this.keyword, this.storageCode, true, this.skipCount, this.pageSize)
     .subscribe((result: ExportImportPagedResult) => {
       this.products1 = result.items;
       this.showPaging(result, this.pageNumber);

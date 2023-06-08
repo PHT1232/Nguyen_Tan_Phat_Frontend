@@ -39,7 +39,7 @@ import {
   StorageProductDetailList,
 } from "./dtos/products/StorageProductDetail";
 import { ProductInputDto } from "./dtos/products/ProductInputDto";
-import { ProductGetAllDto } from "./dtos/products/ProductGetAllDto";
+import { ListProductGetAll, ProductGetAllDto } from "./dtos/products/ProductGetAllDto";
 import { ProductGetAllPagedResultDto } from "./dtos/products/ProductGetAllPagedResultDto";
 import {
   SubcategoryProduct,
@@ -5534,6 +5534,46 @@ export class EmployeeServiceProxy {
     return _observableOf<EmployeeSelectForAccountList>(<any>null);
   }
 
+  getEmployeeForSelectWithStructureId(id: string): Observable<EmployeeSelectForAccountList> {
+    let _url = this.baseUrl + "/api/services/app/Employee/GetEmployeeSelectWithStructureId?";
+    if (id !== undefined)
+      _url += "StructureId=" + encodeURIComponent("" + id) + "&"; 
+    _url = _url.replace(/[?&]$/, "");
+
+    let _options: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "text/plain",
+      }),
+    };
+
+    return this.http
+      .request("get", _url, _options)
+      .pipe(
+        _observableMergeMap((_response: any) => {
+          return this.processGetEmployeeSelect(_response);
+        })
+      )
+      .pipe(
+        _observableCatch((_response: any) => {
+          if (_response instanceof HttpResponseBase) {
+            try {
+              return this.processGetEmployeeSelect(<any>_response);
+            } catch (e) {
+              return <Observable<EmployeeSelectForAccountList>>(
+                (<any>_observableThrow(e))
+              );
+            }
+          } else {
+            return <Observable<EmployeeSelectForAccountList>>(
+              (<any>_observableThrow(_response))
+            );
+          }
+        })
+      );
+  }
+
   delete(id: string | undefined): Observable<void> {
     let _url = this.baseUrl + "/api/services/app/Employee/Delete?";
     if (id === null) throw new Error("The parameter 'id' cannot be null");
@@ -6037,7 +6077,8 @@ export class ProductServiceProxy {
       );
     }
     return _observableOf<ProductGetAllPagedResultDto>(<any>null);
-  }
+  }  
+  
 
   getCategoryProduct(): Observable<CategoryProductList> {
     let url_ = this.baseUrl + "/api/services/app/Product/GetCategoryProduct";
@@ -6546,6 +6587,13 @@ export class FileDownloadService {
   
   exportToExcelDelivery(id: string): Observable<boolean> {
     const url = this.baseUrl + '/File/ExcelExportForXuatHang?id=' + id;
+    // TODO: This causes reloading of same page in Firefox
+    location.href = url;
+    return _observableOf(true);
+  }  
+  
+  exportToExcelSalary(id: string, date: string): Observable<boolean> {
+    const url = this.baseUrl + '/File/ExcelExportForSalary?structureId=' + id + "&date=" + date;
     // TODO: This causes reloading of same page in Firefox
     location.href = url;
     return _observableOf(true);
@@ -7570,6 +7618,7 @@ export class ExportImportService {
   }
 
   getProduct(
+    keyword: string,
     storageId: string,
     isInsert: boolean,
     skipCount: number | undefined,
@@ -7578,6 +7627,8 @@ export class ExportImportService {
     let url_ = this.baseUrl + "/api/services/app/ExportImport/GetProduct?";
     if (storageId !== undefined)
       url_ += "StorageId=" + encodeURIComponent("" + storageId) + "&";
+    if (keyword !== undefined)
+      url_ += "Keyword=" + encodeURIComponent("" + keyword) + "&";
     if (isInsert !== undefined)
       url_ += "isInsert=" + encodeURIComponent("" + isInsert) + "&";
     if (skipCount === null)

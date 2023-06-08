@@ -48,7 +48,7 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
   totalCount: number;
   isLoading = false;
   first: number = 0;
-  rows: number = 6;
+  rows: number = 10;
   loading: boolean = false;
 
   constructor(
@@ -85,6 +85,7 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
         });
       }
       
+      console.log(request.maxResultCount);
       this._exportImportService
         .getAll(
           request.keyword,
