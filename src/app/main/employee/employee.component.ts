@@ -2,13 +2,15 @@ import { Component, Injector } from '@angular/core';
 import { AppComponent } from '@app/app.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
+import { StructureSelectDto } from '@shared/service-proxies/dtos/Structure/StructureSelectDto';
 import { EmployeeGetAllDto } from '@shared/service-proxies/dtos/employee/EmployeeGetallDto';
 import { EmployeeGetAllPagedResultDto } from '@shared/service-proxies/dtos/employee/EmployeeGetallPagedResultDto';
-import { EmployeeServiceProxy } from '@shared/service-proxies/service-proxies';
+import { EmployeeServiceProxy, StructureServiceProxy } from '@shared/service-proxies/service-proxies';
 import { catchError, finalize, throwError } from 'rxjs';
 
 class PagedEmployeeRequestDto extends PagedRequestDto {
   keyword: string;
+  unitCode: string;
 }
 
 @Component({
@@ -24,25 +26,35 @@ export class EmployeeComponent extends PagedListingComponentBase<EmployeeGetAllD
   employeeCodes: string[] = [];
   totalCount: number;
   first: number = 0;
+  date: Date;
+  getStructure: StructureSelectDto[] = [];
+  selectedStructure = new StructureSelectDto();
+  selectedStructureForDataPage = new StructureSelectDto();
   rows: number = 6;
+  visible = false;
   // selectedProducts: ProductGetAllDto[] = [];
 
   constructor(
     injector: Injector,
     private _employeeService: EmployeeServiceProxy,
+    private _structureService: StructureServiceProxy,
     private appMain: AppComponent
   ) { 
     super(injector);
+    this._structureService.getStructureSelect().subscribe(val => {
+      this.getStructure = val.items;
+    })
   }
 
   list(request: PagedEmployeeRequestDto, pageNumber: number, finishedCallback: Function): void {
     request.keyword = this.keyword;
-
     setTimeout(() => { 
+      request.unitCode = this.selectedStructureForDataPage.code;
       console.log(request.keyword);
+      console.log(request.unitCode);
       
       this._employeeService
-      .getAll(request.keyword, request.skipCount, request.maxResultCount)
+      .getAll(request.keyword, request.unitCode, request.skipCount, request.maxResultCount)
       .pipe(
         finalize(() => {
           finishedCallback();
@@ -143,5 +155,15 @@ export class EmployeeComponent extends PagedListingComponentBase<EmployeeGetAllD
       this.rows = this.totalItems;
       this.pageSize = this.totalItems;
     }
+  }
+
+  showDialog() {
+    this.visible = true;
+  }
+
+  closeModal() {
+    console.log(this.date.toString())
+    console.log(this.selectedStructureForDataPage)
+    this.visible = false;
   }
 }

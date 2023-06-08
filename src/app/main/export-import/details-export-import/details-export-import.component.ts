@@ -127,6 +127,12 @@ export class DetailsExportImportComponent extends AppComponentBase implements On
     });
   }
 
+  ExportExcelXuat(id: string) {
+    this._fileService.exportToExcelDelivery(id).subscribe((res) => {
+      this.loading = false;
+    });
+  }
+
   createLink(id: string) {
     this.vnpayService.createPaymentUrl(id)
   }

@@ -24,13 +24,7 @@
                     [style]="{'width':'100%'}"
                     [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="products.productCode"
-                    #nameCode="ngModel"
-                    #nameCodeEl
                   />
-                  <abp-validation-summary
-                    [control]="nameCode"
-                    [controlEl]="nameCodeEl"
-                  ></abp-validation-summary>
                 </div>
               </div>
             </div>
@@ -54,13 +48,7 @@
                     [ngModelOptions]="{ standalone: true }"
                     [style]="{'width':'100%'}"
                     [(ngModel)]="products.productName"
-                    #nameModel="ngModel"
-                    #nameEl
                   />
-                  <abp-validation-summary
-                    [control]="nameModel"
-                    [controlEl]="nameEl"
-                  ></abp-validation-summary>
                 </div>
               </div>
             </div>
@@ -104,14 +92,8 @@
                   [(ngModel)]="categoryCode" 
                   [ngModelOptions]="{standalone: true}" 
                   (onChange)="getSubcategory()"
-                  optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Danh mục"
-                  #selectModel="ngModel"
-                  #selectEl>
+                  optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Danh mục">
                   </p-dropdown>
-                  <abp-validation-summary
-                    [control]="selectModel"
-                    [controlEl]="selectEl"
-                  ></abp-validation-summary>
                 </div>
               </div>
             </div>
@@ -153,9 +135,7 @@
                   [options]="getSubcategorycode.items" 
                   [(ngModel)]="subcategoryCode" 
                   [ngModelOptions]="{standalone: true}" 
-                  optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Danh mục nhỏ"
-                  #selectModel="ngModel"
-                  #selectEl>
+                  optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Danh mục nhỏ">
                   </p-dropdown>
                 </div>
               </div>
@@ -192,13 +172,7 @@
                     mode="currency" currency="VND"
                     [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="products.price"
-                    #priceModel="ngModel"
-                    #priceEl
                   ></p-inputNumber>
-                  <abp-validation-summary
-                    [control]="priceModel"
-                    [controlEl]="priceEl"
-                  ></abp-validation-summary>
                 </div>
               </div>
             </div>
@@ -222,14 +196,7 @@
                     [ngModelOptions]="{ standalone: true }"
                     [style]="{'width':'100%'}"
                     [(ngModel)]="this.products.unit"
-                    #unitModel="ngModel"
-                    #unitEl
-                    required
                   />
-                  <abp-validation-summary
-                    [control]="unitModel"
-                    [controlEl]="unitEl"
-                  ></abp-validation-summary>
                 </div>
               </div>
             </div>
@@ -247,8 +214,7 @@
                 <div class="col">
                   <textarea
                     class="form-control"
-                    name="description"
-                    id="description"
+                    [ngModelOptions]="{standalone: true}"
                     [(ngModel)]="products.productDescription"
                     cols="20"
                     rows="5"
@@ -270,9 +236,8 @@
                 <div class="col">
                   <textarea
                     class="form-control"
-                    name="description"
-                    id="description"
                     [(ngModel)]="products.productDetail"
+                    [ngModelOptions]="{standalone: true}"
                     cols="20"
                     rows="6"
                   ></textarea>

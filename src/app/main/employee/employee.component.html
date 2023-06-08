@@ -20,8 +20,7 @@
             <p-button
               label="Tính lương"
               style="margin-right: 20px"
-              [disabled]="listToDelete.length === 0"
-              routerLink="create"
+              (click)="showDialog()"
               *ngIf="isGranted('Pages.System.Employee.Add') == true"
             >
             </p-button>
@@ -37,6 +36,19 @@
               </section> -->
         </ng-template>
         <div class="card-header">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row mb-15">
+                <p-dropdown [style]="{'width':'100%' }" 
+                [options]="getStructure" 
+                [ngModelOptions]="{standalone: true}" 
+                [(ngModel)]="selectedStructureForDataPage" 
+                placeholder="Chi nhánh"
+                (onChange)="getDataPage(1)"
+                optionLabel="name" [filter]="true" filterBy="name" [showClear]="true"></p-dropdown>
+              </div>
+            </div>
+          </div>
           <div class="row">
             <div class="col-md-6">
                 <p-button
@@ -90,6 +102,8 @@
                     <th pSortableColumn="employeeCode">{{ "Mã nhân viên" | localize }}<p-sortIcon field="employeeCode"></p-sortIcon></th>
                     <th pSortableColumn="employeeName">{{ "Tên nhân viên" | localize }}<p-sortIcon field="employeeName"></p-sortIcon></th>
                     <th pSortableColumn="employeePhone">{{ "Số Điện thoại" | localize }}<p-sortIcon field="employeePhone"></p-sortIcon></th>
+                    <th pSortableColumn="employeeSalary">{{ "Lương" | localize }}<p-sortIcon field="employeeSalary"></p-sortIcon></th>
+                    <th pSortableColumn="employeeAllowance">{{ "Phụ cấp" | localize }}<p-sortIcon field="employeeAllowance"></p-sortIcon></th>
                     <th pSortableColumn="jobTitle">{{ "Chức danh" | localize }}<p-sortIcon field="jobTitle"></p-sortIcon></th>
                     <th pSortableColumn="workUnit">{{ "Tên đơn vị" | localize }}<p-sortIcon field="workUnit"></p-sortIcon></th>
                     <th pSortableColumn="accountId">{{ "Số tài khoản" | localize }}<p-sortIcon field="workUnit"></p-sortIcon></th>
@@ -110,6 +124,8 @@
                     </td>
                     <td>{{ employee.employeeName }}</td>
                     <td>{{ employee.employeePhone }}</td>
+                    <td>{{ employee.employeeSalary | currency: 'VND' }}</td>
+                    <td>{{ employee.employeeAllowance | currency: 'VND' }}</td>
                     <td>{{ employee.jobTitle }}</td>
                     <!-- <td *ngIf="storageCode != '0'">{{ product.quantity }}</td> -->
                     <td>
@@ -174,4 +190,29 @@
       </p-panel>
     </section>
   </div>
+  <p-dialog [(visible)]="visible" (onHide)="closeModal()" [modal]="true" [style]="{ width: '30vw', height: '20vw' }" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+      <span class="text-xl font-bold">Tính lương</span>
+    </ng-template>
+    <div class="calendar" id="mydiv">
+      <p-calendar
+      dateFormat="mm"
+      [style]="{'width':'90%'}"
+      [(ngModel)]="date"
+      [showIcon]="true"
+      view="month" dateFormat="mm/yy" 
+      [ngModelOptions]="{ standalone: true }"
+      placeholder="Tháng lương"
+    ></p-calendar>
+    <br>
+    <br>
+    <p-dropdown [style]="{'width':'90%' }" [panelStyle]="{'width':'100%'}" [options]="getStructure" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedStructure" optionLabel="name" [filter]="true" filterBy="name" [showClear]="true"></p-dropdown>
+  
+    </div>
+      <ng-template pTemplate="footer">
+      <div class="modal-footer justify-content-center">
+        <p-button icon="pi pi-check" (click)="visible = false; closeModal()" label="Ok" [style]="{'margin-top':'20px' }" styleClass="p-button-success"></p-button>
+      </div>
+    </ng-template>
+</p-dialog>
   
