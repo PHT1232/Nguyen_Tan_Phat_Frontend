@@ -2,7 +2,7 @@ export interface IRetailCustomerDto {
     retailCode: string;
     customerCode: string;
     customerName: string;
-    receiveAddress: string;
+    reveciveAddress: string;
     discount: number;
     phoneToCall: string;
   }
@@ -11,7 +11,7 @@ export interface IRetailCustomerDto {
     retailCode: string;
     customerCode: string;
     customerName: string;
-    receiveAddress: string;
+    reveciveAddress: string;
     discount: number;
     phoneToCall: string;
   
@@ -29,7 +29,7 @@ export interface IRetailCustomerDto {
         this.retailCode = _data["retailCode"];
         this.customerCode = _data["customerCode"];
         this.customerName = _data["customerName"];
-        this.receiveAddress = _data["receiveAddress"];
+        this.reveciveAddress = _data["reveciveAddress"];
         this.discount = _data["discount"];
         this.phoneToCall = _data["phoneToCall"];
       }
@@ -47,7 +47,7 @@ export interface IRetailCustomerDto {
       data["retailCode"] = this.retailCode;
       data["customerCode"] = this.customerCode;
       data["customerName"] = this.customerName;
-      data["receiveAddress"] = this.receiveAddress;
+      data["reveciveAddress"] = this.reveciveAddress;
       data["discount"] = this.discount;
       data["phoneToCall"] = this.phoneToCall;
       return data;

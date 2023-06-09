@@ -37,6 +37,8 @@ import { ExpensesComponent } from './main/expenses/expenses.component';
 import { CreateExpensesComponent } from './main/expenses/create-expenses/create-expenses.component';
 import { DetailExpensesComponent } from './main/expenses/detail-expenses/detail-expenses.component';
 import { UploadComponent } from './main/upload/upload.component';
+import { RetailComponent } from './main/retail/retail.component';
+import { CreateRetailComponent } from './main/retail/create-retail/create-retail.component';
 
 @NgModule({
     imports: [
@@ -81,6 +83,10 @@ import { UploadComponent } from './main/upload/upload.component';
                     { path: 'customer/detail/:id', component: DetailsExportImportComponent, data: { permission: 'Pages.System.Employee.View'} , canActivate: [AppRouteGuard] },                    
                     { path: 'expense', component: ExpensesComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] },
                     { path: 'expense/create', component: CreateExpensesComponent, data: { permission: 'Pages.System.Revenue.Add'} , canActivate: [AppRouteGuard] },
+                    { path: 'expense/edit/:id', component: EditCustomerComponent, data: { permission: 'Pages.System.Revenue.Update'} , canActivate: [AppRouteGuard] },
+                    { path: 'expense/detail/:id', component: DetailExpensesComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] },     
+                    { path: 'retail', component: RetailComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] },
+                    { path: 'retail/create', component: CreateRetailComponent, data: { permission: 'Pages.System.Revenue.Add'} , canActivate: [AppRouteGuard] },
                     { path: 'expense/edit/:id', component: EditCustomerComponent, data: { permission: 'Pages.System.Revenue.Update'} , canActivate: [AppRouteGuard] },
                     { path: 'expense/detail/:id', component: DetailExpensesComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] },
                     { path: 'upload', component: UploadComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] }

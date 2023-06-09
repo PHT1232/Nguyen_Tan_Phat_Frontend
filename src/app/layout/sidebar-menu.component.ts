@@ -108,6 +108,14 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                     'Pages.System.Revenue.View'
                 ),
             ]),
+            new MenuItem(this.l('Bán lẻ'), '', '', '', [
+                new MenuItem(
+                    this.l('Bán lẻ'),
+                    '/app/retail',
+                    '',
+                    'Pages.System.Revenue.View'
+                ),
+            ]),
             new MenuItem(this.l('Người dùng'), '', '', '', [
                 new MenuItem(
                     this.l('Vai trò'),

@@ -1,16 +1,22 @@
 export interface IRetailProductDto {
     retailId: string;
     productId: string;
+    storageId: string;
+    productName: string;
     quantity: number;
     price: number;
+    unit: string;
     finalPrice: number;
   }
   
   export class RetailProductDto implements IRetailProductDto {
     retailId: string;
     productId: string;
+    storageId: string;
+    productName: string;
     quantity: number;
     price: number;
+    unit: string;
     finalPrice: number;
   
     constructor(data?: IRetailProductDto) {
@@ -26,8 +32,11 @@ export interface IRetailProductDto {
       if (_data) {
         this.retailId = _data["retailId"];
         this.productId = _data["productId"];
+        this.storageId = _data["storageId"];
+        this.productName = _data["productName"];
         this.quantity = _data["quantity"];
         this.price = _data["price"];
+        this.unit = _data["unit"];
         this.finalPrice = _data["finalPrice"];
       }
     }
@@ -43,8 +52,11 @@ export interface IRetailProductDto {
       data = typeof data === "object" ? data : {};
       data["retailId"] = this.retailId;
       data["productId"] = this.productId;
+      data["storageId"] = this.storageId;
+      data["productName"] = this.productName;
       data["quantity"] = this.quantity;
       data["price"] = this.price;
+      data["unit"] = this.unit;
       data["finalPrice"] = this.finalPrice;
       return data;
     }

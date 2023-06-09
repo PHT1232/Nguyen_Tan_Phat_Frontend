@@ -24,6 +24,7 @@ import * as ApiServiceProxies from './service-proxies';
         ApiServiceProxies.UploadServiceProxy,
         ApiServiceProxies.FileDownloadService,
         ApiServiceProxies.VnPayService,
+        ApiServiceProxies.RetailService,
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
     ]
 })

@@ -72,6 +72,7 @@ import { RetailGetAllPagedResultDto } from "./dtos/retail/RetailGetAllPagedResul
 import { RetailOutputDto } from "./dtos/retail/RetailOutputDto";
 import { RetailProductDto } from "./dtos/retail/RetailProductDto";
 import { BaoGiaObject } from "./dtos/BaoGiaObject";
+import { RetailPagedResult } from "./dtos/retail/RetailPagedResult";
 
 export const API_BASE_URL = new InjectionToken<string>("API_BASE_URL");
 
@@ -9169,8 +9170,8 @@ export class RetailService {
     return _observableOf<void>(<any>null);
   }
 
-  getCustomer(id: string): Observable<CustomerDto> {
-    let url_ = this.baseUrl + "/api/services/app/ExportImport/GetCustomer?";
+  getCustomer(id: string): Observable<RetailCustomerDto> {
+    let url_ = this.baseUrl + "/api/services/app/Retail/GetCustomer?";
     if (id === null) throw new Error("The parameter 'id' cannot be null");
     else if (id !== undefined)
       url_ += "PhoneNumber=" + encodeURIComponent("" + id) + "&";
@@ -9197,17 +9198,17 @@ export class RetailService {
             try {
               return this.processGetCustomer(<any>response_);
             } catch (e) {
-              return <Observable<CustomerDto>>(<any>_observableThrow(e));
+              return <Observable<RetailCustomerDto>>(<any>_observableThrow(e));
             }
           } else
-            return <Observable<CustomerDto>>(<any>_observableThrow(response_));
+            return <Observable<RetailCustomerDto>>(<any>_observableThrow(response_));
         })
       );
   }
 
   protected processGetCustomer(
     response: HttpResponseBase
-  ): Observable<CustomerDto> {
+  ): Observable<RetailCustomerDto> {
     const status = response.status;
     const responseBlob =
       response instanceof HttpResponse
@@ -9230,7 +9231,7 @@ export class RetailService {
             _responseText === ""
               ? null
               : JSON.parse(_responseText, this.jsonParseReviver);
-          result200 = CustomerDto.fromJS(resultData200);
+          result200 = RetailCustomerDto.fromJS(resultData200);
           return _observableOf(result200);
         })
       );
@@ -9246,20 +9247,20 @@ export class RetailService {
         })
       );
     }
-    return _observableOf<CustomerDto>(<any>null);
+    return _observableOf<RetailCustomerDto>(<any>null);
   }
 
   getProduct(
+    keyword: string,
     storageId: string,
-    isInsert: boolean,
     skipCount: number | undefined,
     maxResultCount: number | undefined
-  ): Observable<ExportImportPagedResult> {
+  ): Observable<RetailPagedResult> {
     let url_ = this.baseUrl + "/api/services/app/ExportImport/GetProduct?";
     if (storageId !== undefined)
       url_ += "StorageId=" + encodeURIComponent("" + storageId) + "&";
-    if (isInsert !== undefined)
-      url_ += "isInsert=" + encodeURIComponent("" + isInsert) + "&";
+    if (keyword !== undefined)
+      url_ += "Keyword=" + encodeURIComponent("" + keyword) + "&";
     if (skipCount === null)
       throw new Error("The parameter 'skipCount' cannot be null.");
     else if (skipCount !== undefined)
@@ -9292,12 +9293,12 @@ export class RetailService {
             try {
               return this.processGetProduct(<any>response_);
             } catch (e) {
-              return <Observable<ExportImportPagedResult>>(
+              return <Observable<RetailPagedResult>>(
                 (<any>_observableThrow(e))
               );
             }
           } else
-            return <Observable<ExportImportPagedResult>>(
+            return <Observable<RetailPagedResult>>(
               (<any>_observableThrow(response_))
             );
         })
@@ -9306,7 +9307,7 @@ export class RetailService {
 
   protected processGetProduct(
     response: HttpResponseBase
-  ): Observable<ExportImportPagedResult> {
+  ): Observable<RetailPagedResult> {
     const status = response.status;
     const responseBlob =
       response instanceof HttpResponse
@@ -9329,7 +9330,7 @@ export class RetailService {
             _responseText === ""
               ? null
               : JSON.parse(_responseText, this.jsonParseReviver);
-          result200 = ExportImportPagedResult.fromJS(resultData200);
+          result200 = RetailPagedResult.fromJS(resultData200);
           return _observableOf(result200);
         })
       );
@@ -9345,7 +9346,7 @@ export class RetailService {
         })
       );
     }
-    return _observableOf<ExportImportPagedResult>(<any>null);
+    return _observableOf<RetailPagedResult>(<any>null);
   }
 
   getUser(): Observable<LookUpTableList> {
@@ -9435,7 +9436,7 @@ export class RetailService {
     skipCount: number | undefined,
     maxResultCount: number | undefined
   ): Observable<RetailGetAllPagedResultDto> {
-    let _url = this.baseUrl + "/api/services/app/ExportImport/GetAll";
+    let _url = this.baseUrl + "/api/services/app/Retail/GetAll";
     if (keyword === null)
       throw new Error("The parameter 'keyword' cannot be null.");
     else if (keyword !== undefined)
