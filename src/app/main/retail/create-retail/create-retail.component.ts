@@ -10,6 +10,8 @@ import { RetailInputDto } from '@shared/service-proxies/dtos/retail/RetailInputD
 import { RetailProductDto } from '@shared/service-proxies/dtos/retail/RetailProductDto';
 import { RetailPagedResult } from '@shared/service-proxies/dtos/retail/RetailPagedResult';
 import { CustomerDto, CustomerListDto, EmployeeServiceProxy, ExportImportPagedResult, ExportImportService, ProductServiceProxy, RetailService, StructureServiceProxy } from '@shared/service-proxies/service-proxies';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+import { AppComponent } from '@app/app.component';
 
 class PagedProductRequestDto extends PagedRequestDto {
   storageCode: string;
@@ -29,7 +31,8 @@ interface DropDownVarible {
 @Component({
   selector: 'app-create-retail',
   templateUrl: './create-retail.component.html',
-  styleUrls: ['./create-retail.component.css']
+  styleUrls: ['./create-retail.component.css'],
+  animations: [appModuleAnimation()]
 })
 export class CreateRetailComponent extends AppComponentBase implements OnInit{
   saving = false;
@@ -55,7 +58,8 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
   request: PagedProductRequestDto;
   pageSize = 10;
   pageNumber = 1;
-  totalPages = 1;
+  first: number = 0;
+  rows: number = 10;
   int = 0;
   skipCount = (1 - 1) * this.pageSize;
   isTrue = true;
@@ -81,6 +85,7 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
     private _productService: ProductServiceProxy,
     private _structureService: StructureServiceProxy,
     public _employeeService: EmployeeServiceProxy,
+    private appMain: AppComponent,
     private _retailService: RetailService,
   ) {
     super(injector);
@@ -134,23 +139,41 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
       this.exportImport.products.push(element);  
     });
 
-    this.exportImport.products.forEach(element => {
-        console.log("Storage id: " + element.storageId);
-        console.log("Product id: " + element.productId);
-        console.log("quantity: " + element.quantity);
-    });
+    // this.exportImport.products.forEach(element => {
+    //     console.log("Storage id: " + element.storageId);
+    //     console.log("Product id: " + element.productId);
+    //     console.log("quantity: " + element.quantity);
+    // });
 
+    if (this.selectedPhuongThuc.code === 'VNP') {
+      this.exportImport.paymentMethod = 2;
+    } else if (this.selectedPhuongThuc.code === 'TM') {
+      this.exportImport.paymentMethod = 1;
+    }
+
+    if (this.selectedDropDownValues.code === 'TT') {
+      this.exportImport.isHomeDelivery = false;
+      this.exportImport.isDelivered = true;
+    } else if (this.selectedDropDownValues.code === 'GV') {
+      this.exportImport.isHomeDelivery = true;
+      this.exportImport.paymentMethod = 1;
+      this.exportImport.isDelivered = false;
+    }
     this.exportImport.deliveryEmployee = this.employeeDeliverySelected.code;
     this.exportImport.orderCreator = this.employeeSelected.code;
     this.exportImport.customer = this.customerInput;
+    this.exportImport.customer.customerCode = this.customerInput.phoneToCall;
     this.exportImport.discount = this.customerInput.discount;
     this.exportImport.totalPrice = totalPrice;
     this.exportImport.orderStatus = 1;
+    console.log("VN pay" + this.exportImport.paymentMethod)
     this._retailService.create(this.exportImport).subscribe(
       () => {
-        this.notify.success(this.l("Tạo đơn thành công"));
+        // this.notify.success(this.l("Tạo đơn thành công"));
+        
+        this.appMain.showSuccessMessage('Thành công', 'Tạo đơn thành công');
         this.onsave.emit();
-        this._router.navigate(["app/exportimport"]);
+        this._router.navigate(["app/retail"]);
       },
       () => {
         this.saving = false;
@@ -159,45 +182,28 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
   }
 
   public showPaging(result: RetailPagedResult, pageNumber: number): void {
-    this.totalPages =
-      (result.totalCount - (result.totalCount % this.pageSize)) /
-        this.pageSize +
-      1;
-
     this.totalItems = result.totalCount;
     this.pageNumber = pageNumber;
   }
 
   Cancel(): void {
-    this._router.navigate(["app/exportimport"]);
+    this._router.navigate(["app/retail"]);
   }
 
   checkFormValid(): boolean {
-    // this.isTrue = true;
     if (
-      // this.exportImport.products.length === 0 ||
       this.productsList === undefined ||
       this.productsList.length === 0 ||
       this.exportImport.retailCode === "" ||
       this.employeeSelected === null ||
-      this.customerSelected === null ||
       this.employeeSelected.code === undefined ||
-      this.customerSelected.code === undefined
+      this.customerInput.phoneToCall === undefined ||
+      this.customerInput.phoneToCall === "" || 
+      this.customerInput.customerName === undefined || 
+      this.customerInput.customerName === "" 
     ) {
       return true;
     }
-
-    // for (let i = 0; i < this.quantityCheck.length; i++) {
-    //   if (this.quantityCheck[i] === false) {
-    //     this.isTrue = false;
-    //     return false;
-    //   }
-    // }
-
-    // if (this.isTrue) {
-    //   this.isTrue = true;
-    // return true;
-    // }
   }
 
   getRandomCode() {
@@ -214,7 +220,6 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
       (error) => {
         this.customerInput.customerName = "";
         this.customerInput.customerCode = "";
-        this.customerInput.phoneToCall = "";
         this.customerInput.reveciveAddress = "";
       }
     );
@@ -230,24 +235,27 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
   //   return true;
   // }
 
-  changeQuantity(productTemp: RetailProductDto) {
-    this.selectedProducts.forEach((element, index) => {
-      if (element.productId === productTemp.productId) {
-        this.initialProductQuantity.forEach((element1) => {
-          if (element1.id === element.productId) {
-            if (productTemp.quantity >= element1.quantity) {
-              this.selectedProducts[index].quantity = element1.quantity;
-              this.selectedProducts[index].finalPrice =
-                element1.quantity * productTemp.price;
-            } else {
-              this.selectedProducts[index].finalPrice =
-                productTemp.quantity * productTemp.price;
-            }
-          }
-        });
-      }
-    });
-  }
+  // changeQuantity(productTemp: RetailProductDto) {
+  //   this.selectedProductsForInput.forEach((element, index) => {
+  //     if (element.productId === productTemp.productId) {
+  //       this.initialProductQuantity.forEach((element1) => {
+  //         if (element1.id === element.productId) {
+  //           if (productTemp.quantity >= element1.quantity) {
+  //             console.log(this.products.indexOf(element));
+  //             console.log("quantity element1 " + element1.quantity)
+  //             console.log("quantity element " + element.quantity)
+  //             this.products[index].quantity = element1.quantity;
+  //             this.products[index].finalPrice =
+  //               element1.quantity * productTemp.price;
+  //           } else {
+  //             this.products[index].finalPrice =
+  //               productTemp.quantity * productTemp.price;
+  //           }
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
 
   // AddItem(productTemp: ExportImportProductDto, index: number) {
   //   if (this.quantityCheck[index] === false) {
@@ -270,12 +278,13 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
   //   }
   // }
 
-  getDataPage(page: number) {
+  getDataPage(event) {
     this.exportImport.products = [];
     this.quantityCheck = [];
-    this.skipCount = (page - 1) * this.pageSize;
+    console.log("page " + event.page);
+    this.skipCount = event.page * this.pageSize;
     this._retailService
-      .getProduct(this.keyword, this.storageCode.code, this.skipCount, this.pageSize)
+      .getProduct(this.keyword, this.selectedStructure.code, this.skipCount, this.pageSize)
       .subscribe((result: RetailPagedResult) => {
         // this.products = result.items;
         this.products = [];
@@ -321,26 +330,19 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
   getStorageAndEmployeeClick(id: string) {
     this._exportImport.getStorage(id).subscribe((val) => {
       this.getStorage = val.items;
-      // console.log(val.items[0]);
-      this.storageCode = val.items[val.items.length - 1];
     });
     this._retailService
       .getProduct(this.keyword, id, this.skipCount, this.pageSize)
       .subscribe((result: RetailPagedResult) => {
-        // this.products = result.items;
         this.products = [];
-        if (this.selectedProductsForInput.length !== 0) {
-          result.items.forEach(element => {
-            this.selectedProductsForInput.forEach(elementProduct => {
-              if (element.productId === elementProduct.productId) {
-                element.quantity = elementProduct.quantity;
-              }
-            });
-            this.products.push(element);
-          });
-        } else {
-          this.products = result.items;
-        }
+        this.initialProductQuantity = []; 
+        this.products = result.items;
+        result.items.forEach(element => {
+          var initialProduct = new InitialProductQuantity();
+          initialProduct.id = element.productId;
+          initialProduct.quantity = element.quantity;
+          this.initialProductQuantity.push(initialProduct);
+        });
         
         this.showPaging(result, this.pageNumber);
         for (let i = 0; i < this.products.length; i++) {
@@ -359,8 +361,9 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
   closeModal() {
     this.selectedProductsForInput = [];
     this.products = [];
-    this.storageCode = undefined
+    this.storageCode = undefined;
     this.visible = false;
+    this.getStorageAndEmployeeClick(this.selectedStructure.code);
   }
 
   addProduct() {
@@ -368,7 +371,7 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
       this.productsList = [];
     }
     this.selectedProductsForInput.forEach((res) => {
-      res.storageId = this.storageCode.code;
+      res.storageId = this.selectedStructure.code;
       console.log(res.storageId)
       this.productsList.push(res)
     });
@@ -383,45 +386,5 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
 
   deleteAllProduct() {
     delete this.productsList;
-  }
-
-  onTableScroll(event) {
-    const scrollHeight = event.originalEvent.target.scrollHeight;
-    const scrollTop = event.originalEvent.target.scrollTop;
-    console.log("scroll hegight " +scrollHeight)
-    console.log("scroll top " +scrollTop)
-    if (scrollHeight === scrollTop) {
-      // Load more data here
-      this.onLazyLoad(event);
-    }
-  }
-
-  onLazyLoad(event) {
-    this.isTableLoading = true;
-    // Load data here based on the event properties such as event.first and event.rows
-    // Update the cars array with the new data
-    this._retailService
-      .getProduct(this.keyword, this.storageCode.code, 0, event.rows)
-      .subscribe((result: RetailPagedResult) => {
-        // this.products = result.items;
-        this.products = [];
-        if (this.selectedProductsForInput.length !== 0) {
-          result.items.forEach(element => {
-            this.selectedProductsForInput.forEach(elementProduct => {
-              if (element.productId === elementProduct.productId) {
-                element.quantity = elementProduct.quantity;
-              }
-            });
-            this.products.push(element);
-          });
-        } else {
-          this.products = result.items;
-        }
-        
-        this.showPaging(result, this.pageNumber);
-        for (let i = 0; i < this.products.length; i++) {
-          this.quantityCheck[i] = true;
-        }
-      });
   }
 }

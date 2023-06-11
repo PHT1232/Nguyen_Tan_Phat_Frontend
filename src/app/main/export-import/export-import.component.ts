@@ -171,11 +171,11 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
 
   ExportExcel(id: string) {
     this.loading = true;
-    this._fileService.exportToExcelDelivery(id).subscribe((res) => {
+    this._fileService.exportToExcelDelivery(id, false).subscribe((res) => {
       this.loading = false;
     });
     setTimeout(() => {
-      this._fileService.exportToExcel(id).subscribe((res) => {
+      this._fileService.exportToExcel(id, false).subscribe((res) => {
         this.loading = false;
       });
     }, 300);

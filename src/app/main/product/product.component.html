@@ -17,13 +17,13 @@
                       <i class="fa fa-plus-square"></i>
                       {{ "Thêm" | localize }}
                     </a> -->
-                    <p-button
+                    <!-- <p-button
                     label="Tạo báo giá"
                     style="margin-right: 20px"
                     (onClick)="ExportExcel()"
                     *ngIf="isGranted('Pages.System.Employee.Add') == true"
                   >
-                  </p-button>
+                  </p-button> -->
 
           <p-button
             label="Thêm"
@@ -98,7 +98,7 @@
                         [options]="getCategory.items" 
                         [(ngModel)]="categoryCode" 
                         [ngModelOptions]="{standalone: true}"
-                        (change)="getSubcategory(); getDataPage(1)"
+                        (onChange)="getSubcategory(); getDataPage(1)"
                         optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Danh mục"
                         ></p-dropdown>
                         <!-- <p-cascadeSelect [ngModelOptions]="{standalone: true}" [(ngModel)]="categoryCode" [options]="getCategory.items" optionLabel="cname" optionGroupLabel="name" [style]="{ minWidth: '14rem' }" placeholder="Danh mục"></p-cascadeSelect> -->
@@ -130,7 +130,7 @@
                         [disabled]="getSubcategorycode.items === undefined"
                         [options]="getSubcategorycode.items" 
                         [(ngModel)]="subcategoryCode" 
-                        (change)="getDataPage(1)"
+                        (onChange)="getDataPage(1)"
                         [ngModelOptions]="{standalone: true}" 
                         optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Danh mục nhỏ"
                         >
@@ -261,7 +261,7 @@
               [(selection)]="selectedProducts"
               dataKey="productCode"
               [tableStyle]="{ 'min-width': '50rem' }"
-              [scrollable]="true" scrollHeight="500px"
+              [scrollable]="true" scrollHeight="550px"
               [busy]="isTableLoading"
               rowGroupMode="subheader" groupRowsBy="productCode"
               [styleClass]="'p-datatable-sm'"

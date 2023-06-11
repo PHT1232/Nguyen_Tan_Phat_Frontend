@@ -105,6 +105,7 @@ import { DetailExpensesComponent } from './main/expenses/detail-expenses/detail-
 import { UploadComponent } from './main/upload/upload.component';
 import { RetailComponent } from './main/retail/retail.component';
 import { CreateRetailComponent } from './main/retail/create-retail/create-retail.component';
+import { RetailDetailComponent } from './main/retail/retail-detail/retail-detail.component';
 
 @NgModule({
   declarations: [
@@ -173,6 +174,7 @@ import { CreateRetailComponent } from './main/retail/create-retail/create-retail
     UploadComponent,
     RetailComponent,
     CreateRetailComponent,
+    RetailDetailComponent,
   ],
   imports: [
     CommonModule,

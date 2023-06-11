@@ -122,13 +122,13 @@ export class DetailsExportImportComponent extends AppComponentBase implements On
 
   ExportExcel(id: string) {
     this.loading = true;
-    this._fileService.exportToExcel(id).subscribe((res) => {
+    this._fileService.exportToExcel(id, false).subscribe((res) => {
       this.loading = false;
     });
   }
 
   ExportExcelXuat(id: string) {
-    this._fileService.exportToExcelDelivery(id).subscribe((res) => {
+    this._fileService.exportToExcelDelivery(id, false).subscribe((res) => {
       this.loading = false;
     });
   }

@@ -1,11 +1,12 @@
 import { Component, Injector } from '@angular/core';
 import { AppComponent } from '@app/app.component';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
 import { LookUpTable } from '@shared/service-proxies/dtos/LookUpTable';
 import { RetailGetAllDto } from '@shared/service-proxies/dtos/retail/RetailGetAllDto';
 import { RetailGetAllPagedResultDto } from '@shared/service-proxies/dtos/retail/RetailGetAllPagedResultDto';
 import { RetailInputDto } from '@shared/service-proxies/dtos/retail/RetailInputDto';
-import { FileDownloadService, ProductServiceProxy, RetailService } from '@shared/service-proxies/service-proxies';
+import { FileDownloadService, ProductServiceProxy, RetailService, VnPayService } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs';
 
 class PagedRetailRequestDto extends PagedRequestDto {
@@ -13,18 +14,21 @@ class PagedRetailRequestDto extends PagedRequestDto {
   storageCode: string;
   dateTime: string[] = [];
   orderStatus: number;
+  isDelived: boolean;
 }
 
 @Component({
   selector: 'app-retail',
   templateUrl: './retail.component.html',
-  styleUrls: ['./retail.component.css']
+  styleUrls: ['./retail.component.css'],
+  animations: [appModuleAnimation()]
 })
 export class RetailComponent extends PagedListingComponentBase<RetailGetAllDto> {
   retail: RetailGetAllDto[];
   keyword = "";
   storageCode = new LookUpTable();
   orderStatus = 1;
+  isDelived = false;
   nameOfReciever = "";
   bsInlineRangeValue: Date[];
   retailList: RetailGetAllDto[] = [];
@@ -40,6 +44,7 @@ export class RetailComponent extends PagedListingComponentBase<RetailGetAllDto> 
     injector: Injector,
     private _productService: ProductServiceProxy,
     private _retailService: RetailService,
+    private vnpayService: VnPayService,
     private _fileService: FileDownloadService,
     private appMain: AppComponent
   ) {
@@ -155,9 +160,12 @@ export class RetailComponent extends PagedListingComponentBase<RetailGetAllDto> 
 
   ExportExcel(id: string) {
     this.loading = true;
-    this._fileService.exportToExcel(id).subscribe((res) => {
+    this._fileService.exportToExcel(id, true).subscribe((res) => {
       this.loading = false;
     });
   }
 
+  createLink(id: string) {
+    this.vnpayService.createPaymentUrl(id)
+  }
 }

@@ -346,11 +346,11 @@ export class CreateExportImportComponent
     this._exportImport.getStorage(id).subscribe((val) => {
       this.getStorage = val.items;
       // console.log(val.items[0]);
-      this.storageCode = val.items[val.items.length - 1];
     });
     this._employeeService.getEmployeeForSelectWithStructureId(id).subscribe((val) => {
       this.employee = val.items;
-    })
+    });
+    // this._exportImport.getProduct(this.keyword)
   }
 
   showDialog() {

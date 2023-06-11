@@ -38,8 +38,8 @@
         </ng-template>
         <div class="card-header">
           <div class="row">
-            <div class="col-md-6">
-              <div class="form-group row mb-15">
+            <div class="col">
+              <div style="width: 25%; margin-bottom: 25px">
                 <p-dropdown [style]="{'width':'100%' }" 
                 [options]="getStructure" 
                 [ngModelOptions]="{standalone: true}" 
@@ -213,7 +213,7 @@
     </div>
       <ng-template pTemplate="footer">
       <div class="modal-footer justify-content-center">
-        <p-button icon="pi pi-check" (click)="visible = false; confirmModal()" label="Ok"  styleClass="p-button-success"></p-button>
+        <p-button [disabled]="date === undefined || selectedStructure === undefined || selectedStructure.code === ''" icon="pi pi-check" (click)="visible = false; confirmModal()" label="Ok"  styleClass="p-button-success"></p-button>
       </div>
     </ng-template>
 </p-dialog>

@@ -6579,15 +6579,15 @@ export class FileDownloadService {
     location.href = url;
   }
 
-  exportToExcel(id: string): Observable<boolean> {
-    const url = this.baseUrl + '/File/ExcelExport?id=' + id;
+  exportToExcel(id: string, isRetail: boolean): Observable<boolean> {
+    const url = this.baseUrl + '/File/ExcelExport?id=' + id + '&isRetail=' + isRetail;
     // TODO: This causes reloading of same page in Firefox
     location.href = url;
     return _observableOf(true);
   }  
   
-  exportToExcelDelivery(id: string): Observable<boolean> {
-    const url = this.baseUrl + '/File/ExcelExportForXuatHang?id=' + id;
+  exportToExcelDelivery(id: string, isRetail: boolean): Observable<boolean> {
+    const url = this.baseUrl + '/File/ExcelExportForXuatHang?id=' + id + '&isRetail=' + isRetail;
     // TODO: This causes reloading of same page in Firefox
     location.href = url;
     return _observableOf(true);

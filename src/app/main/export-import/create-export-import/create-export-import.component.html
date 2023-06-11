@@ -442,7 +442,8 @@
       <div class="row" style="margin-top: 130px">
         <div class="table-responsive">
           <p-table [value]="products" dataKey="productId" [(selection)]="selectedProductsForInput" 
-          [scrollable]="true" scrollHeight="300px" 
+          [scrollable]="true" scrollHeight="500px"
+          [style]="{'height': '500px'}"
           (onLazyLoad)="onTableScroll($event)" 
           [busy]="isTableLoading">
               <ng-template pTemplate="header">
