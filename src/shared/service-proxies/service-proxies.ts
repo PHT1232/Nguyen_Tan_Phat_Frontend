@@ -4767,6 +4767,7 @@ export class CustomerServiceProxy {
   getAll(
     keyword: string | undefined,
     skipCount: number | undefined,
+    isRetail: boolean | undefined,
     maxResultCount: number | undefined
   ): Observable<CustomerGetAllDtoPagedResultDto> {
     let _url = this.baseUrl + "/api/services/app/Customer/GetAll";
@@ -4774,6 +4775,10 @@ export class CustomerServiceProxy {
       throw new Error("The parameter 'keyword' cannot be null.");
     else if (keyword !== undefined)
       _url += "?Keyword=" + encodeURIComponent("" + keyword) + "&";
+    if (isRetail === null)
+      throw new Error("The parameter 'isRetail' cannot be null.");
+    else if (isRetail !== undefined)
+      _url += "isRetail=" + encodeURIComponent("" + isRetail) + "&";
     if (skipCount === null)
       throw new Error("The parameter 'skipCount' cannot be null.");
     else if (skipCount !== undefined)
@@ -7312,8 +7317,12 @@ export class ExportImportService {
     return _observableOf<ExportImportOutputDto>(<any>null);
   }
 
-  getCustomerSelect(): Observable<ListOfCustomer> {
-    let url_ = this.baseUrl + "/api/services/app/ExportImport/GetCustomerList";
+  getCustomerSelect(structureId: string): Observable<ListOfCustomer> {
+    let url_ = this.baseUrl + "/api/services/app/ExportImport/GetCustomerList?";
+    if (structureId === null) 
+      throw new Error("The parameter 'structureId' cannot be null");
+    else if (structureId !== undefined)
+      url_ += "structureId=" + encodeURIComponent("" + structureId) + "&";
     url_ = url_.replace(/[?&]$/, "");
 
     let options_: any = {

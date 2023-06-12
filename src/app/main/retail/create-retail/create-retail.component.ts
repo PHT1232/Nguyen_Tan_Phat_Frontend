@@ -94,9 +94,9 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
     //   this.employee = result.items;
     // });
 
-    this._exportImport.getCustomerSelect().subscribe((result) => {
-      this.customer = result.items;
-    });
+    // this._exportImport.getCustomerSelect().subscribe((result) => {
+    //   this.customer = result.items;
+    // });
     
     this._structureService.getStructureSelect().subscribe(val => {
       this.getStructure = val.items;

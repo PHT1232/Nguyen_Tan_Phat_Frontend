@@ -33,6 +33,7 @@ import {
 import { EmployeeSelectForAccount } from "@shared/service-proxies/dtos/employee/EmployeeSelectForAccount";
 import { StructureSelectDto } from "@shared/service-proxies/dtos/Structure/StructureSelectDto";
 import { forEach } from "lodash-es";
+import { AppComponent } from "@app/app.component";
 
 class PagedProductRequestDto extends PagedRequestDto {
   storageCode: string;
@@ -77,6 +78,8 @@ export class CreateExportImportComponent
   request: PagedProductRequestDto;
   pageSize = 10;
   pageNumber = 1;
+  first: number = 0;
+  rows: number = 10;
   totalPages = 1;
   int = 0;
   skipCount = (1 - 1) * this.pageSize;
@@ -97,6 +100,7 @@ export class CreateExportImportComponent
     private _exportImport: ExportImportService,
     private _productService: ProductServiceProxy,
     private _structureService: StructureServiceProxy,
+    private appMain: AppComponent,
     public _employeeService: EmployeeServiceProxy,
   ) {
     super(injector);
@@ -105,10 +109,6 @@ export class CreateExportImportComponent
     //   this.employee = result.items;
     // });
 
-    this._exportImport.getCustomerSelect().subscribe((result) => {
-      this.customer = result.items;
-    });
-    
     this._structureService.getStructureSelect().subscribe(val => {
       this.getStructure = val.items;
     })
@@ -172,7 +172,8 @@ export class CreateExportImportComponent
     this.exportImport.orderType = 1;
     this._exportImport.create(this.exportImport).subscribe(
       () => {
-        this.notify.success(this.l("Tạo đơn thành công"));
+        // this.notify.success(this.l("Tạo đơn thành công"));
+        this.appMain.showSuccessMessage('Thành công', 'Tạo đơn thành công')
         this.onsave.emit();
         this._router.navigate(["app/exportimport"]);
       },
@@ -294,12 +295,19 @@ export class CreateExportImportComponent
   //   }
   // }
 
-  getDataPage(page: number) {
+  getDataPage(event) {
     this.exportImport.products = [];
     this.quantityCheck = [];
-    this.skipCount = (page - 1) * this.pageSize;
+    console.log("page " + event.page);
+    // this.skipCount = event.page * this.pageSize;
+    var code = '';
+    if (this.storageCode.code !== undefined || this.storageCode.code == '') {
+      code = this.storageCode.code;
+    } else {
+      code = this.selectedStructure.code;
+    }
     this._exportImport
-      .getProduct(this.keyword, this.storageCode.code, false, this.skipCount, this.pageSize)
+      .getProduct(this.keyword, code, false, 0, this.pageSize)
       .subscribe((result: ExportImportPagedResult) => {
         // this.products = result.items;
         this.products = [];
@@ -334,7 +342,7 @@ export class CreateExportImportComponent
 
     var hasThing = false;
     this.selectedProductsForInput.forEach(element => {
-      if (element.productId === data.productId) {
+      if (element.productId === data.productId && element.storageId === data.storageId) {
         hasThing = true;
         return;
       }
@@ -347,10 +355,24 @@ export class CreateExportImportComponent
       this.getStorage = val.items;
       // console.log(val.items[0]);
     });
+
+    this._exportImport.getCustomerSelect(id).subscribe((result) => {
+      this.customer = result.items;
+    });
+
     this._employeeService.getEmployeeForSelectWithStructureId(id).subscribe((val) => {
       this.employee = val.items;
     });
-    // this._exportImport.getProduct(this.keyword)
+
+    this._exportImport.getProduct(this.keyword, this.selectedStructure.code, false, 0, 10).subscribe((res) => {
+      this.products = [];
+      this.products = res.items;
+      
+      this.showPaging(res, this.pageNumber);
+      for (let i = 0; i < this.products.length; i++) {
+        this.quantityCheck[i] = true;
+      }
+    })
   }
 
   showDialog() {
@@ -358,8 +380,8 @@ export class CreateExportImportComponent
   }
 
   closeModal() {
-    this.selectedProductsForInput = [];
-    this.products = [];
+    // this.selectedProductsForInput = [];
+    // this.products = [];
     this.storageCode = undefined
     this.visible = false;
   }
@@ -369,11 +391,10 @@ export class CreateExportImportComponent
       this.productsList = [];
     }
     this.selectedProductsForInput.forEach((res) => {
-      res.storageId = this.storageCode.code;
-      console.log(res.storageId)
+      res.storageId = res.storageId;
       this.productsList.push(res)
     });
-    this.selectedProductsForInput = [];
+    // this.selectedProductsForInput = [];
     // this.selectedProducts = this.selectedProductsForInput;
   }
 

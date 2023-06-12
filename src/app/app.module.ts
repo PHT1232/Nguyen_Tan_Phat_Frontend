@@ -35,6 +35,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { ImageModule } from 'primeng/image';
+import { ChartModule } from 'primeng/chart';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -106,6 +107,7 @@ import { UploadComponent } from './main/upload/upload.component';
 import { RetailComponent } from './main/retail/retail.component';
 import { CreateRetailComponent } from './main/retail/create-retail/create-retail.component';
 import { RetailDetailComponent } from './main/retail/retail-detail/retail-detail.component';
+import { ChartComponent } from './main/chart/chart.component';
 
 @NgModule({
   declarations: [
@@ -175,6 +177,7 @@ import { RetailDetailComponent } from './main/retail/retail-detail/retail-detail
     RetailComponent,
     CreateRetailComponent,
     RetailDetailComponent,
+    ChartComponent,
   ],
   imports: [
     CommonModule,
@@ -219,7 +222,8 @@ import { RetailDetailComponent } from './main/retail/retail-detail/retail-detail
     TagModule,
     TreeTableModule,
     DialogModule,
-    ImageModule
+    ImageModule,
+    ChartModule
   ],
   providers: [],
   entryComponents: [
