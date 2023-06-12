@@ -7,6 +7,7 @@ export interface ICustomerInputDto {
     customerAddress: string;
     customerWebsite: string;
     customerEmail: string;
+    structureCode: string;
     customerDescription: string;
     discount: number;
     bankAccount: BankAccount;
@@ -19,6 +20,7 @@ export interface ICustomerInputDto {
     customerAddress: string;
     customerWebsite: string;
     customerEmail: string;
+    structureCode: string;
     customerDescription: string;
     discount: number;
     bankAccount: BankAccount;
@@ -40,6 +42,7 @@ export interface ICustomerInputDto {
         this.customerAddress = _data["customerAddress"];
         this.customerWebsite = _data["customerWebsite"];
         this.customerEmail = _data["customerEmail"];
+        this.structureCode = _data["structureCode"];
         this.customerDescription = _data["customerDescription"];
         this.discount = _data["discount"];
         this.bankAccount = _data["bankAccount"];
@@ -61,6 +64,7 @@ export interface ICustomerInputDto {
       data["customerAddress"] = this.customerAddress;
       data["customerWebsite"] = this.customerWebsite;
       data["customerEmail"] = this.customerEmail;
+      data["structureCode"] = this.structureCode;
       data["customerDescription"] = this.customerDescription;
       data["discount"] = this.discount;
       data["bankAccount"] = this.bankAccount;

@@ -198,6 +198,25 @@
                   </div>
                 </div>
               </div>
+              <div class="col">
+                <div class="row">
+                  <div class="col required">
+                    <label for="name">
+                      {{ "Chi nhánh" | localize }}
+                    </label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <p-dropdown [style]="{'width':'100%' }" 
+                      [options]="getStructure" 
+                      [ngModelOptions]="{standalone: true}" 
+                      [(ngModel)]="selectedStructure" 
+                      placeholder="Chi nhánh"
+                      optionLabel="name" [filter]="true" filterBy="name" [showClear]="true"></p-dropdown>
+                  </div>
+                </div>
+              </div>
             </div>
           <div class="row" style="padding-bottom: 25px">
             <div class="col">

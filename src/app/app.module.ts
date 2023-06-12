@@ -35,6 +35,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { ImageModule } from 'primeng/image';
+import { ChartModule } from 'primeng/chart';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -107,6 +108,8 @@ import { RetailComponent } from './main/retail/retail.component';
 import { CreateRetailComponent } from './main/retail/create-retail/create-retail.component';
 import { RetailDetailComponent } from './main/retail/retail-detail/retail-detail.component';
 import { AddCsrfHeaderInterceptorService } from '@shared/service-proxies/service-proxies';
+import { ChartComponent } from './main/chart/chart.component';
+
 
 @NgModule({
   declarations: [
@@ -176,6 +179,7 @@ import { AddCsrfHeaderInterceptorService } from '@shared/service-proxies/service
     RetailComponent,
     CreateRetailComponent,
     RetailDetailComponent,
+    ChartComponent,
   ],
   imports: [
     CommonModule,
@@ -220,7 +224,8 @@ import { AddCsrfHeaderInterceptorService } from '@shared/service-proxies/service
     TagModule,
     TreeTableModule,
     DialogModule,
-    ImageModule
+    ImageModule,
+    ChartModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AddCsrfHeaderInterceptorService, multi: true }],
   entryComponents: [

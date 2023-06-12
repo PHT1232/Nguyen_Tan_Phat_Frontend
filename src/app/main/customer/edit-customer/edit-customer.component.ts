@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponent } from '@app/app.component';
 import { AppComponentBase } from '@shared/app-component-base';
 import { BankAccount } from '@shared/service-proxies/dtos/BankAccount';
+import { StructureSelectDto } from '@shared/service-proxies/dtos/Structure/StructureSelectDto';
 import { CustomerInputDto } from '@shared/service-proxies/dtos/customer/CustomerInputDto';
-import { CustomerServiceProxy, PermissionDto } from '@shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, PermissionDto, StructureServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-edit-customer',
@@ -19,6 +20,8 @@ export class EditCustomerComponent extends AppComponentBase implements OnInit {
   isExist: boolean[] = [];
   checkedPermissionMap: { [key: string]: boolean } = {};
   defaultPermissionCheckedStatus = true;
+  getStructure: StructureSelectDto[] = [];
+  selectedStructure = new StructureSelectDto();
   id = '';
 
   @Output() onSave = new EventEmitter<any>();
@@ -28,6 +31,7 @@ export class EditCustomerComponent extends AppComponentBase implements OnInit {
     private _router: Router,
     private router: ActivatedRoute,
     private _customerService: CustomerServiceProxy,
+    private _structureService: StructureServiceProxy,
     private appMain: AppComponent
   ) { 
     super(injector);
@@ -37,6 +41,9 @@ export class EditCustomerComponent extends AppComponentBase implements OnInit {
     this.router.params.subscribe(params => {
       this.id = params['id']
     });
+    this._structureService.getStructureSelect().subscribe(val => {
+      this.getStructure = val.items;
+    })
     this._customerService.get(this.id).subscribe(result => {
         this.customer = result;
         this.customer.discount = result.discount;
@@ -53,6 +60,7 @@ export class EditCustomerComponent extends AppComponentBase implements OnInit {
     customerAdd.customerAddress = this.customer.customerAddress;
     customerAdd.customerPhone = this.customer.customerPhone;
     customerAdd.customerDescription = this.customer.customerDescription;
+    customerAdd.structureCode = this.selectedStructure.code;
     customerAdd.customerWebsite = this.customer.customerWebsite;
     customerAdd.bankAccount = this.customerBank;
     customerAdd.discount = this.customer.discount;
