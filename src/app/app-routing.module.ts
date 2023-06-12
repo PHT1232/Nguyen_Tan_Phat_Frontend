@@ -40,6 +40,7 @@ import { UploadComponent } from './main/upload/upload.component';
 import { RetailComponent } from './main/retail/retail.component';
 import { CreateRetailComponent } from './main/retail/create-retail/create-retail.component';
 import { RetailDetailComponent } from './main/retail/retail-detail/retail-detail.component';
+import { ChartComponent } from './main/chart/chart.component';
 
 @NgModule({
     imports: [
@@ -90,7 +91,8 @@ import { RetailDetailComponent } from './main/retail/retail-detail/retail-detail
                     { path: 'retail/create', component: CreateRetailComponent, data: { permission: 'Pages.System.Revenue.Add'} , canActivate: [AppRouteGuard] },
                     { path: 'expense/edit/:id', component: EditCustomerComponent, data: { permission: 'Pages.System.Revenue.Update'} , canActivate: [AppRouteGuard] },
                     { path: 'retail/detail/:id', component: RetailDetailComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] },
-                    { path: 'upload', component: UploadComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] }
+                    { path: 'upload', component: UploadComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] },
+                    { path: 'chart', component: ChartComponent, data: { permission: 'Pages.System.Revenue.View'} , canActivate: [AppRouteGuard] }
                 ]
             }
         ])
