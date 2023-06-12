@@ -125,6 +125,7 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
   save(): void {
     let totalPrice = 0;
     this.saving = true;
+    this.isTableLoading = true;
     // this.exportImport.customer = this.customer;
     this.exportImport.structureId = this.selectedStructure.code;
     // this.exportImport.products.forEach((element) => {
@@ -151,15 +152,6 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
       this.exportImport.paymentMethod = 1;
     }
 
-    if (this.selectedDropDownValues.code === 'TT') {
-      this.exportImport.isHomeDelivery = false;
-      this.exportImport.isDelivered = true;
-    } else if (this.selectedDropDownValues.code === 'GV') {
-      this.exportImport.isHomeDelivery = true;
-      this.exportImport.paymentMethod = 1;
-      this.exportImport.isDelivered = false;
-    }
-    this.exportImport.deliveryEmployee = this.employeeDeliverySelected.code;
     this.exportImport.orderCreator = this.employeeSelected.code;
     this.exportImport.customer = this.customerInput;
     this.exportImport.customer.customerCode = this.customerInput.phoneToCall;
@@ -177,6 +169,7 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
       },
       () => {
         this.saving = false;
+        this.isTableLoading = true;
       }
     );
   }

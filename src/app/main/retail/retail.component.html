@@ -189,7 +189,10 @@
                           >
                           </p-button>
                         </td>
-                        <td >
+                        <td *ngIf="orderStatus == 1">
+                          <p-button *ngIf="retail.paymentMethod === 2" [disabled]="loading" icon="pi pi-qrcode" (onClick)="createLink(retail.retailCode)"></p-button>
+                        </td>
+                        <!-- <td>
                           <p-button
                             [loading]="loading"
                             styleClass="p-button-help"
@@ -199,10 +202,8 @@
                             (click)="ExportExcel(retail.retailCode)"
                           >
                           </p-button>
-                        </td>
-                        <td *ngIf="orderStatus == 1">
-                          <p-button *ngIf="retail.paymentMethod === 2" [disabled]="loading" label="Tạo link" (onClick)="createLink(retail.retailCode)"></p-button>
-                        </td>
+                        </td> -->
+                        
                       </tr>
                     </table>
                   </td>

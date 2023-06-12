@@ -79,7 +79,7 @@
                   </div>
                 </div>              
                 <div class="row" style="padding-bottom: 25px">
-                  <div class="col">
+                  <!-- <div class="col">
                     <div class="row">
                       <div class="col">
                         <label for="name">
@@ -101,8 +101,8 @@
                         </p-dropdown>
                       </div>
                     </div>
-                  </div>
-                  <div class="col" *ngIf="selectedDropDownValues !== undefined && selectedDropDownValues.code !== 'GV'">
+                  </div> -->
+                  <div class="col">
                     <div class="row">
                       <div class="col">
                         <label for="name">
@@ -161,7 +161,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col" *ngIf="selectedDropDownValues !== undefined && selectedDropDownValues.code === 'GV'">
+                  <!-- <div class="col" *ngIf="selectedDropDownValues !== undefined && selectedDropDownValues.code === 'GV'">
                     <div class="row">
                       <div class="col">
                         <label for="name">
@@ -175,19 +175,6 @@
                     </div>
                     <div class="row">
                       <div class="col">
-                        <!-- <select
-                          required
-                          #selectModel="ngModel"
-                          #selectEl
-                          class="form-control"
-                          [(ngModel)]="exportImport.orderCreator"
-                          [ngModelOptions]="{ standalone: true }"
-                          aria-label="Default select example"
-                        >
-                          <option value="0" selected>Người lập phiếu</option>
-                          <option *ngFor="let usd of user.items;let i = index" value="{{usd.id}}">
-                            {{usd.name}}</option>
-                        </select> -->
                         <p-dropdown [style]="{'width':'100%'}" 
                           [options]="employee" 
                           [(ngModel)]="employeeDeliverySelected" 
@@ -196,7 +183,7 @@
                         </p-dropdown>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
                 <div class="row" style="padding-bottom: 25px">
                     <div class="col">
@@ -312,7 +299,7 @@
                 </div>
                 <div class="row" style="padding-bottom: 25px">
                   <div class="col">
-                    <p-button [disabled]="selectedStructure === undefined || selectedDropDownValues === undefined" (click)="showDialog()" label="Thêm"></p-button>
+                    <p-button [disabled]="selectedStructure === undefined || selectedStructure.code === '' || selectedStructure.code === undefined" (click)="showDialog()" label="Thêm"></p-button>
                   </div>
                 </div>
   
