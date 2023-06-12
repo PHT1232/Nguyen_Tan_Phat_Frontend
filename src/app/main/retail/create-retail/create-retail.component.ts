@@ -218,59 +218,6 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
     );
   }
 
-  // check(): boolean {
-  //   if (this.customer.customerPhone === undefined) {
-  //     return false;
-  //   }
-  //   if (this.customer.customerPhone.trim() === "") {
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
-  // changeQuantity(productTemp: RetailProductDto) {
-  //   this.selectedProductsForInput.forEach((element, index) => {
-  //     if (element.productId === productTemp.productId) {
-  //       this.initialProductQuantity.forEach((element1) => {
-  //         if (element1.id === element.productId) {
-  //           if (productTemp.quantity >= element1.quantity) {
-  //             console.log(this.products.indexOf(element));
-  //             console.log("quantity element1 " + element1.quantity)
-  //             console.log("quantity element " + element.quantity)
-  //             this.products[index].quantity = element1.quantity;
-  //             this.products[index].finalPrice =
-  //               element1.quantity * productTemp.price;
-  //           } else {
-  //             this.products[index].finalPrice =
-  //               productTemp.quantity * productTemp.price;
-  //           }
-  //         }
-  //       });
-  //     }
-  //   });
-  // }
-
-  // AddItem(productTemp: ExportImportProductDto, index: number) {
-  //   if (this.quantityCheck[index] === false) {
-  //     var indexToSlice = 0;
-  //     this.exportImport.products.forEach((element, index) => {
-  //       if (element.productId === productTemp.productId) {
-  //         indexToSlice = index;
-  //       }
-  //     });
-  //     if (this.exportImport.products.length === 1) {
-  //       this.exportImport.products = [];
-  //     } else {
-  //       // delete this.exportImport.products[indexToSlice];
-  //       this.exportImport.products.slice(indexToSlice);
-  //     }
-  //     this.quantityCheck[index] = true;
-  //   } else {
-  //     this.exportImport.products.push(productTemp);
-  //     this.quantityCheck[index] = false;
-  //   }
-  // }
-
   getDataPage(event) {
     this.exportImport.products = [];
     this.quantityCheck = [];

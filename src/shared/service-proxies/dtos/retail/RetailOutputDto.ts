@@ -1,3 +1,4 @@
+import { CustomerDto } from '@shared/service-proxies/service-proxies';
 import { RetailCustomerDto } from './RetailCustomerDto';
 import { RetailProductDto } from './RetailProductDto';
 
@@ -13,7 +14,7 @@ export interface IRetailOutputDto {
     isDelivered: boolean;
     totalPrice: number;
     discount: number;
-    customer: RetailCustomerDto;
+    customer: CustomerDto;
     products: RetailProductDto[];
 }
 
@@ -29,7 +30,7 @@ export class RetailOutputDto implements IRetailOutputDto {
     isDelivered: boolean;
     totalPrice: number;
     discount: number;
-    customer: RetailCustomerDto;
+    customer: CustomerDto;
     products: RetailProductDto[];
 
   constructor(data?: IRetailOutputDto) {
