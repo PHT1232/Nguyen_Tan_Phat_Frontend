@@ -73,6 +73,28 @@ import { RetailOutputDto } from "./dtos/retail/RetailOutputDto";
 import { RetailProductDto } from "./dtos/retail/RetailProductDto";
 import { BaoGiaObject } from "./dtos/BaoGiaObject";
 import { RetailPagedResult } from "./dtos/retail/RetailPagedResult";
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+
+@Injectable()
+export class AddCsrfHeaderInterceptorService implements HttpInterceptor {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+      const requestToken = this.getCookieValue('XSRF-TOKEN');
+      return next.handle(req.clone({
+          headers: req.headers.set('X-XSRF-TOKEN', requestToken)
+      }));
+  }
+
+  private getCookieValue(cookieName: string) {
+    const allCookies = decodeURIComponent(document.cookie).split('; ');
+    for (let i = 0; i < allCookies.length; i++) {
+        const cookie = allCookies[i];
+        if (cookie.startsWith(cookieName + '=')){
+            return cookie.substring(cookieName.length + 1);
+        }
+    }
+    return '';
+  }
+} 
 
 export const API_BASE_URL = new InjectionToken<string>("API_BASE_URL");
 
@@ -1645,6 +1667,7 @@ export class TokenAuthServiceProxy {
       responseType: "blob",
       headers: new HttpHeaders({
         "Content-Type": "application/json-patch+json",
+        headerName: "X-XSRF-TOKEN",
         Accept: "text/plain",
       }),
     };

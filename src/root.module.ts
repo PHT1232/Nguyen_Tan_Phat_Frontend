@@ -14,7 +14,7 @@ import { SharedModule } from '@shared/shared.module';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
 import { RootRoutingModule } from './root-routing.module';
 import { AppConsts } from '@shared/AppConsts';
-import { API_BASE_URL } from '@shared/service-proxies/service-proxies';
+import { API_BASE_URL, AddCsrfHeaderInterceptorService } from '@shared/service-proxies/service-proxies';
 
 import { RootComponent } from './root.component';
 import { AppInitializer } from './app-initializer';
@@ -43,7 +43,7 @@ export function getCurrentLanguage(): string {
   ],
   declarations: [RootComponent],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AddCsrfHeaderInterceptorService, multi: true },
     {
       provide: APP_INITIALIZER,
       useFactory: (appInitializer: AppInitializer) => appInitializer.init(),
