@@ -63,18 +63,12 @@ export class ChartComponent extends AppComponentBase implements OnInit {
 
       console.log(this.date.toLocaleString());
 
-      this.basicData = {
-          labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-          datasets: [
-              {
-                  label: 'sản phẩm',
-                  data: [540, 325, 702, 6120],
-                  backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-                  borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
-                  borderWidth: 1
-              }
-          ]
-      };
+      this._sumaryService.GetProductSale(this.date.toLocaleString()).subscribe((result) => {
+        this.basicData = {
+            labels: result.items.labels,
+            datasets: result.items.datasets
+        };
+      });
 
       this.basicOptions = {
           plugins: {

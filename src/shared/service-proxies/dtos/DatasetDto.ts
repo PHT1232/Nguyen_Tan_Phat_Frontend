@@ -74,9 +74,11 @@ export class DatasetDto {
 }
 
 export class DatasetClass {
+    label: string;
     data: number[];
     backgroundColor: string[];
     hoverBackgroundColor: string[];
+    borderWidth: number;
 
     constructor(data?: DatasetClass) {
         if (data) {
@@ -90,8 +92,10 @@ export class DatasetClass {
       init(_data: any) {
         if (_data) {
           this.data = _data["data"];
+          this.label = _data["label"];
           this.backgroundColor = _data["backgroundColor"];
           this.hoverBackgroundColor = _data["hoverBackgroundColor"];
+          this.borderWidth = _data["borderWidth"];
         }
       }
     
@@ -104,9 +108,11 @@ export class DatasetClass {
     
       toJSON(data?: any) {
         data = typeof data === "object" ? data : {};
+        data["label"] = this.label;
         data["data"] = this.data;
         data["backgroundColor"] = this.backgroundColor;
         data["hoverBackgroundColor"] = this.hoverBackgroundColor;
+        data["borderWidth"] = this.borderWidth;
         return data;
       }
     
