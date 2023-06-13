@@ -1,4 +1,5 @@
 import { Component, Injector } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AppComponent } from '@app/app.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
@@ -39,11 +40,13 @@ export class RetailComponent extends PagedListingComponentBase<RetailGetAllDto> 
   first: number = 0;
   rows: number = 6;
   loading: boolean = false;
+  failed: boolean = true;
 
   constructor(
     injector: Injector,
     private _productService: ProductServiceProxy,
     private _retailService: RetailService,
+    private router: ActivatedRoute,
     private vnpayService: VnPayService,
     private _fileService: FileDownloadService,
     private appMain: AppComponent
@@ -52,6 +55,15 @@ export class RetailComponent extends PagedListingComponentBase<RetailGetAllDto> 
     this._productService.getStorageExpense().subscribe((val) => {
       this.getStorage = val.items;
       // this.storageCode = val[val.items.length].storageCode;
+    });
+
+    this.router.params.subscribe(params => {
+      this.failed = params['failed']
+      if (this.failed !== undefined && this.failed === false) {
+        this.appMain.showFailedMessage('Lỗi thanh toán', 'Thanh toán lỗi không thể hoàn thành đơn')
+      } else if (this.failed !== undefined && this.failed === true) {
+        this.appMain.showSuccessMessage('Thành công', 'Thanh toán thành công và hoàn thành đơn')
+      }
     });
   }
 

@@ -72,6 +72,7 @@ import { RetailGetAllPagedResultDto } from "./dtos/retail/RetailGetAllPagedResul
 import { RetailOutputDto } from "./dtos/retail/RetailOutputDto";
 import { RetailProductDto } from "./dtos/retail/RetailProductDto";
 import { BaoGiaObject } from "./dtos/BaoGiaObject";
+import { DatasetDto, DatasetDtoList } from "./dtos/DatasetDto";
 import { RetailPagedResult } from "./dtos/retail/RetailPagedResult";
 
 export const API_BASE_URL = new InjectionToken<string>("API_BASE_URL");
@@ -9548,6 +9549,189 @@ export class RetailService {
   }
 }
 //#endregion
+//#region SumaryService
+@Injectable()
+export class SumaryServiceProxy {
+  private http: HttpClient;
+  private baseUrl: string;
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined =
+    undefined;
+
+  constructor(
+    @Inject(HttpClient) http: HttpClient,
+    @Optional() @Inject(API_BASE_URL) baseUrl?: string
+  ) {
+    this.http = http;
+    this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+  }
+
+  GetRevenueStructure(date: string): Observable<DatasetDtoList> {
+    let url_ = this.baseUrl + "/api/services/app/Sumary/GetRevenueStructure?";
+    if (date === null) throw new Error("The parameter 'date' cannot be null.");
+    else if (date !== undefined)
+      url_ += "date=" + encodeURIComponent("" + date) + "&";
+
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "text/plain",
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetRevenueStructure(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetRevenueStructure(<any>response_);
+            } catch (e) {
+              return <Observable<DatasetDtoList>>(
+                (<any>_observableThrow(e))
+              );
+            }
+          } else
+            return <Observable<DatasetDtoList>>(
+              (<any>_observableThrow(response_))
+            );
+        })
+      );
+  }
+
+  protected processGetRevenueStructure(
+    response: HttpResponseBase
+  ): Observable<DatasetDtoList> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+        ? (<any>response).error
+        : undefined;
+
+    let _headers: any = {};
+    if (response.headers) {
+      for (let key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          let resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          result200 = DatasetDtoList.fromJS(resultData200);
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<DatasetDtoList>(<any>null);
+  }
+  
+  GetAllSales(date: string): Observable<number> {
+    let url_ = this.baseUrl + "/api/services/app/Sumary/GetAllSales?";
+    if (date === null) throw new Error("The parameter 'date' cannot be null.");
+    else if (date !== undefined)
+      url_ += "date=" + encodeURIComponent("" + date) + "&";
+
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_: any = {
+      observe: "response",
+      responseType: "blob",
+      headers: new HttpHeaders({
+        Accept: "text/plain",
+      }),
+    };
+
+    return this.http
+      .request("get", url_, options_)
+      .pipe(
+        _observableMergeMap((response_: any) => {
+          return this.processGetAllSales(response_);
+        })
+      )
+      .pipe(
+        _observableCatch((response_: any) => {
+          if (response_ instanceof HttpResponseBase) {
+            try {
+              return this.processGetAllSales(<any>response_);
+            } catch (e) {
+              return <Observable<number>>(<any>_observableThrow(e));
+            }
+          } else return <Observable<number>>(<any>_observableThrow(response_));
+        })
+      );
+  }
+
+  protected processGetAllSales(
+    response: HttpResponseBase
+  ): Observable<number> {
+    const status = response.status;
+    const responseBlob =
+      response instanceof HttpResponse
+        ? response.body
+        : (<any>response).error instanceof Blob
+        ? (<any>response).error
+        : undefined;
+
+    let _headers: any = {};
+    if (response.headers) {
+      for (let key of response.headers.keys()) {
+        _headers[key] = response.headers.get(key);
+      }
+    }
+    if (status === 200) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          let result200: any = null;
+          let resultData200 =
+            _responseText === ""
+              ? null
+              : JSON.parse(_responseText, this.jsonParseReviver);
+          result200 = resultData200;
+          return _observableOf(result200);
+        })
+      );
+    } else if (status !== 200 && status !== 204) {
+      return blobToText(responseBlob).pipe(
+        _observableMergeMap((_responseText) => {
+          return throwException(
+            "An unexpected server error occurred.",
+            status,
+            _responseText,
+            _headers
+          );
+        })
+      );
+    }
+    return _observableOf<number>(<any>null);
+  }
+}
+//#endregion
+
 
 //#region my Dto interface
 export interface IStorageProductDto {
@@ -9761,6 +9945,7 @@ export interface IGetAllExportImportDto {
   orderCreator: string;
   orderStatus: number;
   storageName: string;
+  structureName: string;
   discount: number;
   address: string;
   orderType: number;
@@ -10133,6 +10318,7 @@ export class GetAllExportImportDto implements IGetAllExportImportDto {
   orderCreator: string;
   orderStatus: number;
   storageName: string;
+  structureName: string;
   address: string;
   orderType: number;
   totalPrice: number;
@@ -10158,6 +10344,7 @@ export class GetAllExportImportDto implements IGetAllExportImportDto {
       this.orderCreator = _data["orderCreator"];
       this.orderStatus = _data["orderStatus"];
       this.storageName = _data["storageName"];
+      this.structureName = _data["structureName"];
       this.address = _data["address"];
       this.orderType = _data["orderType"];
       this.discount = _data["discount"];
@@ -10183,6 +10370,7 @@ export class GetAllExportImportDto implements IGetAllExportImportDto {
     data["orderCreator"] = this.orderCreator;
     data["orderStatus"] = this.orderStatus;
     data["storageName"] = this.storageName;
+    data["structureName"] = this.structureName;
     data["address"] = this.address;
     data["orderType"] = this.orderType;
     data["discount"] = this.discount;

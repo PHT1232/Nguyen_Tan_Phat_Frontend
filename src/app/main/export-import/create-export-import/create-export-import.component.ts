@@ -91,6 +91,8 @@ export class CreateExportImportComponent
   getStructure: StructureSelectDto[] = [];
   selectedStructure = new StructureSelectDto();
   visible = false;
+  totalPrice: number = 0;
+  totalPriceAfterDiscount = 0;
 
   @Output() onsave = new EventEmitter<any>();
 
@@ -298,14 +300,16 @@ export class CreateExportImportComponent
   getDataPage(event) {
     this.exportImport.products = [];
     this.quantityCheck = [];
-    console.log("page " + event.page);
     // this.skipCount = event.page * this.pageSize;
     var code = '';
-    if (this.storageCode.code !== undefined || this.storageCode.code == '') {
+    if (this.storageCode !== undefined && this.storageCode.code !== undefined  || this.storageCode.code !== undefined && this.storageCode !== undefined) {
       code = this.storageCode.code;
+      console.log("storage code " + this.storageCode.code);
     } else {
       code = this.selectedStructure.code;
+      console.log("selected code " + code);
     }
+
     this._exportImport
       .getProduct(this.keyword, code, false, 0, this.pageSize)
       .subscribe((result: ExportImportPagedResult) => {
@@ -351,6 +355,17 @@ export class CreateExportImportComponent
   }
 
   getStorageAndEmployeeClick(id: string) {
+    this.employee = [];
+    this.customer = [];
+    this.productsList = [];
+    this.customerSelected = new CustomerListDto();
+    this.customerInput.customerName = '';
+    this.customerInput.customerPhone = '';
+    this.customerInput.customerAdress = '';
+    this.customerInput.discount = 0;
+    this.employeeSelected = new EmployeeSelectForAccount();
+    this.employeeDeliverySelected = new EmployeeSelectForAccount();
+
     this._exportImport.getStorage(id).subscribe((val) => {
       this.getStorage = val.items;
       // console.log(val.items[0]);
@@ -367,7 +382,13 @@ export class CreateExportImportComponent
     this._exportImport.getProduct(this.keyword, this.selectedStructure.code, false, 0, 10).subscribe((res) => {
       this.products = [];
       this.products = res.items;
-      
+      this.products.forEach(element => {
+        this.initialProductQuantity.push({
+          id: element.productId,
+          quantity: element.quantity
+        });
+      });
+
       this.showPaging(res, this.pageNumber);
       for (let i = 0; i < this.products.length; i++) {
         this.quantityCheck[i] = true;
@@ -376,12 +397,38 @@ export class CreateExportImportComponent
   }
 
   showDialog() {
+    // this.selectedProductsForInput = [];
+    if (this.products.length <= 0) {
+      this.isTableLoading = true;
+      this._exportImport
+      .getProduct(this.keyword, this.selectedStructure.code, false, 0, this.pageSize)
+      .subscribe((result: ExportImportPagedResult) => {
+        // this.products = result.items;
+        this.products = [];
+        if (this.productsList.length !== 0) {
+          result.items.forEach(element => {
+            var elementInput = this.productsList.find(e => e.productId == element.productId && e.storageId == element.storageId);
+            if (elementInput !== undefined) {
+              element.quantity = element.quantity - elementInput.quantity;
+            }
+            this.products.push(element);
+          });
+        } else {
+          this.products = result.items;
+        }
+        this.isTableLoading = false;
+        this.showPaging(result, this.pageNumber);
+        for (let i = 0; i < this.products.length; i++) {
+          this.quantityCheck[i] = true;
+        }
+      });
+    }
     this.visible = true;
   }
 
   closeModal() {
-    // this.selectedProductsForInput = [];
-    // this.products = [];
+    this.selectedProductsForInput = [];
+    this.products = [];
     this.storageCode = undefined
     this.visible = false;
   }
@@ -391,9 +438,20 @@ export class CreateExportImportComponent
       this.productsList = [];
     }
     this.selectedProductsForInput.forEach((res) => {
+      var index = this.productsList.findIndex(e => e.productId == res.productId && e.storageId == res.storageId);
       res.storageId = res.storageId;
-      this.productsList.push(res)
+      console.log(index);
+      if (index > -1) {
+        this.productsList[index].quantity += res.quantity;
+      } else {
+        this.productsList.push(res);
+      }
+      this.totalPrice += res.quantity * res.price;
+      console.log(this.totalPrice);
     });
+
+    this.totalPriceAfterDiscount = this.totalPrice - (this.totalPrice * (this.customerInput.discount / 100));
+    console.log("totalPrice " + this.totalPriceAfterDiscount);
     // this.selectedProductsForInput = [];
     // this.selectedProducts = this.selectedProductsForInput;
   }

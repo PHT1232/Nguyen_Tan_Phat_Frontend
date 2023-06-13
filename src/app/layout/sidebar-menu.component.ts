@@ -20,7 +20,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
     menuItemsMap: { [key: number]: MenuItem } = {};
     activatedMenuItems: MenuItem[] = [];
     routerEvents: BehaviorSubject<RouterEvent> = new BehaviorSubject(undefined);
-    homeRoute = '/app/home';
+    homeRoute = '/app/chart';
 
     constructor(injector: Injector, private router: Router) {
         super(injector);
@@ -50,6 +50,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
             //     '',
             //     'Pages.System.Test'
             // ),
+            new MenuItem(this.l('Thống kê'),  '/app/chart', '', ''),
             new MenuItem(this.l('Cơ cấu tổ chức'),  '', '', 'Pages.System.Structure.View', [
                 new MenuItem(
                     this.l('Cơ cấu tổ chức'),

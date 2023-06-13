@@ -8,7 +8,7 @@
                 <div class="container-fluid">
                   <div class="row"> -->
           <div class="col-6">
-            <h1>{{ "Khách hàng" | localize }}</h1>
+            <h1>{{ "Thống kê" | localize }}</h1>
           </div>
           <div class="col-6 text-right">
             <!-- <a href="javascript:;"
@@ -18,10 +18,10 @@
                         <i class="fa fa-plus-square"></i>
                         {{ "Thêm" | localize }}
                       </a> -->
-            <p-button
-              label="Thêm"
-              routerLink="create"
-              *ngIf="isGranted('Pages.System.Product.Add') == true"
+              <p-button
+              label="Thống kê"
+              [loading]="loading"
+              (click)="showDialog()"
             >
             </p-button>
           </div>
@@ -33,6 +33,9 @@
           <div class="row">
             <div class="col-md-6">
               <div class="input-group">
+                <h3>
+                  Tổng doanh thu: {{ totalSales | currency : "VND" }}
+                </h3>
               </div>
             </div>
           </div>
@@ -40,35 +43,58 @@
         <div class="card-body">
             <div class="row"> 
                 <div class="col">
-                    <p-chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart>
+                    <h3>Doanh số</h3>
+                    <p-chart type="bar" [data]="basicData" height="300px" width="635px" [options]="basicOptions"></p-chart>
                 </div>
+                <p-divider layout="vertical"></p-divider>
                 <div class="col">
-                    <p-chart type="pie" [data]="data" [options]="options"></p-chart>
+                    <h3>Doanh thu chi nhánh</h3>
+                    <p-chart type="pie" [data]="data" height="300px" [options]="options"></p-chart>
                 </div>
             </div>
             <div class="row">
-                <div class="table-responsive" style="margin-top: 15px">
-                    <p-table [columns]="cols" [value]="products">
-                      <ng-template pTemplate="header" let-columns> 
-                        <tr>
-                            <th *ngFor="let col of columns">
-                                {{ col.header }}
-                            </th>
-                        </tr>
-                      </ng-template>
-                      <ng-template pTemplate="body" let-rowData let-columns="columns">
-                        <tr>
-                            <td *ngFor="let col of columns">
-                                {{ rowData[col.field] }}
-                            </td>
-                        </tr>
-                      </ng-template>
-                    </p-table>
-                  </div>
+              <div class="table-responsive" style="margin-top: 15px">
+                  <p-table [columns]="cols" [value]="products">
+                    <ng-template pTemplate="header" let-columns> 
+                      <tr>
+                          <th *ngFor="let col of columns">
+                              {{ col.header }}
+                          </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                      <tr>
+                          <td *ngFor="let col of columns">
+                              {{ rowData[col.field] }}
+                          </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
             </div>
         </div>
           
       </p-panel>
     </section>
   </div>
-  
+  <p-dialog [(visible)]="visible" (onHide)="closeModal()" [modal]="true" [style]="{ width: '30vw', height: '22vw' }" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+      <span class="text-xl font-bold">Thống kê</span>
+    </ng-template>
+    <div class="calendar" id="mydiv">
+      <p-calendar
+      dateFormat="yy"
+      [style]="{'width':'90%'}"
+      [(ngModel)]="date"
+      [showIcon]="true"
+      view="year" dateFormat="yy" 
+      [ngModelOptions]="{ standalone: true }"
+      placeholder="Năm"
+    ></p-calendar>
+    </div>
+      <ng-template pTemplate="footer">
+      <div class="modal-footer justify-content-center">
+        <p-button [disabled]="date === undefined" icon="pi pi-check" (click)="visible = false; confirmModal()" label="Ok"  styleClass="p-button-success"></p-button>
+      </div>
+    </ng-template>
+</p-dialog>
