@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientJsonpModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientJsonpModule } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -108,7 +108,9 @@ import { UploadComponent } from './main/upload/upload.component';
 import { RetailComponent } from './main/retail/retail.component';
 import { CreateRetailComponent } from './main/retail/create-retail/create-retail.component';
 import { RetailDetailComponent } from './main/retail/retail-detail/retail-detail.component';
+import { AddCsrfHeaderInterceptorService } from '@shared/service-proxies/service-proxies';
 import { ChartComponent } from './main/chart/chart.component';
+
 
 @NgModule({
   declarations: [
@@ -227,7 +229,7 @@ import { ChartComponent } from './main/chart/chart.component';
     ChartModule,
     DividerModule
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AddCsrfHeaderInterceptorService, multi: true }],
   entryComponents: [
     // tenants
     CreateTenantDialogComponent,
