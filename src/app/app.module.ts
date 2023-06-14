@@ -36,6 +36,7 @@ import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { ImageModule } from 'primeng/image';
 import { ChartModule } from 'primeng/chart';
+import { DividerModule } from 'primeng/divider';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -225,7 +226,8 @@ import { ChartComponent } from './main/chart/chart.component';
     TreeTableModule,
     DialogModule,
     ImageModule,
-    ChartModule
+    ChartModule,
+    DividerModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AddCsrfHeaderInterceptorService, multi: true }],
   entryComponents: [

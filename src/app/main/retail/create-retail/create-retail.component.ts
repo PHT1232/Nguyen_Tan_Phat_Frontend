@@ -295,6 +295,32 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
   }
 
   showDialog() {
+    if (this.products.length <= 0) {
+      this.isTableLoading = true;
+      this._retailService
+      .getProduct(this.keyword, this.selectedStructure.code, this.skipCount, this.pageSize)
+      .subscribe((result: RetailPagedResult) => {
+        // this.products = result.items;
+        this.products = [];
+        if (this.productsList.length !== 0) {
+          result.items.forEach(element => {
+            var elementInput = this.productsList.find(e => e.productId == element.productId && e.storageId == element.storageId);
+            if (elementInput !== undefined) {
+              element.quantity = element.quantity - elementInput.quantity;
+            }
+            this.products.push(element);
+          });
+        } else {
+          this.products = result.items;
+        }
+        this.isTableLoading = false;
+        this.showPaging(result, this.pageNumber);
+        for (let i = 0; i < this.products.length; i++) {
+          this.quantityCheck[i] = true;
+        }
+      });
+    }
+
     this.visible = true;
   }
 
@@ -303,18 +329,31 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
     this.products = [];
     this.storageCode = undefined;
     this.visible = false;
-    this.getStorageAndEmployeeClick(this.selectedStructure.code);
+    // this.getStorageAndEmployeeClick(this.selectedStructure.code);
   }
 
   addProduct() {
     if (this.productsList === undefined) {
       this.productsList = [];
     }
+    // this.selectedProductsForInput.forEach((res) => {
+    //   res.storageId = this.selectedStructure.code;
+    //   console.log(res.storageId)
+    //   this.productsList.push(res)
+    // });
+
     this.selectedProductsForInput.forEach((res) => {
+      var index = this.productsList.findIndex(e => e.productId == res.productId && e.storageId == this.selectedStructure.code);
       res.storageId = this.selectedStructure.code;
-      console.log(res.storageId)
-      this.productsList.push(res)
+      
+      if (index > -1) {
+        this.productsList[index].quantity += res.quantity;
+      } else {
+        this.productsList.push(res);
+      }
     });
+
+
     this.selectedProductsForInput = [];
     // this.selectedProducts = this.selectedProductsForInput;
   }

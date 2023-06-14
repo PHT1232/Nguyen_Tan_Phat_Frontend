@@ -64,13 +64,13 @@
                           {{ storage.storageName }}
                         </option>
                       </select> -->
-                      <p-dropdown [style]="{'width':'100%'}" 
-                        [options]="getStorage" 
-                        [(ngModel)]="storageCode" 
-                        [ngModelOptions]="{standalone: true}" 
-                        (onChange)="getDataPage(1)"
-                        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Kho">
-                        </p-dropdown>
+                      <p-dropdown [style]="{'width':'100%' }" 
+                      [options]="getStructure" 
+                      [ngModelOptions]="{standalone: true}" 
+                      [(ngModel)]="selectedStructure" 
+                      placeholder="Chi nhánh"
+                      (onChange)="getDataPage(1)"
+                      optionLabel="name" [filter]="true" filterBy="name" [showClear]="true"></p-dropdown>
                     </div>
                     <div class="col pt-2">
                       <input type="text"
@@ -125,10 +125,22 @@
                 <th pSortableColumn="orderType">
                   {{ "Loại đơn" | localize
                   }}<p-sortIcon field="orderType"></p-sortIcon>
+                </th>                
+                <th pSortableColumn="discount">
+                  {{ "Chiết khấu" | localize
+                  }}<p-sortIcon field="discount"></p-sortIcon>
                 </th>
                 <th pSortableColumn="totalPrice">
                   {{ "Tổng tiền" | localize
                   }}<p-sortIcon field="totalPrice"></p-sortIcon>
+                </th>     
+                <th pSortableColumn="totalPrice">
+                  {{ "Tổng tiền sau chiếu khấu" | localize
+                  }}<p-sortIcon field="totalPrice"></p-sortIcon>
+                </th>                
+                <th pSortableColumn="structureName">
+                  {{ "Chi nhánh" | localize
+                  }}<p-sortIcon field="structureName"></p-sortIcon>
                 </th>
                 <th pSortableColumn="creationTime">
                   {{ "Ngày tạo" | localize
@@ -161,7 +173,16 @@
                   <span *ngIf="exportImport.orderType == 3">Nhập kho</span>
                 </td>
                 <td>
+                  {{ exportImport.discount + "%" }}
+                </td>                   
+                <td>
                   {{ exportImport.totalPrice | currency : "VND" }}
+                </td>                    
+                <td>
+                  {{ exportImport.totalPrice - (exportImport.totalPrice * (exportImport.discount / 100)) | currency : "VND" }}
+                </td>                
+                <td>
+                  {{ exportImport.structureName }}
                 </td>
                 <td>
                   {{ exportImport.creationTime | date : "dd/MM/yyyy" }}
