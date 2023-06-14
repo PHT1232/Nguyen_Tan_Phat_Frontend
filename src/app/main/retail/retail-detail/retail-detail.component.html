@@ -153,8 +153,8 @@
               </p-button>
               <p-button
                         [disabled]="loading"
-                        styleClass="p-button-outlined p-button-secondary"
-                        label="Phiếu xuất hàng"
+                        styleClass="p-button-outlined"
+                        label="VN PAY"
                         *ngIf="isGranted('Pages.System.ExportImport.View') == true"
                         icon="pi pi-qrcode" 
                         (onClick)="createLink(exportImport.retailCode)">

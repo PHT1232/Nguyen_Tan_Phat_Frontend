@@ -64,13 +64,13 @@
                             {{ storage.storageName }}
                           </option>
                         </select> -->
-                        <p-dropdown [style]="{'width':'100%'}" 
-                          [options]="getStorage" 
-                          [(ngModel)]="storageCode" 
-                          [ngModelOptions]="{standalone: true}" 
-                          (onChange)="getDataPage(1)"
-                          optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Kho">
-                          </p-dropdown>
+                        <p-dropdown [style]="{'width':'100%' }" 
+                        [options]="getStructure" 
+                        [ngModelOptions]="{standalone: true}" 
+                        [(ngModel)]="selectedStructure" 
+                        placeholder="Chi nhánh"
+                        (onChange)="getDataPage(1)"
+                        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true"></p-dropdown>
                       </div>
                       <div class="col pt-2">
                         <input type="text"

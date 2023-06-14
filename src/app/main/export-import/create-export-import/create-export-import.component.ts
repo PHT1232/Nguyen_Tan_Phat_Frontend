@@ -304,10 +304,8 @@ export class CreateExportImportComponent
     var code = '';
     if (this.storageCode !== undefined && this.storageCode.code !== undefined  || this.storageCode.code !== undefined && this.storageCode !== undefined) {
       code = this.storageCode.code;
-      console.log("storage code " + this.storageCode.code);
     } else {
       code = this.selectedStructure.code;
-      console.log("selected code " + code);
     }
 
     this._exportImport
@@ -440,20 +438,16 @@ export class CreateExportImportComponent
     this.selectedProductsForInput.forEach((res) => {
       var index = this.productsList.findIndex(e => e.productId == res.productId && e.storageId == res.storageId);
       res.storageId = res.storageId;
-      console.log(index);
+      
       if (index > -1) {
         this.productsList[index].quantity += res.quantity;
       } else {
         this.productsList.push(res);
       }
       this.totalPrice += res.quantity * res.price;
-      console.log(this.totalPrice);
     });
 
     this.totalPriceAfterDiscount = this.totalPrice - (this.totalPrice * (this.customerInput.discount / 100));
-    console.log("totalPrice " + this.totalPriceAfterDiscount);
-    // this.selectedProductsForInput = [];
-    // this.selectedProducts = this.selectedProductsForInput;
   }
 
   deleteProduct(product: ExportImportProductDto) {
@@ -468,8 +462,6 @@ export class CreateExportImportComponent
   onTableScroll(event) {
     const scrollHeight = event.originalEvent.target.scrollHeight;
     const scrollTop = event.originalEvent.target.scrollTop;
-    console.log("scroll hegight " +scrollHeight)
-    console.log("scroll top " +scrollTop)
     if (scrollHeight === scrollTop) {
       // Load more data here
       this.onLazyLoad(event);

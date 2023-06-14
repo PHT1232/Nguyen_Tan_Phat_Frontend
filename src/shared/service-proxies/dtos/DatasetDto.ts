@@ -78,6 +78,7 @@ export class DatasetClass {
     data: number[];
     backgroundColor: string[];
     hoverBackgroundColor: string[];
+    borderColor: string[];
     borderWidth: number;
 
     constructor(data?: DatasetClass) {
@@ -95,6 +96,7 @@ export class DatasetClass {
           this.label = _data["label"];
           this.backgroundColor = _data["backgroundColor"];
           this.hoverBackgroundColor = _data["hoverBackgroundColor"];
+          this.borderColor = _data["borderColor"];
           this.borderWidth = _data["borderWidth"];
         }
       }
@@ -112,6 +114,7 @@ export class DatasetClass {
         data["data"] = this.data;
         data["backgroundColor"] = this.backgroundColor;
         data["hoverBackgroundColor"] = this.hoverBackgroundColor;
+        data["borderColor"] = this.borderColor;
         data["borderWidth"] = this.borderWidth;
         return data;
       }

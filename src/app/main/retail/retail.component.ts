@@ -4,15 +4,16 @@ import { AppComponent } from '@app/app.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
 import { LookUpTable } from '@shared/service-proxies/dtos/LookUpTable';
+import { StructureSelectDto } from '@shared/service-proxies/dtos/Structure/StructureSelectDto';
 import { RetailGetAllDto } from '@shared/service-proxies/dtos/retail/RetailGetAllDto';
 import { RetailGetAllPagedResultDto } from '@shared/service-proxies/dtos/retail/RetailGetAllPagedResultDto';
 import { RetailInputDto } from '@shared/service-proxies/dtos/retail/RetailInputDto';
-import { FileDownloadService, ProductServiceProxy, RetailService, VnPayService } from '@shared/service-proxies/service-proxies';
+import { FileDownloadService, ProductServiceProxy, RetailService, StructureServiceProxy, VnPayService } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs';
 
 class PagedRetailRequestDto extends PagedRequestDto {
   keyword: string;
-  storageCode: string;
+  structureCode: string;
   dateTime: string[] = [];
   orderStatus: number;
   isDelived: boolean;
@@ -27,20 +28,19 @@ class PagedRetailRequestDto extends PagedRequestDto {
 export class RetailComponent extends PagedListingComponentBase<RetailGetAllDto> {
   retail: RetailGetAllDto[];
   keyword = "";
-  storageCode = new LookUpTable();
   orderStatus = 1;
   isDelived = false;
   nameOfReciever = "";
   bsInlineRangeValue: Date[];
   retailList: RetailGetAllDto[] = [];
   // getStorage: StorageProductDetailList = new StorageProductDetailList();
-  getStorage: LookUpTable[];
   totalCount: number;
   isLoading = false;
   first: number = 0;
   rows: number = 6;
   loading: boolean = false;
-  failed: boolean = true;
+  getStructure: StructureSelectDto[] = [];
+  selectedStructure = new StructureSelectDto();
 
   constructor(
     injector: Injector,
@@ -49,22 +49,14 @@ export class RetailComponent extends PagedListingComponentBase<RetailGetAllDto> 
     private router: ActivatedRoute,
     private vnpayService: VnPayService,
     private _fileService: FileDownloadService,
+    private _structureService: StructureServiceProxy,
     private appMain: AppComponent
   ) {
     super(injector);
-    this._productService.getStorageExpense().subscribe((val) => {
-      this.getStorage = val.items;
-      // this.storageCode = val[val.items.length].storageCode;
-    });
+    this._structureService.getStructureSelect().subscribe(val => {
+      this.getStructure = val.items;
+    })
 
-    this.router.params.subscribe(params => {
-      this.failed = params['failed']
-      if (this.failed !== undefined && this.failed === false) {
-        this.appMain.showFailedMessage('Lỗi thanh toán', 'Thanh toán lỗi không thể hoàn thành đơn')
-      } else if (this.failed !== undefined && this.failed === true) {
-        this.appMain.showSuccessMessage('Thành công', 'Thanh toán thành công và hoàn thành đơn')
-      }
-    });
   }
 
   list(
@@ -77,7 +69,7 @@ export class RetailComponent extends PagedListingComponentBase<RetailGetAllDto> 
     request.keyword = this.keyword;
     request.orderStatus = this.orderStatus;
     setTimeout(() => {
-      request.storageCode = this.storageCode.code;
+      request.structureCode = this.selectedStructure.code;
       if (this.bsInlineRangeValue !== undefined) {
         request.dateTime = [];
         this.bsInlineRangeValue.forEach(element => {
@@ -90,7 +82,7 @@ export class RetailComponent extends PagedListingComponentBase<RetailGetAllDto> 
       this._retailService
         .getAll(
           request.keyword,
-          request.storageCode,
+          request.structureCode,
           request.dateTime,
           request.orderStatus,
           request.skipCount,
@@ -105,6 +97,27 @@ export class RetailComponent extends PagedListingComponentBase<RetailGetAllDto> 
           this.retailList = result.items;
           this.showPaging(result, pageNumber);
           this.isLoading = false;
+
+          this.router.queryParams.subscribe(params => {
+            var failed = params.failed
+            const url = new URL(window.location.href);
+            const searchParams = url.searchParams;
+            searchParams.delete('failed');
+
+            setTimeout(() => {
+              if (failed === 'true') {
+                this.appMain.showFailedMessage('Lỗi thanh toán', 'Thanh toán lỗi không thể hoàn thành đơn');
+                window.history.replaceState({}, document.title, url);
+                params.failed = '';
+              } else if (failed === 'false') {
+                this.appMain.showSuccessMessage('Thành công', 'Thanh toán thành công và hoàn thành đơn');
+                const searchParams = url.searchParams;
+                window.history.replaceState({}, document.title, url);
+                params.failed = '';
+              }
+            }, 100);
+          });
+          
         });
     }, 500);
   }
