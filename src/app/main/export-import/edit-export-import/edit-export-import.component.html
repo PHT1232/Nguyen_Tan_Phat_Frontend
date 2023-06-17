@@ -67,7 +67,8 @@
                         /> -->
                         <!-- <p-dropdown [style]="{'width':'100%'}" [options]="getStructure" (onClick)="getStorageClick(selectedStructure.code)" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedStructure" optionLabel="name"></p-dropdown> -->
                         <!-- <abp-validation-summary [control]="nameCode" [controlEl]="nameCodeEl"></abp-validation-summary> -->
-                        <p-dropdown [style]="{'width':'100%'}" 
+                        <p-dropdown
+                        [style]="{'width':'100%'}" 
                         [options]="getStructure" 
                         (onChange)="getStorageAndEmployeeClick(selectedStructure.code)"
                         [(ngModel)]="selectedStructure" 

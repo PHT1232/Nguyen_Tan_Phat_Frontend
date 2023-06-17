@@ -191,7 +191,7 @@ save(): void {
   this.exportImport.totalPrice = totalPrice;
   this.exportImport.orderStatus = 1;
   this.exportImport.orderType = 1;
-  this._exportImport.create(this.exportImport).subscribe(
+  this._exportImport.update(this.exportImport).subscribe(
     () => {
       // this.notify.success(this.l("Tạo đơn thành công"));
       this.appMain.showSuccessMessage('Thành công', 'Tạo đơn thành công')
