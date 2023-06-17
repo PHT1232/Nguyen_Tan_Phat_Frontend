@@ -240,7 +240,7 @@ export class CreateExportImportComponent
       },
       (error) => {
         this.customerInput.customerName = "";
-        this.customerInput.customerCode = 0;
+        this.customerInput.customerCode = "";
         this.customerInput.customerPhone = "";
         this.customerInput.customerAdress = "";
       }

@@ -10735,7 +10735,7 @@ export class ExportImportProductDto implements IExportImportProductDto {
 }
 
 export class CustomerDto {
-  customerCode: number;
+  customerCode: string;
   customerName: string;
   customerPhone: string;
   customerAdress: string;
