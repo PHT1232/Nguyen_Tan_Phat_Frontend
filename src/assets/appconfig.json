@@ -1,6 +1,6 @@
 {
-  "remoteServiceBaseUrl": "https://localhost:44311",
-  "appBaseUrl": "https://localhost:4200/",
+  "remoteServiceBaseUrl": "https://unten.tech",
+  "appBaseUrl": "https://unten.tech/quantri/",
   "localeMappings": [
     {
       "from": "pt-BR",

@@ -108,8 +108,9 @@ import { UploadComponent } from './main/upload/upload.component';
 import { RetailComponent } from './main/retail/retail.component';
 import { CreateRetailComponent } from './main/retail/create-retail/create-retail.component';
 import { RetailDetailComponent } from './main/retail/retail-detail/retail-detail.component';
-import { AddCsrfHeaderInterceptorService } from '@shared/service-proxies/service-proxies';
 import { ChartComponent } from './main/chart/chart.component';
+import { AbpHttpInterceptor } from 'abp-ng2-module';
+import { AddCsrfHeaderInterceptorService } from '@shared/service-proxies/service-proxies';
 
 
 @NgModule({

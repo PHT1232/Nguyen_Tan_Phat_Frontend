@@ -99,6 +99,9 @@ export class AddCsrfHeaderInterceptorService implements HttpInterceptor {
 } 
 
 export const API_BASE_URL = new InjectionToken<string>("API_BASE_URL");
+// const responseHeaders = response.headers;
+// const setCookieHeader = responseHeaders.get("set-cookie");
+// const antiforgeryToken = setCookieHeader.match(/.AspNetCore.Identity.Application=([^;]+)/)[1];
 
 //#region Framework service
 @Injectable()
