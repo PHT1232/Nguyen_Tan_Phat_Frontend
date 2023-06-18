@@ -19,7 +19,7 @@
                       </a> -->
             <p-button
               label="Tính lương"
-              style="margin-right: 20px"
+              [style]="{'margin-right': '20px'}"
               [loading]="loading"
               (click)="showDialog()"
               *ngIf="isGranted('Pages.System.Employee.Add') == true"
