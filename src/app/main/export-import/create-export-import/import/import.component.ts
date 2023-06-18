@@ -69,20 +69,20 @@ export class ImportComponent extends AppComponentBase implements OnInit {
       // this.storageCode = val[val.items.length - 1].storageCode;
     });
 
-    setTimeout(() => {
-      this._exportImport.getProduct(this.storageCode, false, this.skipCount, this.pageSize)
-      .subscribe((result: ExportImportPagedResult) => {
-        this.products1 = result.items;
-        this.showPaging(result, this.pageNumber);
-        for (let i = 0; i < this.products1.length; i++) {
-          this.quantityCheck[i] = true;
-          let productQuantity = new InitialProductQuantity();
-          productQuantity.id = this.products1[i].productId;
-          productQuantity.quantity = this.products1[i].quantity;
-          this.initialProductQuantity.push(productQuantity);
-        }
-      });
-    }, 300);
+    // setTimeout(() => {
+    //   this._exportImport.getProduct(this.storageCode, false, this.skipCount, this.pageSize)
+    //   .subscribe((result: ExportImportPagedResult) => {
+    //     this.products1 = result.items;
+    //     this.showPaging(result, this.pageNumber);
+    //     for (let i = 0; i < this.products1.length; i++) {
+    //       this.quantityCheck[i] = true;
+    //       let productQuantity = new InitialProductQuantity();
+    //       productQuantity.id = this.products1[i].productId;
+    //       productQuantity.quantity = this.products1[i].quantity;
+    //       this.initialProductQuantity.push(productQuantity);
+    //     }
+    //   });
+    // }, 300);
    
     this._exportImport.getUser()
     .subscribe(val => {
@@ -90,7 +90,7 @@ export class ImportComponent extends AppComponentBase implements OnInit {
     });
 
     this.exportImport.products = [];
-    this.exportImport.orderCreator = 0;
+    this.exportImport.orderCreator = "";
   }
 
   ngOnInit(): void {
@@ -99,8 +99,6 @@ export class ImportComponent extends AppComponentBase implements OnInit {
   save1(): void {
     let totalPrice = 0; 
     this.saving = true;
-    this.exportImport.storageId = this.storageCode;
-    this.exportImport.storageInputId = this.storageCodeInput;
     this.exportImport.products.forEach(element => {
       totalPrice += element.finalPrice;
     });
@@ -141,7 +139,7 @@ export class ImportComponent extends AppComponentBase implements OnInit {
 
     if (this.exportImport.products.length === 0
       || this.exportImport.exportImportCode === ''
-      || this.exportImport.orderCreator === 0
+      || this.exportImport.orderCreator === null
       || this.storageCode === '0'
       || this.storageCodeInput === '0'
       || this.storageCodeInput === this.storageCode) {
@@ -216,7 +214,7 @@ export class ImportComponent extends AppComponentBase implements OnInit {
     this.exportImport.products = [];
     this.quantityCheck = [];
     this.skipCount = (page - 1) * this.pageSize;
-    this._exportImport.getProduct(this.storageCode, false, this.skipCount, this.pageSize)
+    this._exportImport.getProduct(this.keyword, this.storageCode, false, this.skipCount, this.pageSize)
     .subscribe((result: ExportImportPagedResult) => {
       this.products1 = result.items;
       this.showPaging(result, this.pageNumber);

@@ -122,6 +122,29 @@
                 </div>
               </div>
             </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Chiết khấu" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p-inputNumber 
+                    class="pinputnumber"
+                    [(ngModel)]="customer.discount" 
+                    [style]="{'width':'100%'}" 
+                    inputStyleClass="{'width':'100%'}"
+                    inputId="percent" 
+                    [ngModelOptions]="{standalone: true}"
+                    prefix="%"   
+                    #nameNumber="ngModel"
+                    #nameNumberEl> </p-inputNumber>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="row" style="padding-bottom: 25px">
             <div class="col">
@@ -172,6 +195,25 @@
                       #nameModel="ngModel"
                       #nameEl
                     />
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="row">
+                  <div class="col required">
+                    <label for="name">
+                      {{ "Chi nhánh" | localize }}
+                    </label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <p-dropdown [style]="{'width':'100%' }" 
+                      [options]="getStructure" 
+                      [ngModelOptions]="{standalone: true}" 
+                      [(ngModel)]="selectedStructure" 
+                      placeholder="Chi nhánh"
+                      optionLabel="name" [filter]="true" filterBy="name" [showClear]="true"></p-dropdown>
                   </div>
                 </div>
               </div>

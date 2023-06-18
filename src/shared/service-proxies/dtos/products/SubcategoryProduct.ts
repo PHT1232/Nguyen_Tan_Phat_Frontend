@@ -52,13 +52,13 @@ export class SubcategoryProductList implements ISubcategoryProductList {
 }
 
 export interface ISubcategoryProduct {
-    subcategoryId: number;
-    subcategoryName: string;
+    code: number;
+    name: string;
 }
 
 export class SubcategoryProduct implements ISubcategoryProduct {
-    subcategoryId: number;
-    subcategoryName: string;
+    code: number;
+    name: string;
 
     constructor(data?: ISubcategoryProduct) {
         if (data) {
@@ -71,8 +71,8 @@ export class SubcategoryProduct implements ISubcategoryProduct {
 
     init(_data: any) {
         if (_data) {
-            this.subcategoryId = _data["subcategoryId"];
-            this.subcategoryName = _data["subcategoryName"];
+            this.code = _data["code"];
+            this.name = _data["name"];
         }
     }
 
@@ -85,8 +85,8 @@ export class SubcategoryProduct implements ISubcategoryProduct {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["subcategoryId"] = this.subcategoryId;
-        data["subcategoryName"] = this.subcategoryName;
+        data["code"] = this.code;
+        data["name"] = this.name;
         return data;
     }
 

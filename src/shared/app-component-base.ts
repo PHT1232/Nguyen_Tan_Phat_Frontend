@@ -64,4 +64,12 @@ export abstract class AppComponentBase {
             detail: detail
         })
     }
+
+    showFailedMessage(summary: string, detail: string) {
+        this.message.add({
+            severity: 'error',
+            summary: summary,
+            detail: detail
+        })
+    }
 }

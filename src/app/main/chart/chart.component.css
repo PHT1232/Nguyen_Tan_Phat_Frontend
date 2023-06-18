@@ -1,0 +1,25 @@
+.container-add {
+    margin-right: 0px;
+    margin-left: 0px;
+    background-color: white;
+}
+
+.container-row {
+    padding-top: 3%;
+    margin-right: 5%;
+    margin-left: 5%;
+    padding-bottom: 3%;
+}
+.pinputnumber {
+    width: 100%;
+}
+
+.calendar {
+    width: 100%; 
+    position: absolute;
+    top: 100px
+}
+
+.buttonTinhLuong {
+    margin-top: 60px;
+}

@@ -12,6 +12,8 @@ import { SubcategoryProduct, SubcategoryProductList } from '@shared/service-prox
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponent } from '@app/app.component';
+import { AppConsts } from '@shared/AppConsts';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-edit-product',
@@ -22,7 +24,8 @@ import { AppComponent } from '@app/app.component';
 export class EditProductComponent extends AppComponentBase implements OnInit {
   id: string;
   saving = false;
-  categoryCode = '0';
+  categoryCode: CategoryProduct = new CategoryProduct();
+  subcategoryCode: SubcategoryProduct = new SubcategoryProduct();
   productList: ProductGetAllDto[] = [];
   getStorage: StorageProductDetailList = new StorageProductDetailList();
   getCategory: CategoryProductList = new CategoryProductList();
@@ -39,6 +42,7 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
   location: string;
   isTrue = true;
   isExist = false;
+  files: File[] = [];
   errorMessage = 'Không được trùng kho';
 
   @Output() onSave = new EventEmitter<any>();
@@ -46,6 +50,7 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
   constructor(
     injector: Injector,
     private _productService: ProductServiceProxy,
+    private http: HttpClient,
     private router: ActivatedRoute,
     private _router: Router,
     private appMain: AppComponent
@@ -75,7 +80,36 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
         this.products.productDetail = result.productDetail;
         this.products.price = result.price;
         this.products.unit = result.unit;
-        this.categoryCode = result.categoryId;
+        this.getCategory.items.forEach(element => {
+          if (result.categoryId == element.code) {
+            this.categoryCode = new CategoryProduct({
+              code: element.code,
+              name: element.name
+            });
+          }
+        });
+
+        this._productService.getSubcategoryProduct(result.categoryId).subscribe(val => {
+          if (val.items === undefined) {
+          //   this.products.subCategoryId = '0';
+            this.isCategoryCodeExist = false;
+          } else {
+          //   this.products.subCategoryId = '0';
+            this.isCategoryCodeExist = true;
+          }
+          this.getSubcategorycode = val;
+
+          this.getSubcategorycode.items.forEach(element => {
+            if (result.subCategoryId == element.code.toString()) {
+              this.subcategoryCode = new SubcategoryProduct({
+                code: element.code,
+                name: element.name
+              });
+            }
+          });
+        });
+        const path = AppConsts.remoteServiceBaseUrl + '\\Upload\\Product\\' + result.productImage;
+
         this._productService.getSubcategoryProduct(result.categoryId).subscribe(val => {
           this.getSubcategorycode = val;
         });
@@ -85,16 +119,14 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
           this.products.subCategoryId = result.subCategoryId;
         }
         // this.products.storages = result.storages;
-        this.storageSelect = result.storages;
-        result.storages.forEach(element => {
-          this.storageFormArray.push(new FormGroup({
-            storageOfFormArray: new FormControl(''),
-            quantity: new FormControl(''),
-            location: new FormControl(''),
-          }));
-        });
+        
+        // this.http.get(path,
+        //   { responseType: 'blob' }).subscribe((res) => {
+        //     const fileDto = new File([res], result.productImage);
+        //     this.files.push(fileDto);
+        //   });
       });
-      this.isCategoryCodeExist = true;
+      
   }
 
   save(): void {
@@ -102,33 +134,51 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
 
     const product = new ProductInputDto();
     product.productCode = this.products.productCode;
-    product.productName = this.products.productName;
-    product.productDescription = this.products.productDescription;
-    product.productDetail = this.products.productDetail;
-    product.categoryId = this.categoryCode;
-    product.unit = this.products.unit;
-    product.price = this.products.price;  
-    if (this.products.subCategoryId === '0')
-      product.subCategoryId = null;
-    else
-      product.subCategoryId = this.products.subCategoryId;
-    
-    product.storages = this.storageSelect;
-    this._productService.update(product).subscribe(
-      () => {
-        this.appMain.showSuccessMessage('Cập nhật thành công', 'Cập nhật sản phẩm thành công');
-        this.onSave.emit();
-        this._router.navigate(['app/product']);
-      },
-      () => {
-        this.saving = false;
+    const formData = new FormData();
+
+    var URL = AppConsts.remoteServiceBaseUrl + '/api/Upload/ProductUpload';
+
+    for (const file of this.files) {
+      formData.append('file', file);
+      URL += "?id=" + this.products.productCode;
+    }
+
+    this.http.post(URL, formData).subscribe((res) => {
+      product.productName = this.products.productName;
+      var tenFile;
+        for (const file of this.files) {
+          // const a = res['result'][res['result']
+          //   .findIndex(e => e.includes(file.name))].split('/');
+          tenFile = file.name;
       }
-    )
+      product.productDescription = this.products.productDescription;
+      product.productImage = product.productCode + "/" + tenFile;
+      product.productDetail = this.products.productDetail;
+      product.categoryId = this.categoryCode.code;
+      product.unit = this.products.unit;
+      product.price = this.products.price;  
+      if (this.products.subCategoryId === '0')
+        product.subCategoryId = null;
+      else
+        product.subCategoryId = this.products.subCategoryId;
+      
+      product.storages = this.storageSelect;
+      this._productService.update(product).subscribe(
+        () => {
+          this.appMain.showSuccessMessage('Cập nhật thành công', 'Cập nhật sản phẩm thành công');
+          this.onSave.emit();
+          this._router.navigate(['app/product']);
+        },
+        () => {
+          this.saving = false;
+        }
+      )
+    });
   }
 
   getSubcategory() {
-    if (this.categoryCode !== '0') {
-      this._productService.getSubcategoryProduct(this.categoryCode).subscribe(val => {
+    if (this.categoryCode !== undefined) {
+      this._productService.getSubcategoryProduct(this.categoryCode.code).subscribe(val => {
         // if (val.length === 0) {
         //   this.products.subCategoryId = '0';
         //   this.isCategoryCodeExist = false;
@@ -142,17 +192,6 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
     }
     this.products.subCategoryId = '0';
     this.isCategoryCodeExist = false;
-  }
-
-  AddItem() {
-    if (this.storageFormArray.length < this.getStorage.items.length) {
-      this.storageSelect[this.storageFormArray.length] = new StorageProductDetail();
-      this.storageFormArray.push(new FormGroup({
-        storageOfFormArray: new FormControl(''),
-        quantity: new FormControl(''),
-        location: new FormControl(''),
-      }));
-    }
   }
 
   Cancel(): void {
@@ -169,12 +208,11 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
   }
 
   checkFormValid(): boolean {
-    
     if (this.products.productCode === undefined 
       || this.products.productName === undefined 
       || this.products.price === undefined 
       // || this.storageSelect.length === 0
-      || this.categoryCode === '0' 
+      || this.categoryCode === undefined 
       || this.products.unit === ''
       || this.isExist
       || this.products.productCode === '' 
@@ -182,7 +220,7 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
       return true;
     }
 
-    if (this.getSubcategorycode.items.length > 0 && this.products.subCategoryId === '0') {
+    if (this.getSubcategorycode.items === undefined || this.getSubcategorycode.items.length > 0 && this.products.subCategoryId === '0') {
       return true;
     }
 
@@ -210,5 +248,15 @@ export class EditProductComponent extends AppComponentBase implements OnInit {
         this.isExist = false;
       }
     }
+  }
+
+  onSelect(event) {
+    console.log(event);
+    this.files.push(...event.addedFiles);
+  }
+
+  onRemove(event) {
+    console.log(event);
+    this.files.splice(this.files.indexOf(event), 1);
   }
 }

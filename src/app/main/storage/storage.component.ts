@@ -7,6 +7,7 @@ import {
 } from '@shared/paged-listing-component-base';
 import { GetAllStorageDto, GetAllStoragePagedResultDto, StorageOutPutDto, StorageServiceProxy } from '@shared/service-proxies/service-proxies';
 import { throwError } from 'rxjs';
+import { TreeNode } from 'primeng/api';
 import { AppComponent } from '@app/app.component';
 
 class PagedStorageRequestDto extends PagedRequestDto {
@@ -27,6 +28,8 @@ export class StorageComponent extends PagedListingComponentBase<GetAllStorageDto
   rows: number = 6;
   selectedStorages: GetAllStorageDto[] = [];
   storageCodes: string[] = [];
+  data: TreeNode[] = [];
+  cols: any[];
 
   constructor(
     injector: Injector,
@@ -34,6 +37,15 @@ export class StorageComponent extends PagedListingComponentBase<GetAllStorageDto
     private appMain: AppComponent
   ) { 
     super(injector);
+    this.cols = [
+      { field: "storageCode", header: "Mã kho" },
+      { field: "storageName", header: "Tên kho" },
+      { field: "unit", header: "Chi nhánh" },
+      { field: "address", header: "Địa chỉ" },
+      { field: "productQuantity", header: "Số lượng sản phẩm" },
+      { field: "creationTime", header: "Ngày tạo" },
+      { field: "username", header: "Người cập nhật" }
+    ];
   }
 
   checkOnDelete() {
@@ -91,9 +103,68 @@ export class StorageComponent extends PagedListingComponentBase<GetAllStorageDto
         })
       )
       .subscribe((result: GetAllStoragePagedResultDto) => {
-        this.storages = result.items;
-        this.showPaging(result, pageNumber);
-      });
+      //   this.cols = [
+      //     { field: "storageCode", header: "Mã kho" },
+      //     { field: "storageName", header: "Tên kho" },
+      //     { field: "unit", header: "Chi nhánh" },
+      //     { field: "address", header: "Địa chỉ" },
+      //     { field: "creationTime", header: "Ngày tạo" },
+      //     { field: "username", header: "Người cập nhật" },
+      //   ]
+          this.data = [];
+          result.items.forEach(element => {
+            var childrenStorage = [];
+            element.children.forEach(elementChildren => {
+              childrenStorage.push({
+                data: {
+                  storageCode: elementChildren.storageCode,
+                  storageName: elementChildren.storageName,
+                  unit: elementChildren.unit,
+                  address: elementChildren.address,
+                  productQuantity: elementChildren.productQuantity,
+                  creationTime: elementChildren.creationTime,
+                  username: elementChildren.username
+                }
+              })
+            });
+            this.data.push({
+              data: {
+                storageCode: element.storageCode,
+                storageName: element.storageName,
+                productQuantity: element.productQuantity,
+                address: element.address,
+              },
+              children: childrenStorage
+            })
+        });
+          
+          // this.data = [
+          //     {
+          //         data: {
+          //           storageCode: "A",
+          //           storageName: "40"
+          //         },
+          //         children: [
+          //             {
+          //                 data: {
+          //                   storageCode: "B",
+          //                   storageName: "16"
+          //                 }
+          //             },
+          //             {
+          //                 data: {
+          //                     storageCode: "C",
+          //                     storageName: "14"
+          //                 }
+          //             }
+          //         ]
+          //     },
+          // ];
+        });
+
+      //   this.showPaging(result, pageNumber);
+      // });
+      
     }, 500)
   }
   delete(entity: GetAllStorageDto): void {

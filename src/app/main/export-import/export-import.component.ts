@@ -8,9 +8,11 @@ import {
   ExportImportInput,
   ExportImportPagedResult,
   ExportImportService,
+  FileDownloadService,
   GetAllExportImportDto,
   GetAllExportImportPagedResult,
   ProductServiceProxy,
+  StructureServiceProxy,
 } from "@shared/service-proxies/service-proxies";
 import { ProductGetAllDto } from '@shared/service-proxies/dtos/products/ProductGetAllDto';
 import { StorageProductDetail, StorageProductDetailList } from '@shared/service-proxies/dtos/products/StorageProductDetail';
@@ -19,6 +21,8 @@ import { catchError, finalize } from "rxjs/operators";
 import { AppComponent } from "@app/app.component";
 import * as moment from "moment";
 import { Console } from "console";
+import { LookUpTable } from "@shared/service-proxies/dtos/LookUpTable";
+import { StructureSelectDto } from "@shared/service-proxies/dtos/Structure/StructureSelectDto";
 
 class PagedExportImportRequestDto extends PagedRequestDto {
   keyword: string;
@@ -36,28 +40,31 @@ class PagedExportImportRequestDto extends PagedRequestDto {
 export class ExportImportComponent extends PagedListingComponentBase<GetAllExportImportDto> {
   exportImports: GetAllExportImportDto[];
   keyword = "";
-  storageCode = "0";
   orderStatus = 1;
   nameOfReciever = "";
   bsInlineRangeValue: Date[];
   exportImportList: GetAllExportImportDto[] = [];
-  getStorage: StorageProductDetailList = new StorageProductDetailList();
+  // getStorage: StorageProductDetailList = new StorageProductDetailList();
   totalCount: number;
   isLoading = false;
   first: number = 0;
-  rows: number = 6;
+  rows: number = 10;
+  loading: boolean = false;
+  getStructure: StructureSelectDto[] = [];
+  selectedStructure = new StructureSelectDto();
 
   constructor(
     injector: Injector,
     private _productService: ProductServiceProxy,
     private _exportImportService: ExportImportService,
+    private _structureService: StructureServiceProxy,
+    private _fileService: FileDownloadService,
     private appMain: AppComponent
   ) {
     super(injector);
-    this._productService.getStorageProduct().subscribe((val) => {
-      this.getStorage = val;
-      // this.storageCode = val[val.items.length].storageCode;
-    });
+    this._structureService.getStructureSelect().subscribe(val => {
+      this.getStructure = val.items;
+    })
   }
 
   list(
@@ -70,7 +77,7 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
     request.keyword = this.keyword;
     request.orderStatus = this.orderStatus;
     setTimeout(() => {
-      request.storageCode = this.storageCode;
+      request.storageCode = this.selectedStructure.code;
       if (this.bsInlineRangeValue !== undefined) {
         request.dateTime = [];
         this.bsInlineRangeValue.forEach(element => {
@@ -80,7 +87,7 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
         });
       }
       
-
+      console.log(request.maxResultCount);
       this._exportImportService
         .getAll(
           request.keyword,
@@ -162,5 +169,18 @@ export class ExportImportComponent extends PagedListingComponentBase<GetAllExpor
 
   checkDate() {
     console.log(this.bsInlineRangeValue.toLocaleString());
+  }
+
+  ExportExcel(id: string) {
+    this.loading = true;
+    this._fileService.exportToExcelDelivery(id, false).subscribe((res) => {
+      this.loading = false;
+    });
+    setTimeout(() => {
+      this._fileService.exportToExcel(id, false).subscribe((res) => {
+        this.loading = false;
+      });
+    }, 300);
+    
   }
 }

@@ -28,7 +28,23 @@
                       </div>
                     </div>
                   </div>
+                  <div class="col">
+                    <div class="row">
+                      <div class="col">
+                        <label for="name">
+                          {{ "Nhân viên giao hàng:" | localize }}
+                        </label>
+                        <span style="margin-left: 20px;">
+                            {{ exportImport.employeeDelivery }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+                <hr style="
+                margin-top: -10px;
+                border-top: 1px solid rgba(0,0,0,1);
+            "> 
                 <div class="row" style="padding-bottom: 25px">
                   <div class="col">
                     <div class="row">
@@ -40,7 +56,7 @@
                             {{ customer.customerPhone }}
                         </span>
                       </div>
-                      <div class="col required" *ngIf="exportImport.storageId !== null && customer.customerPhone === null && exportImport.nameOfExport === null">
+                      <!-- <div class="col required" *ngIf="exportImport.storageId !== null && customer.customerPhone === null && exportImport.nameOfExport === null">
                         <label  for="name">
                           {{ "Kho xuất:" | localize }}
                         </label>
@@ -50,7 +66,7 @@
                                 <option *ngFor="let storage of getStorage;let i = index" value="{{storage.storageCode}}" [selected]="true">{{storage.storageName}}</option>
                             </select>
                         </span>
-                      </div>
+                      </div> -->
                       <div *ngIf="exportImport.nameOfExport !== null && customer.customerPhone === null" class="col required">
                         <label for="name">
                           {{ "Nơi nhập:" | localize }}
@@ -71,20 +87,21 @@
                                 {{ customer.customerName }}
                             </span>
                           </div>
-                          <div class="col required" *ngIf="exportImport.storageInputId !== null && customer.customerPhone === null">
+                          <!-- <div class="col required" *ngIf="exportImport.storageInputId !== null && customer.customerPhone === null">
                             <label  for="name">
                               {{ "Kho Nhập:" | localize }}
                             </label>
                             <span style="margin-left: 20px;">
-                                <select disabled class="form-control" [(ngModel)]="exportImport.storageInputId" [ngModelOptions]="{standalone: true}" aria-label="Default select example">
-                                    <option value="0">Kho</option>
-                                    <option *ngFor="let storage of getStorage;let i = index" value="{{storage.storageCode}}" >{{storage.storageName}}</option>
-                                </select>
+                                {{ exportImport.storageId }}
                             </span>
-                          </div>
+                          </div> -->
                     </div>
                   </div>
                 </div>
+                <hr style="
+                margin-top: -10px;
+                border-top: 1px solid rgba(0,0,0,1);
+            "> 
                 <div class="row" *ngIf="customer.customerPhone !== null" style="padding-bottom: 25px">
                   <div class="col">
                     <div class="row">
@@ -98,7 +115,53 @@
                       </div>
                     </div>
                   </div>
+                  <div class="col">
+                    <div class="row">
+                      <div class="col required">
+                        <label for="name">
+                          {{ "Chiết khấu:" | localize }}
+                        </label>
+                        <span style="margin-left: 20px;">
+                            {{ exportImport.discount + "%" }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+                <hr style="
+                margin-top: -10px;
+                border-top: 1px solid rgba(0,0,0,1);
+            ">
+            <div class="row" *ngIf="customer.customerPhone !== null" style="padding-bottom: 25px">
+              <div class="col">
+                <div class="row">
+                  <div class="col required">
+                      <label  for="name">
+                      {{ "Kho nhập:" | localize }}
+                      </label>
+                      <span style="margin-left: 20px;">
+                          <!-- {{ exportImport.storageId }} -->
+                      </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="row">
+                  <div class="col required">
+                      <label  for="name">
+                      {{ "Tổng tiền:" | localize }}
+                      </label>
+                      <span style="margin-left: 20px;">
+                          {{ exportImport.totalPrice | currency: 'VND'}}
+                      </span>
+                  </div>
+                </div>
+              </div>
+            </div> 
+            <hr style="
+                margin-top: -10px;
+                border-top: 1px solid rgba(0,0,0,1);
+            ">
                 <div class="row" style="padding-bottom: 25px">
                   <div class="col">
                     <div class="row" style="margin-bottom: 10px">
@@ -107,17 +170,11 @@
                           {{ "Sản phẩm" | localize }}
                         </label>
                       </div>
-                      <div *ngIf="customer.customerPhone !== null" class="col">
-                        <select disabled class="form-control" [(ngModel)]="storageCode" [ngModelOptions]="{standalone: true}" aria-label="Default select example">
-                          <option value="0" *ngIf="getStorage.items.length === 0" selected>Kho</option>
-                          <option *ngFor="let storage of getStorage;let i = index" value="{{storage.storageCode}}" [selected]="true">{{storage.storageName}}</option>
-                        </select>
-                      </div>
                     </div>
 
                     <div class="row" style="margin-top: 15px">
                       <div class="table-responsive">
-                        <table class="table table-striped table-bordered">
+                        <!-- <table class="table table-striped table-bordered">
                           <thead class="bg-light">
                             <tr>
                               <th>{{ "Mã sản phẩm" | localize }}</th>
@@ -141,18 +198,70 @@
                             </tr>
                           </tbody>
                         </table>
+                         -->
+                        <p-table [value]="products" dataKey="productId"
+                      [busy]="isTableLoading">
+                        <ng-template pTemplate="header">
+                          <tr>
+                            <th>{{ "Mã Kho" | localize }}</th>
+                            <th>{{ "Mã sản phẩm" | localize }}</th>
+                            <th>{{ "Tên sản phẩm" | localize }}</th>
+                            <th>{{ "Số lượng" | localize }}</th>
+                            <th>{{ "Đơn vị tính" | localize }}</th>
+                            <th>{{ "Giá" | localize }}</th>
+                            <th>{{ "Đơn giá" | localize }}</th>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-product let-i="index">
+                          <tr>
+                            <td>{{ product.storageId }}</td>
+                            <td>{{ product.productId }}</td>
+                            <td>{{ product.productName }}</td>
+                            <td>
+                                {{ product.quantity }}
+                            </td>
+                            <td>{{ product.unit }}</td>
+                            <td>{{ product.price | currency : "VND" }}</td>
+                            <td [innerHTML]="product.finalPrice | currency: 'VND'"></td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
                       </div>
                     </div>
                     <div class="row" style="margin-top: 15px">
                         <strong>Cộng:</strong>
-                        <span style="margin-left: 20px;">{{ exportImport.totalPrice | currency : "VND" }}</span>
+                        <span style="margin-left: 20px;">{{ exportImport.totalPrice - (exportImport.totalPrice * (exportImport.discount / 100)) | currency : "VND" }}</span>
                     </div>
                   </div>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-default" (click)="Cancel()">
-                        Hủy
-                    </button>
+                  <p-button
+                  type="button"
+                  label="Hủy"
+                  styleClass="p-button-outlined"
+                  (click)="Cancel()"
+                >
+                </p-button>
+                <p-button
+                          [disabled]="loading"
+                          styleClass="p-button-outlined p-button-help"
+                          icon="pi pi-download"
+                          label="Phiếu xuất kho"
+                          *ngIf="isGranted('Pages.System.ExportImport.View') == true"
+                          (click)="ExportExcel(exportImport.exportImportCode)"
+                        >
+                </p-button>
+                <p-button
+                          [disabled]="loading"
+                          styleClass="p-button-outlined p-button-secondary"
+                          icon="pi pi-download"
+                          label="Phiếu xuất hàng"
+                          [style]="{ 'margin-right': '10px' }"
+                          *ngIf="isGranted('Pages.System.ExportImport.View') == true"
+                          (click)="ExportExcelXuat(exportImport.exportImportCode)"
+                        >
+                </p-button>
+                <!-- <p-button  [disabled]="loading" label="Tạo link" (onClick)="createLink(exportImport.exportImportCode)"></p-button> -->
                 </div>
               </div>
             </div>

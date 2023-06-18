@@ -142,7 +142,7 @@ export class CreateRoleDialogComponent extends AppComponentBase
   constructor(
     injector: Injector,
     private _roleService: RoleServiceProxy,
-    private appMain: AppComponent,
+    // private appMain: AppComponent,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
@@ -211,7 +211,8 @@ export class CreateRoleDialogComponent extends AppComponentBase
       .create(role)
       .subscribe(
         () => {
-          this.appMain.showSuccessMessage("Thành công", "Tạo tài khoản thành công");
+          this.notify.info(this.l('Lưu thành công'));
+          // this.appMain.showSuccessMessage("Thành công", "Tạo tài khoản thành công");
           this.bsModalRef.hide();
           this.onSave.emit();
         },

@@ -5,6 +5,7 @@ export interface IProductOutputDto {
     productName: string;
     productDescription: string;
     productDetail: string;
+    productImage: string;
     price: number;
     categoryId: string;
     subCategoryId: string;
@@ -17,6 +18,7 @@ export class ProductOutputDto implements IProductOutputDto {
     productName: string;
     productDescription: string;
     productDetail: string;
+    productImage: string;
     price: number;
     categoryId: string;
     subCategoryId: string;
@@ -38,6 +40,7 @@ export class ProductOutputDto implements IProductOutputDto {
             this.productName = _data["productName"];
             this.productDescription = _data["productDescription"];
             this.productDetail = _data["productDetail"];
+            this.productImage = _data["productImage"];
             this.price = _data["price"];
             this.unit = _data["unit"];
             this.categoryId = _data["categoryId"];
@@ -59,6 +62,7 @@ export class ProductOutputDto implements IProductOutputDto {
         data["productName"] = this.productName;
         data["productDescription"] = this.productDescription;
         data["productDetail"] = this.productDetail;
+        data["productImage"] = this.productImage;
         data["price"] = this.price;
         data["unit"] = this.unit;
         data["categoryId"] = this.categoryId;

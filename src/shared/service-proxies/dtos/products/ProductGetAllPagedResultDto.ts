@@ -1,13 +1,13 @@
 // import { ProductGetAllDto } from "./ProductGetAllDto";
-import { ProductGetAllDto } from '../products/ProductGetAllDto';
+import { ListProductGetAll, ProductGetAllDto } from '../products/ProductGetAllDto';
 
 export interface IProductGetAllPagedResultDto {
-    items: ProductGetAllDto[] | undefined;
+    items: ListProductGetAll[] | undefined;
     totalCount: number;
 }
 
 export class ProductGetAllPagedResultDto implements IProductGetAllPagedResultDto {
-    items: ProductGetAllDto[] | undefined;
+    items: ListProductGetAll[] | undefined;
     totalCount: number;
 
     constructor(data?: IProductGetAllPagedResultDto) {
@@ -24,7 +24,7 @@ export class ProductGetAllPagedResultDto implements IProductGetAllPagedResultDto
             if (Array.isArray(_data["items"])) {
                 this.items = [] as any;
                 for (let item of _data["items"])
-                    this.items.push(ProductGetAllDto.fromJS(item));
+                    this.items.push(ListProductGetAll.fromJS(item));
             }
             this.totalCount = _data["totalCount"];
         }

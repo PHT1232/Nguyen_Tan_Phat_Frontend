@@ -115,7 +115,7 @@ export class CreateUserDialogComponent extends AppComponentBase
     this.user.name = this.employeeSelected.name;
     this._userService.create(this.user).subscribe(
       () => {
-        this.notify.info(this.l('SavedSuccessfully'));
+        this.notify.info(this.l('Lưu thành công'));
         // this.appMain.showSuccessMessage("Thành công", "Tạo tài khoản thành công")
         this.bsModalRef.hide();
         this.onSave.emit();

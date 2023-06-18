@@ -1,15 +1,18 @@
 import { Component, EventEmitter, Injector, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponent } from '@app/app.component';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
 import { BankAccount } from '@shared/service-proxies/dtos/BankAccount';
+import { StructureSelectDto } from '@shared/service-proxies/dtos/Structure/StructureSelectDto';
 import { CustomerInputDto } from '@shared/service-proxies/dtos/customer/CustomerInputDto';
-import { CustomerServiceProxy, PermissionDto } from '@shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, PermissionDto, StructureServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-create-customer',
   templateUrl: './create-customer.component.html',
-  styleUrls: ['./create-customer.component.css']
+  styleUrls: ['./create-customer.component.css'],
+  animations: [appModuleAnimation()]
 })
 export class CreateCustomerComponent extends AppComponentBase implements OnInit {
   saving = false;
@@ -19,6 +22,8 @@ export class CreateCustomerComponent extends AppComponentBase implements OnInit 
   isExist: boolean[] = [];
   checkedPermissionMap: { [key: string]: boolean } = {};
   defaultPermissionCheckedStatus = true;
+  getStructure: StructureSelectDto[] = [];
+  selectedStructure = new StructureSelectDto();
 
   @Output() onSave = new EventEmitter<any>();
 
@@ -26,12 +31,16 @@ export class CreateCustomerComponent extends AppComponentBase implements OnInit 
     injector: Injector,
     private _router: Router,
     private _customerService: CustomerServiceProxy,
+    private _structureService: StructureServiceProxy,
     private appMain: AppComponent
   ) { 
     super(injector);
   }
 
   ngOnInit(): void {
+    this._structureService.getStructureSelect().subscribe(val => {
+      this.getStructure = val.items;
+    })
   }
 
   save(): void {
@@ -43,7 +52,10 @@ export class CreateCustomerComponent extends AppComponentBase implements OnInit 
     customerAdd.customerAddress = this.customer.customerAddress;
     customerAdd.customerPhone = this.customer.customerPhone;
     customerAdd.customerDescription = this.customer.customerDescription;
+    customerAdd.structureCode = this.selectedStructure.code;
     customerAdd.customerWebsite = this.customer.customerWebsite;
+    console.log(this.customer.discount);
+    customerAdd.discount = this.customer.discount;
     customerAdd.bankAccount = this.customerBank;
 
     this._customerService.create(customerAdd).subscribe(

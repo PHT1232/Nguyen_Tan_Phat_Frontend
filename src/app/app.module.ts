@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientJsonpModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientJsonpModule } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -16,6 +16,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { PasswordModule } from 'primeng/password';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
+import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DockModule } from 'primeng/dock';
@@ -31,6 +32,12 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
 import { KeyFilterModule } from 'primeng/keyfilter';
+import { TagModule } from 'primeng/tag';
+import { DialogModule } from 'primeng/dialog';
+import { ImageModule } from 'primeng/image';
+import { ChartModule } from 'primeng/chart';
+import { DividerModule } from 'primeng/divider';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
@@ -97,6 +104,14 @@ import { EditCustomerComponent } from './main/customer/edit-customer/edit-custom
 import { ExpensesComponent } from './main/expenses/expenses.component';
 import { CreateExpensesComponent } from './main/expenses/create-expenses/create-expenses.component';
 import { DetailExpensesComponent } from './main/expenses/detail-expenses/detail-expenses.component';
+import { UploadComponent } from './main/upload/upload.component';
+import { RetailComponent } from './main/retail/retail.component';
+import { CreateRetailComponent } from './main/retail/create-retail/create-retail.component';
+import { RetailDetailComponent } from './main/retail/retail-detail/retail-detail.component';
+import { ChartComponent } from './main/chart/chart.component';
+import { AbpHttpInterceptor } from 'abp-ng2-module';
+import { AddCsrfHeaderInterceptorService } from '@shared/service-proxies/service-proxies';
+
 
 @NgModule({
   declarations: [
@@ -162,6 +177,11 @@ import { DetailExpensesComponent } from './main/expenses/detail-expenses/detail-
     ExpensesComponent,
     CreateExpensesComponent,
     DetailExpensesComponent,
+    UploadComponent,
+    RetailComponent,
+    CreateRetailComponent,
+    RetailDetailComponent,
+    ChartComponent,
   ],
   imports: [
     CommonModule,
@@ -201,8 +221,16 @@ import { DetailExpensesComponent } from './main/expenses/detail-expenses/detail-
     InputNumberModule,
     DropdownModule,
     KeyFilterModule,
+    FileUploadModule,
+    NgxDropzoneModule,
+    TagModule,
+    TreeTableModule,
+    DialogModule,
+    ImageModule,
+    ChartModule,
+    DividerModule
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AddCsrfHeaderInterceptorService, multi: true }],
   entryComponents: [
     // tenants
     CreateTenantDialogComponent,

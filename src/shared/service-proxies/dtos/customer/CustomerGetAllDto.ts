@@ -5,7 +5,9 @@ export interface ICustomerGetAllDto {
     customerAddress: string;
     customerWebsite: string;
     customerBankId: string;
+    structureName: string;
     customerBankName: string;
+    discount: number;
   }
   
   export class CustomerGetAllDto implements ICustomerGetAllDto {
@@ -15,7 +17,9 @@ export interface ICustomerGetAllDto {
     customerAddress: string;
     customerWebsite: string;
     customerBankId: string;
+    structureName: string;
     customerBankName: string;
+    discount: number;
   
     constructor(data?: ICustomerGetAllDto) {
       if (data) {
@@ -34,8 +38,10 @@ export interface ICustomerGetAllDto {
         this.customerPhone = data["customerPhone"];
         this.customerAddress = data["customerAddress"];
         this.customerWebsite = data["customerWebsite"];
+        this.structureName = data["structureName"];
         this.customerBankId = data["customerBankId"];
         this.customerBankName = data["customerBankName"];
+        this.discount = data["discount"];
       }
     }
   
@@ -53,8 +59,10 @@ export interface ICustomerGetAllDto {
       data["customerPhone"] = this.customerPhone;
       data["customerAddress"] = this.customerAddress;
       data["customerWebsite"] = this.customerWebsite;
+      data["structureName"] = this.structureName;
       data["customerBankId"] = this.customerBankId;
       data["customerBankName"] = this.customerBankName;
+      data["discount"] = this.discount;
       return data;
     }
   

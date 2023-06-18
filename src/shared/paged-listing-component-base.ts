@@ -54,8 +54,10 @@ export abstract class PagedListingComponentBase<TEntityDto> extends AppComponent
     }
 
     public getDataPage(event): void {
+        // debugger;
         var page = 1;
         var pageSize1 = this.pageSize;
+
         if (event.page === undefined) {
             page = 0;
         } else {

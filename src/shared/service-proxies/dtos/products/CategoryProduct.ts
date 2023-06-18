@@ -50,13 +50,13 @@ export class CategoryProductList implements ICategoryProductList {
 }
 
 export interface ICategoryProduct {
-    CategoryId: string;
-    CategoryName: string;
+    code: string;
+    name: string;
 }
 
 export class CategoryProduct implements ICategoryProduct {
-    CategoryId: string;
-    CategoryName: string;
+    code: string;
+    name: string;
 
     constructor(data?: ICategoryProduct) {
         if (data) {
@@ -69,8 +69,8 @@ export class CategoryProduct implements ICategoryProduct {
 
     init(_data: any) {
         if (_data) {
-            this.CategoryId = _data["categoryId"];
-            this.CategoryName = _data["categoryName"];
+            this.code = _data["code"];
+            this.name = _data["name"];
         }
     }
 
@@ -83,8 +83,8 @@ export class CategoryProduct implements ICategoryProduct {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["categoryId"] = this.CategoryId;
-        data["categoryName"] = this.CategoryName;
+        data["code"] = this.code;
+        data["name"] = this.name;
         return data;
     }
 

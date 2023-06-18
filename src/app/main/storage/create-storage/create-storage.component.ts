@@ -7,12 +7,13 @@ import {
 } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { AppComponentBase } from '@shared/app-component-base';
-import { PermissionDto, StorageInput, StorageServiceProxy } from '@shared/service-proxies/service-proxies';
+import { PermissionDto, StorageInput, StorageServiceProxy, StructureServiceProxy } from '@shared/service-proxies/service-proxies';
 import { forEach as _forEach, map as _map } from 'lodash-es';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AppComponent } from '@app/app.component';
+import { StructureSelectDto } from '@shared/service-proxies/dtos/Structure/StructureSelectDto';
 
 @Component({
   selector: 'app-create-storage',
@@ -25,6 +26,8 @@ export class CreateStorageComponent extends AppComponentBase implements OnInit {
   storage = new StorageInput();
   permissions: PermissionDto[] = [];
   checkedPermissionMap: { [key: string]: boolean } = {};
+  getStructure: StructureSelectDto[] = [];
+  selectedStructure = new StructureSelectDto();
   defaultPermissionCheckedStatus = true;
 
   @Output() onSave = new EventEmitter<any>();
@@ -33,9 +36,13 @@ export class CreateStorageComponent extends AppComponentBase implements OnInit {
     injector: Injector,
     private _router: Router,
     private _storageService: StorageServiceProxy,
+    private _structureService: StructureServiceProxy,
     private appMain: AppComponent
   ) { 
     super(injector);
+    this._structureService.getStructureSelect().subscribe(val => {
+      this.getStructure = val.items;
+    })
   }
 
   ngOnInit(): void {
@@ -45,6 +52,7 @@ export class CreateStorageComponent extends AppComponentBase implements OnInit {
     this.saving = true;
     const storageAdd = new StorageInput();
     storageAdd.init(this.storage);
+    storageAdd.structureId = this.selectedStructure.code;
     
     this._storageService.createStorage(storageAdd).subscribe(
       () => {

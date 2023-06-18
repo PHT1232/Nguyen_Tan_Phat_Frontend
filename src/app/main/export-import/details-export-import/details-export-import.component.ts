@@ -10,8 +10,10 @@ import {
   ExportImportPagedResult, 
   ExportImportProductDto, 
   ExportImportService, 
+  FileDownloadService, 
   PermissionDto, 
-  ProductServiceProxy, 
+  ProductServiceProxy,
+  VnPayService, 
 } from '@shared/service-proxies/service-proxies';
 import { LookUpTableList } from '@shared/service-proxies/dtos/LookUpTable';
 import { StorageProductDetailList } from '@shared/service-proxies/dtos/products/StorageProductDetail';
@@ -57,20 +59,24 @@ export class DetailsExportImportComponent extends AppComponentBase implements On
   totalItems: number;
   initialProductQuantity: InitialProductQuantity[] = [];
   id: string;
-
+  isTableLoading = false;
+  loading: boolean = false
+  
   @Output() onsave = new EventEmitter<any>();
 
   constructor(
     injector: Injector,
     private _router: Router,
+    private _fileService: FileDownloadService,
     private _exportImport: ExportImportService,
     private router: ActivatedRoute,
+    private vnpayService: VnPayService,
     private _productService: ProductServiceProxy
   ) {
     super(injector);
     this._productService.getStorageProduct().subscribe(val => {
       this.getStorage = val;
-      this.storageCode = val[val.items.length - 1].storageCode;
+      // this.storageCode = val[val.items.length - 1].storageCode;
     });
 
     this.router.params.subscribe(params => {
@@ -81,13 +87,13 @@ export class DetailsExportImportComponent extends AppComponentBase implements On
       this._exportImport.get(this.id).subscribe((result: ExportImportOutputDto) => {
         this.exportImport.exportImportCode = result.exportImportCode;
         this.exportImport.orderCreator = result.orderCreator;
+        this.exportImport.employeeDelivery = result.employeeDelivery;
         this.exportImport.orderStatus = result.orderStatus;
         this.exportImport.orderType = result.orderType;
         this.exportImport.receiveAddress = result.receiveAddress;
         this.customer = result.customer;
         this.products = result.products;
-        this.exportImport.storageId = result.storageId;
-        this.exportImport.storageInputId = result.storageInputId;
+        this.exportImport.discount = result.discount;
         this.exportImport.nameOfExport = result.nameOfExport;
         this.exportImport.totalPrice = result.totalPrice;
       });
@@ -114,7 +120,20 @@ export class DetailsExportImportComponent extends AppComponentBase implements On
     this._router.navigate(['app/exportimport']);
   }
 
-  getProductPage() {
+  ExportExcel(id: string) {
+    this.loading = true;
+    this._fileService.exportToExcel(id, false).subscribe((res) => {
+      this.loading = false;
+    });
+  }
 
+  ExportExcelXuat(id: string) {
+    this._fileService.exportToExcelDelivery(id, false).subscribe((res) => {
+      this.loading = false;
+    });
+  }
+
+  createLink(id: string) {
+    this.vnpayService.createPaymentUrl(id)
   }
 }

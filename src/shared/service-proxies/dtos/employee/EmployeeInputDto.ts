@@ -12,6 +12,7 @@ export interface IEmployeeInputDto {
     taxIdentification: string;
     phoneNumber: number;
     employeeSalary: number;
+    employeeAllowance: number;
     salaryFactor: number;
     typeOfContract: string;
     employeeBankAccount: BankAccount;
@@ -28,6 +29,7 @@ export interface IEmployeeInputDto {
     workUnit: string;
     taxIdentification: string;
     employeeSalary: number;
+    employeeAllowance: number;
     salaryFactor: number;
     typeOfContract: string;
     employeeBankAccount: BankAccount;
@@ -54,6 +56,7 @@ export interface IEmployeeInputDto {
         this.workUnit = data["workUnit"];
         this.taxIdentification = data["taxIdentification"];
         this.employeeSalary = data["employeeSalary"];
+        this.employeeAllowance = data["employeeAllowance"];
         this.salaryFactor = data["salaryFactor"];
         this.typeOfContract = data["typeOfContract"];
         this.employeeBankAccount = data["employeeBankAccount"];
@@ -79,6 +82,7 @@ export interface IEmployeeInputDto {
       data["workUnit"] = this.workUnit;
       data["taxIdentification"] = this.taxIdentification;
       data["employeeSalary"] = this.employeeSalary;
+      data["employeeAllowance"] = this.employeeAllowance;
       data["salaryFactor"] = this.salaryFactor;
       data["typeOfContract"] = this.typeOfContract;
       data["employeeBankAccount"] = this.employeeBankAccount;

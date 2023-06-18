@@ -380,12 +380,53 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <p-inputNumber
+                  <!-- <p-inputNumber
                     required
                     class="pinputnumber"
                     [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="employee.salaryFactor"
                     [style]="{'width':'100%'}"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  ></p-inputNumber> -->
+                  <input
+                    pInputText
+                    class="pinputnumber"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employee.salaryFactor"
+                    [style]="{'width':'100%'}"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  />
+                </div>
+              </div>
+            </div> 
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Tiền phụ cấp" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <!-- <p-inputNumber
+                    required
+                    class="pinputnumber"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employee.salaryFactor"
+                    [style]="{'width':'100%'}"
+                    #nameCode="ngModel"
+                    #nameCodeEl
+                  ></p-inputNumber> -->
+                  <p-inputNumber
+                    required
+                    class="pinputnumber"
+                    [style]="{'width':'100%'}"
+                    mode="currency" currency="VND"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="employee.employeeAllowance"
                     #nameCode="ngModel"
                     #nameCodeEl
                   ></p-inputNumber>

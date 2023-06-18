@@ -8,6 +8,7 @@ import { catchError, finalize, throwError } from 'rxjs';
 
 class PagedCustomerRequestDto extends PagedRequestDto {
   keyword: string;
+  isRetail: boolean;
 }
 
 @Component({
@@ -22,6 +23,7 @@ export class CustomerComponent extends PagedListingComponentBase<CustomerGetAllD
   totalCount: number;
   first: number = 0;
   rows: number = 6;
+  customerSelect = 1;
 
   constructor(
     injector: Injector,
@@ -37,8 +39,14 @@ export class CustomerComponent extends PagedListingComponentBase<CustomerGetAllD
     setTimeout(() => { 
       console.log(request.keyword);
       
+      if (this.customerSelect === 1) {
+        request.isRetail = false;
+      } else {
+        request.isRetail = true;
+      }
+
       this._customerService
-      .getAll(request.keyword, request.skipCount, request.maxResultCount)
+      .getAll(request.keyword, request.skipCount, request.isRetail, request.maxResultCount)
       .pipe(
         finalize(() => {
           finishedCallback();

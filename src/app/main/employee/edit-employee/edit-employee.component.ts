@@ -62,10 +62,14 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit{
       this.employee.workUnit = employeeOutput.workUnit;
       this.employee.taxIdentification = employeeOutput.taxIdentification;
       this.employee.employeeSalary = employeeOutput.employeeSalary;
+      this.employee.employeeAllowance = employeeOutput.employeeAllowance;
       this.employee.salaryFactor = employeeOutput.salaryFactor;
       this.employee.typeOfContract = employeeOutput.typeOfContract;
       this.employee.phoneNumber = employeeOutput.employeePhone;
       this.employeeBank = employeeOutput.employeeBankAccount;
+      if (this.employeeBank === null) {
+        this.employeeBank = new BankAccount()
+      }
     });
   }
 
@@ -78,6 +82,7 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit{
     employeeAdd.employeeDateOfBirth = this.employee.employeeDateOfBirth;
     employeeAdd.employeeCMND = this.employeeCmnd;
     employeeAdd.jobTitle = this.employee.jobTitle;
+    employeeAdd.employeeAllowance = this.employee.employeeAllowance;
     employeeAdd.workUnit = this.selectedStructure.code;
     employeeAdd.taxIdentification = this.employee.taxIdentification;
     employeeAdd.employeeSalary = this.employee.employeeSalary;

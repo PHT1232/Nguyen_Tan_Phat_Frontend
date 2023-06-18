@@ -1,0 +1,243 @@
+<div [@routerTransition]>
+    <section class="content px-2" style="margin-left: 15px; margin-right: 15px; padding-top: 20px">
+      <p-panel>
+        <ng-template pTemplate="header">
+          <div class="col-6">
+            <h1>{{ "Đơn hàng" | localize }}</h1>
+          </div>
+          <div class="col-6 text-right">
+            <p-button
+              label="Tạo"
+              routerLink="create"
+              *ngIf="isGranted('Pages.System.ExportImport.Add') == true"
+            >
+            </p-button>
+          </div>
+        </ng-template>
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-6">&emsp;</div>
+            <div class="col-md-6">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <button
+                    type="button"
+                    class="btn bg-blue"
+                    (click)="getDataPage(1)"
+                  >
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="keyword"
+                  [placeholder]="'SearchWithThreeDot' | localize"
+                  [(ngModel)]="keyword"
+                  (keydown)="getDataPage(1)"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="card mb-0 mt-2">
+            <div class="card-body">
+              <form class="form-horizontal">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group row mb-0">
+                      <div class="col pt-2">
+                        <!-- <select
+                          class="form-control"
+                          [(ngModel)]="storageCode"
+                          [ngModelOptions]="{ standalone: true }"
+                          (change)="getDataPage(1)"
+                          aria-label="Default select example"
+                        >
+                          <option value="0" selected>Kho</option>
+                          <option
+                            *ngFor="
+                              let storage of getStorage.items;
+                              let i = index
+                            "
+                            value="{{ storage.storageCode }}"
+                          >
+                            {{ storage.storageName }}
+                          </option>
+                        </select> -->
+                        <p-dropdown [style]="{'width':'100%' }" 
+                        [options]="getStructure" 
+                        [ngModelOptions]="{standalone: true}" 
+                        [(ngModel)]="selectedStructure" 
+                        placeholder="Chi nhánh"
+                        (onChange)="getDataPage(1)"
+                        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true"></p-dropdown>
+                      </div>
+                      <div class="col pt-2">
+                        <input type="text"
+                              placeholder="Ngày/tháng/năm"
+                              class="form-control"
+                              style="height: 49px;"
+                              bsDaterangepicker
+                              [bsConfig]="{ isAnimated: true }"
+                              [(ngModel)]="bsInlineRangeValue"
+                              [ngModelOptions]="{ standalone: true }"
+                              (ngModelChange)="getDataPage(1)"
+                            />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <tabset style="margin-left: 10px; margin-top: 10px">
+          <tab
+            (selectTab)="orderStatus = 1; getDataPage(1)"
+            [heading]="'Đang thực hiện'"
+          >
+          </tab>
+          <tab
+            (selectTab)="orderStatus = 2; getDataPage(1)"
+            [heading]="'Đã hoàn thành'"
+          >
+          </tab>
+          <!-- <tab (selectTab)="orderStatus = 3; getDataPage(1)" [heading]="'Đã hoàn thành và thanh toán'">
+          </tab> -->
+        </tabset>
+        <div class="card-body">
+          <div class="table-responsive" style="margin-top: 15px">
+            <p-table [value]="retailList" [busy]="isLoading">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="exportImportCode">
+                    {{ "Mã đơn" | localize
+                    }}<p-sortIcon field="exportImportCode"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="nameOfReceiver">
+                    {{ "Khách hàng" | localize
+                    }}<p-sortIcon field="nameOfReceiver"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="orderType">
+                    {{ "Phương thức thanh toán" | localize
+                    }}<p-sortIcon field="orderType"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="totalPrice">
+                    {{ "Tổng tiền" | localize
+                    }}<p-sortIcon field="totalPrice"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="creationTime">
+                    {{ "Ngày tạo" | localize
+                    }}<p-sortIcon field="creationTime"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="username">
+                    {{ "Người tạo đơn" | localize
+                    }}<p-sortIcon field="username"></p-sortIcon>
+                  </th>
+                  <th style="width: 200px">
+                    {{ "Hành động" | localize }}
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-retail>
+                <tr>
+                  <td>
+                    <a [routerLink]="['detail', retail.retailCode]">{{
+                      retail.retailCode
+                    }}</a>
+                  </td>
+                  <td>{{ retail.nameOfReceiver }}</td>
+                  <td *ngIf="retail.paymentMethod === 2">VN PAY</td>
+                  <td *ngIf="retail.paymentMethod === 1">Tiền mặt</td>
+                  <td>
+                    {{ retail.totalPrice | currency : "VND" }}
+                  </td>
+                  <td>
+                    {{ retail.creationTime | date : "dd/MM/yyyy" }}
+                  </td>
+                  <td>{{ retail.orderCreator }}</td>
+                  <td>
+                    <table>
+                      <tr>
+                        <td *ngIf="orderStatus == 1">
+                          <p-button
+                            styleClass="p-button-secondary"
+                            icon="pi pi-pencil"
+                            [style]="{ 'margin-right': '10px' }"
+                            *ngIf="isGranted('Pages.System.ExportImport.Update') == true"
+                            [routerLink]="['edit', retail.retailCode]"
+                          >
+                          </p-button>
+                        </td>
+                        <td *ngIf="orderStatus == 1">
+                          <p-button
+                            styleClass="p-button-success"
+                            icon="pi pi-check"
+                            [style]="{ 'margin-right': '10px' }"
+                            *ngIf="isGranted('Pages.System.ExportImport.View') == true"
+                            (click)="finishOrder(retail)"
+                          >
+                          </p-button>
+                        </td>
+                        <td *ngIf="orderStatus == 1">
+                          <p-button
+                            styleClass="p-button-danger"
+                            icon="pi pi-times"
+                            [style]="{ 'margin-right': '10px' }"
+                            *ngIf="isGranted('Pages.System.ExportImport.View') == true"
+                            (click)="delete(retail)"
+                          >
+                          </p-button>
+                        </td>
+                        <td *ngIf="orderStatus == 1">
+                          <p-button *ngIf="retail.paymentMethod === 2" [disabled]="loading" icon="pi pi-qrcode" (onClick)="createLink(retail.retailCode)"></p-button>
+                        </td>
+                        <!-- <td>
+                          <p-button
+                            [loading]="loading"
+                            styleClass="p-button-help"
+                            icon="pi pi-download"
+                            [style]="{ 'margin-right': '10px' }"
+                            *ngIf="isGranted('Pages.System.ExportImport.View') == true"
+                            (click)="ExportExcel(retail.retailCode)"
+                          >
+                          </p-button>
+                        </td> -->
+                        
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+        <div class="card-footer table-card-footer bg-light border-top">
+          <div class="row">
+            <div class="col-sm-3 col-12 text-sm-left text-center">
+              <button class="btn btn-secondary" (click)="refresh()">
+                <i class="fas fa-redo-alt"></i>
+              </button>
+            </div>
+            <!-- <div class="col-sm-4 col-12 text-center">
+              <p class="mb-0 my-2">
+                {{ "TotalRecordsCount" | localize : totalItems }}
+              </p>
+            </div> -->
+            <div class="col-sm-5 col-12">
+              <div class="float-sm-right m-auto">
+                <p-paginator
+                  (onPageChange)="getDataPage($event)"
+                  [first]="first"
+                  [rows]="rows"
+                  [totalRecords]="totalItems"
+                  [rowsPerPageOptions]="[6, 10, 15]"
+                ></p-paginator>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-panel>
+    </section>
+  </div>
+  

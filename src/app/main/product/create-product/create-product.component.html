@@ -24,13 +24,7 @@
                     [style]="{'width':'100%'}"
                     [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="products.productCode"
-                    #nameCode="ngModel"
-                    #nameCodeEl
                   />
-                  <abp-validation-summary
-                    [control]="nameCode"
-                    [controlEl]="nameCodeEl"
-                  ></abp-validation-summary>
                 </div>
               </div>
             </div>
@@ -54,13 +48,7 @@
                     [ngModelOptions]="{ standalone: true }"
                     [style]="{'width':'100%'}"
                     [(ngModel)]="products.productName"
-                    #nameModel="ngModel"
-                    #nameEl
                   />
-                  <abp-validation-summary
-                    [control]="nameModel"
-                    [controlEl]="nameEl"
-                  ></abp-validation-summary>
                 </div>
               </div>
             </div>
@@ -79,7 +67,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <select
+                  <!-- <select
                     required="categoryCode === '0'"
                     #selectModel="ngModel"
                     #selectEl
@@ -96,11 +84,16 @@
                     >
                       {{ category.CategoryName }}
                     </option>
-                  </select>
-                  <abp-validation-summary
-                    [control]="selectModel"
-                    [controlEl]="selectEl"
-                  ></abp-validation-summary>
+                  </select> -->
+
+                  
+                  <p-dropdown [style]="{'width':'100%'}" 
+                  [options]="getCategory.items" 
+                  [(ngModel)]="categoryCode" 
+                  [ngModelOptions]="{standalone: true}" 
+                  (onChange)="getSubcategory()"
+                  optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Danh mục">
+                  </p-dropdown>
                 </div>
               </div>
             </div>
@@ -114,7 +107,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <select
+                  <!-- <select
                     required
                     #selectSubModel="ngModel"
                     #selectSubEl
@@ -134,7 +127,16 @@
                     >
                       {{ subcategory.subcategoryName }}
                     </option>
-                  </select>
+                  </select> -->
+
+                  
+                  <p-dropdown [style]="{'width':'100%'}" 
+                  [disabled]="isCategoryCodeExist != true"
+                  [options]="getSubcategorycode.items" 
+                  [(ngModel)]="subcategoryCode" 
+                  [ngModelOptions]="{standalone: true}" 
+                  optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Danh mục nhỏ">
+                  </p-dropdown>
                 </div>
               </div>
             </div>
@@ -170,13 +172,7 @@
                     mode="currency" currency="VND"
                     [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="products.price"
-                    #priceModel="ngModel"
-                    #priceEl
                   ></p-inputNumber>
-                  <abp-validation-summary
-                    [control]="priceModel"
-                    [controlEl]="priceEl"
-                  ></abp-validation-summary>
                 </div>
               </div>
             </div>
@@ -200,14 +196,7 @@
                     [ngModelOptions]="{ standalone: true }"
                     [style]="{'width':'100%'}"
                     [(ngModel)]="this.products.unit"
-                    #unitModel="ngModel"
-                    #unitEl
-                    required
                   />
-                  <abp-validation-summary
-                    [control]="unitModel"
-                    [controlEl]="unitEl"
-                  ></abp-validation-summary>
                 </div>
               </div>
             </div>
@@ -225,8 +214,7 @@
                 <div class="col">
                   <textarea
                     class="form-control"
-                    name="description"
-                    id="description"
+                    [ngModelOptions]="{standalone: true}"
                     [(ngModel)]="products.productDescription"
                     cols="20"
                     rows="5"
@@ -248,12 +236,32 @@
                 <div class="col">
                   <textarea
                     class="form-control"
-                    name="description"
-                    id="description"
                     [(ngModel)]="products.productDetail"
+                    [ngModelOptions]="{standalone: true}"
                     cols="20"
                     rows="6"
                   ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-bottom: 25px">
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="name">
+                    {{ "Hình ảnh sản phẩm" | localize }}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <ngx-dropzone (change)="onSelect($event)" accept="image/jpeg,image/jpg,image/png" [multiple]="false">
+                    <ngx-dropzone-label>Ảnh sản phẩm</ngx-dropzone-label>
+                    <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+                      <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                    </ngx-dropzone-preview>
+                  </ngx-dropzone>
                 </div>
               </div>
             </div>

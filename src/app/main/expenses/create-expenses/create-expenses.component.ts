@@ -10,7 +10,7 @@ import { ExpensesInputDto } from '@shared/service-proxies/dtos/expenses/Expenses
 import { ExpensesProductDto } from '@shared/service-proxies/dtos/expenses/ExpensesProductDto';
 import { ExpensesProductPagedResultDto } from '@shared/service-proxies/dtos/expenses/ExpensesProductPagedResultDto';
 import { StorageProductDetailList } from '@shared/service-proxies/dtos/products/StorageProductDetail';
-import { EmployeeServiceProxy, ExpensesService, ProductServiceProxy } from '@shared/service-proxies/service-proxies';
+import { EmployeeServiceProxy, ExpensesService, ExportImportProductDto, ProductServiceProxy } from '@shared/service-proxies/service-proxies';
 
 class PagedProductRequestDto extends PagedRequestDto {
   storageCode: string;
@@ -49,6 +49,8 @@ export class CreateExpensesComponent extends AppComponentBase implements OnInit 
   totalItems: number;
   initialProductQuantity: InitialProductQuantity[] = [];
   isExist = false;
+  isTableLoading = false;
+  selectedProducts: ExpensesProductDto[] = [];
   errorMessage = 'Không được trùng kho';
 
   @Output() onsave = new EventEmitter<any>();
@@ -104,8 +106,12 @@ export class CreateExpensesComponent extends AppComponentBase implements OnInit 
     this.expenses.storageId = this.storageCode.code;
     console.log(
       this.expenses.productProvider);
-    this.expenses.products.forEach(element => {
-      totalPrice += element.finalPrice;
+    this.selectedProducts.forEach(element => {
+        // console.log("quantity: " + element.quantity);
+        // console.log("finalprice: " + element.finalPrice);
+        element.finalPrice = element.quantity * element.price;
+        totalPrice += element.finalPrice;
+        this.expenses.products.push(element);  
     });
     this.expenses.employeeCode = this.employeeSelected.code;
 
@@ -131,24 +137,26 @@ export class CreateExpensesComponent extends AppComponentBase implements OnInit 
     // this.isTrue = true;
 
     if (
-      this.expenses.products.length === 0
-      || this.expenses.expensesCode === ''
+      this.selectedProducts.length === 0
+      || this.expenses.expensesCode === undefined
+      || this.expenses.employeeCode === undefined
+      || this.expenses.expensesCode === ""
       || this.expenses.employeeCode === ""
       || this.storageCode === undefined
       ) {
       return true;
     }
 
-    for (let i = 0; i < this.quantityCheck.length; i++) {
-      if (this.quantityCheck[i] === false) {
-        this.isTrue = false;
-        return false;
-      }
-    }
+    // for (let i = 0; i < this.quantityCheck.length; i++) {
+    //   if (this.quantityCheck[i] === false) {
+    //     this.isTrue = false;
+    //     return false;
+    //   }
+    // }
 
     // if (this.isTrue) {
     //   this.isTrue = true;
-      return true;
+      // return true;
     // }
   }
 
@@ -213,11 +221,40 @@ export class CreateExpensesComponent extends AppComponentBase implements OnInit 
     this.skipCount = event.page * this.rows;
     this._expensesImport.getProduct(this.storageCode.code, true, this.keyword, this.skipCount, this.rows)
     .subscribe((result: ExpensesProductPagedResultDto) => {
-      this.products1 = result.items;
+      // this.products1 = result.items;
+      this.products1 = [];
       this.totalItems = result.totalCount;
+        if (this.selectedProducts.length !== 0) {
+          result.items.forEach(element => {
+            this.selectedProducts.forEach(elementProduct => {
+              if (element.productId === elementProduct.productId) {
+                element.quantity = elementProduct.quantity;
+                element.location = elementProduct.location;
+              }
+            });
+            this.products1.push(element);
+          });
+        } else {
+          this.products1 = result.items;
+        }
       for (let i = 0; i < this.products1.length; i++) {
         this.quantityCheck[i] = true;
       }
     });
+  }
+
+  isProductSelected(data) {    
+  if (this.selectedProducts.length === 0) {
+    return false;
+  }
+
+  var hasThing = false;
+  this.selectedProducts.forEach(element => {
+    if (element.productId === data.productId) {
+      hasThing = true;
+      return;
+    }
+  });
+  return hasThing;
   }
 }

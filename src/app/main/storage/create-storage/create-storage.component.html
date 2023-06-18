@@ -58,6 +58,24 @@
                         </div>
                       </div>
                   </div>
+                </div> 
+                
+                <div class="row" style="padding-bottom: 25px;">
+                  <div class="col">
+                      <div class="row">
+                        <div class="col required">
+                          <label for="name">
+                            {{ "Đơn vị" | localize }}
+                          </label>
+                          <span style="color: red; margin-left: 5px; font-size: 14pt;">*</span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <p-dropdown [style]="{'width':'100%'}" [options]="getStructure" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedStructure" optionLabel="name"></p-dropdown>
+                        </div>
+                      </div>
+                  </div>
                 </div>
                 
                 <div class="row" style="padding-bottom: 25px;">
