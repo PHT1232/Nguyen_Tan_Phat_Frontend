@@ -9293,7 +9293,7 @@ export class RetailService {
     skipCount: number | undefined,
     maxResultCount: number | undefined
   ): Observable<RetailPagedResult> {
-    let url_ = this.baseUrl + "/api/services/app/ExportImport/GetProduct?";
+    let url_ = this.baseUrl + "/api/services/app/Retail/GetProduct?";
     if (storageId !== undefined)
       url_ += "StorageId=" + encodeURIComponent("" + storageId) + "&";
     if (keyword !== undefined)
