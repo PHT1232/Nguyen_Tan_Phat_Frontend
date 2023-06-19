@@ -222,9 +222,8 @@ export class CreateRetailComponent extends AppComponentBase implements OnInit{
     this.exportImport.products = [];
     this.quantityCheck = [];
     console.log("page " + event.page);
-    this.skipCount = event.page * this.pageSize;
     this._retailService
-      .getProduct(this.keyword, this.selectedStructure.code, this.skipCount, this.pageSize)
+      .getProduct(this.keyword, this.selectedStructure.code, 0, this.pageSize)
       .subscribe((result: RetailPagedResult) => {
         // this.products = result.items;
         this.products = [];
